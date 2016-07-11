@@ -29,6 +29,9 @@ date()
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 rm(list = ls(all = TRUE))
+
+options(java.parameters = "-Xmx100g")
+
 setwd("V:/Analysis/5_Coastwide/Multispecies/Alaska Hatchery Research Program/SEAK Chum")
 source("H:/R Source Scripts/Functions.GCL_KS.R")
 source("C:/Users/krshedd/Documents/R/Functions.GCL.R")
@@ -43,28 +46,30 @@ password <- "********"
 SEAKChumSillys <- c("CMFISHCR14a", "CMFISHCR13", "CMFISHCRT13", "CMADMCR13", "CMSAWCR13", "CMPROSCR13")
 
 ## Create Locus Control
-CreateLocusControl.GCL(markersuite = "ChumParentage2015_248SNPs", username = username, password = password)
+CreateLocusControl.GCL(markersuite = "ChumParentage2015_284SNPs", username = username, password = password)
 
 ## Save original LocusControl
-loci248 <- LocusControl$locusnames
+loci284 <- LocusControl$locusnames
 mito.loci <- which(LocusControl$ploidy == 1)
 
+dir.create("Objects")
 dput(x = LocusControl, file = "Objects/OriginalLocusControl.txt")
-dput(x = loci96, file = "Objects/loci96.txt")
+dput(x = loci284, file = "Objects/loci284.txt")
 dput(x = mito.loci, file = "Objects/mito.loci.txt")
 
 #~~~~~~~~~~~~~~~~~~
 ## Pull all data for each silly code and create .gcl objects for each
-LOKI2R.GCL(sillyvec = LateAugustMixtures2014, username = username, password = password)
+# sillyvec = SEAKChumSillys; username = username; password = password
+LOKI2R.GCL(sillyvec = SEAKChumSillys, username = username, password = password)  # Had to bust open the function and run line by line with `options(java.parameters = "-Xmx100g")` as opposed to `10g`, otherwise hit GC overhead and run out of heap space
 rm(username, password)
 objects(pattern = "\\.gcl")
 
 ## Save unaltered .gcl's as back-up:
+dir.create("Raw genotypes")
 dir.create("Raw genotypes/OriginalCollections")
-dir.create("Raw genotypes/OriginalCollections/KMALateAugust2014")
-invisible(sapply(LateAugustMixtures2014, function(silly) {dput(x = get(paste(silly, ".gcl", sep = '')), file = paste("Raw genotypes/OriginalCollections/KMALateAugust2014/" , silly, ".txt", sep = ''))} )); beep(8)
+invisible(sapply(SEAKChumSillys, function(silly) {dput(x = get(paste(silly, ".gcl", sep = '')), file = paste("Raw genotypes/OriginalCollections/" , silly, ".txt", sep = ''))} )); beep(8)
 
 ## Original sample sizes by SILLY
-collection.size.original <- sapply(LateAugustMixtures2014, function(silly) get(paste(silly, ".gcl", sep = ""))$n)
+collection.size.original <- sapply(SEAKChumSillys, function(silly) get(paste(silly, ".gcl", sep = ""))$n)
 
 
