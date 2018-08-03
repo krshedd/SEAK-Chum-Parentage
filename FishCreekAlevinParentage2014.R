@@ -213,6 +213,35 @@ dir.create("Raw genotypes/PostMetadataPreQC")
 invisible(sapply(SEAKChumSillys.otoltihs, function(silly) {dput(x = get(paste(silly, ".gcl", sep = '')), file = paste("Raw genotypes/PostMetadataPreQC/" , silly, ".txt", sep = ''))} )); beep(8)
 
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#### Clean workspace; dget .gcl objects and Locus Control ####
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+rm(list = ls(all = TRUE))
+setwd("V:/Analysis/5_Coastwide/Multispecies/Alaska Hatchery Research Program/SEAK Chum")
+# This sources all of the new GCL functions to this workspace
+source("C:/Users/krshedd/Documents/R/Functions.GCL.R")
+source("H:/R Source Scripts/Functions.GCL_KS.R")
+
+## Get objects
+LocusControl <- dget(file = "Objects/OriginalLocusControl.txt")
+
+SEAKobjects <- list.files(path = "Objects", recursive = FALSE)
+SEAKobjects <- SEAKobjects[!SEAKobjects %in% c("OriginalLocusControl.txt")]
+SEAKobjects
+
+invisible(sapply(SEAKobjects, function(objct) {assign(x = unlist(strsplit(x = objct, split = ".txt")), value = dget(file = paste(getwd(), "Objects", objct, sep = "/")), pos = 1) })); beep(2)
+
+
+## Get un-altered mixtures
+setwd("V:/Analysis/5_Coastwide/Multispecies/Alaska Hatchery Research Program/SEAK Chum/Raw genotypes/PostMetadataPreQC")
+invisible(sapply(list.files(), function(silly.txt) {
+  silly <- unlist(strsplit(x = silly.txt, split = ".txt"))
+  assign(x = paste(silly, ".gcl", sep = ''), value = dget(file = silly.txt), pos = 1)
+})); beep (5)
+objects(pattern = "\\.gcl")
+
+setwd("V:/Analysis/5_Coastwide/Multispecies/Alaska Hatchery Research Program/SEAK Chum")
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #### Data QC/Massage ####
@@ -297,6 +326,7 @@ SEAKChumSillys.all_SampleSizes[, "Duplicate"] <- ColSize_SEAKChumSillys.all_Post
 ### Final
 SEAKChumSillys.all_SampleSizes[, "Final"] <- ColSize_SEAKChumSillys.all_PostDuplicate
 SEAKChumSillys.all_SampleSizes
+dput(x = SEAKChumSillys.all_SampleSizes, file = "Objects/SEAKChumSillys.all_SampleSizes.txt")
 
 dir.create("Output")
 write.xlsx(SEAKChumSillys.all_SampleSizes, file = "Output/SEAKChumSillys.all_SampleSizes.xlsx")
@@ -317,4 +347,7 @@ levelplot(SEAKChumSillys.all.percent.per.locus, col.regions = new.colors, xlab =
 
 # Hatchery vs. Natural per silly
 sapply(SEAKChumSillys.all, function(silly) {table(get(paste(silly, ".gcl", sep = ''))$attributes$Natural.Hatchery)} )
+
+
+
 
