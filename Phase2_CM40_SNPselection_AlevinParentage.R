@@ -507,6 +507,19 @@ setwd("V:/WORK/Chum/AHRP/FRANz/Run14_loci160_QCed")
 system("FRANz --Nmmax 1000 --Nfmax 1000 --femrepro 1:1 --malerepro 1:1 --typingerror 0.005 --updatefreqs --poutformat 2 --cervusgenotypeout Cervusgenotye.txt --cervusoffspringout Cervusoffspring.txt --fullsibtest V:\\WORK\\Chum\\AHRP\\FRANz\\Run14_loci160_QCed\\Run14_input.dat") #, stdout = "V:\\WORK\\Chum\\AHRP\\FRANz\\Run3_loci176_QCed", stderr = "V:\\WORK\\Chum\\AHRP\\FRANz\\Run3_loci176_QCed"
 system("FRANz --Nmmax 1000 --Nfmax 1000 --femrepro 1:1 --malerepro 1:1 --typingerror 0.005 --updatefreqs --poutformat 2 --cervusgenotypeout Cervusgenotye.txt --cervusoffspringout Cervusoffspring.txt V:\\WORK\\Chum\\AHRP\\FRANz\\Run14_loci160_QCed\\Run14_input.dat") #, stdout = "V:\\WORK\\Chum\\AHRP\\FRANz\\Run3_loci176_QCed", stderr = "V:\\WORK\\Chum\\AHRP\\FRANz\\Run3_loci176_QCed"
 
+# Can't find output files, don't know where they are going
+setwd("C:/Users/krshedd/Program Files/FRANz/examples/simpsons/")
+system2("FRANz --N 2 'C:\\Users\\krshedd\\Program Files\\FRANz\\examples\\simpsons\\simpsons.dat'", stdout = "C:/Users/krshedd/Program Files/FRANz/examples/simpsons/")  # where is output?
+system("FRANz --N 2 simpsons.dat")  # where is output?
+
+system2(command = file.path("C:/Users/krshedd/Program Files/FRANz/FRANz.exe"), 
+        args = paste0("FRANz --N 2 C:/Users/krshedd/Program Files/FRANz/examples/simpsons/simpsons.dat"), 
+        stdout = file.path("C:/Users/krshedd/Program Files/FRANz/examples/simpsons/", paste0("franz_results")), 
+        stderr = file.path("C:/Users/krshedd/Program Files/FRANz/examples/simpsons/", paste0("franz_results")))
+
+system("cd /d 'c:\\Users\\krshedd\\Program Files\\FRANz\\examples\\simpsons' & FRANz --N 2 simpsons.dat")  # this line works in cmd, but not when sent from R!!!
+
+
 ## Also try SOLIDMON???
 
 ### Will need to figure out how to match up the otolith read data from Eric. L. with the fish, because most will be in CMFISHCR13, but there will be the few from CMFISHCR13T
