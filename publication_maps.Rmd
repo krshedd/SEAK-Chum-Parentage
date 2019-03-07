@@ -1,0 +1,83 @@
+---
+title: "Publication Maps"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(leaflet)
+library(ggmap)
+library(maps)
+library(mapdata)
+library(PBSmapping)
+library(grid)
+library(ggsn)
+```
+
+# Read in, format, and filter data
+
+```{r read_map_data}
+(dat <- read_csv("map_data.csv"))
+
+x_lim <- range(dat$long) + c(-1.25, 1)
+y_lim <- range(dat$lat) + c(-0.25, 0.25)
+
+dat <- dat %>%
+  filter(type != "City" & type != "Hatchery") %>% 
+  mutate(Legend = type)
+```
+
+```{r pbs_mapping}
+data("nepacLLhigh")
+ak <- nepacLLhigh %>% 
+  dplyr::select(group = PID, POS = POS,long = X, lat = Y)
+
+maptheme <- theme(
+  panel.grid = element_blank(),
+  panel.border = element_rect(fill = NA, colour = "black"),
+  panel.background = element_blank()
+)
+
+seak_map <- ggplot() + 
+  geom_polygon(data = ak, aes(long, lat, group = group), fill = "grey90", color = "black", lwd = 0.3) +
+  geom_point(data = dat, aes(x = long, y = lat, fill = Legend), shape = 21, colour = "black", stroke = 2, size = 5) +
+  geom_label(data = dat, aes(long, lat, label = name), hjust = 0, nudge_x = 0.1, nudge_y = 0.05) +
+  geom_segment(aes(x = -133, xend = -133, y = 57.90, yend = 58.05), lineend = "butt", linejoin = "round", size = 2, arrow = arrow(length = unit(0.2, "inches"))) +
+  theme(panel.background = element_rect(fill = 'white')) +
+  scale_y_continuous(breaks = c(58, 58.5, 59)) +
+  scale_x_continuous(breaks = c(-136, -135, -134, -133)) +
+  xlab(expression(paste(Longitude^o, ~'W'))) +
+  ylab(expression(paste(Latitude^o, ~'N'))) +
+  coord_map(xlim = x_lim, ylim = y_lim) +
+  maptheme
+
+# north2(pws_map, symbol = 12, 0.18, 0.20)  # couldn't get this to work with the inset
+
+ak_map <- ggplot() + 
+  geom_polygon(data = ak, aes(long, lat, group = group), fill = "grey90", color = "black", lwd = 0.3) +
+  geom_rect(data = data.frame(), aes(xmin = x_lim[1], xmax = x_lim[2], ymin = y_lim[1], ymax = y_lim[2]), colour = "red", fill = NA, lwd = 1.3) +
+  theme(axis.title = element_blank(),
+        axis.text = element_blank(),
+        axis.ticks = element_blank()) +
+  coord_map(xlim = c(-170, -130), ylim = c(53, 65))
+
+grid.newpage()
+vp_b <- viewport(width = 1, height = 1, x = 0.5, y = 0.5)  # the larger map
+vp_a <- viewport(width = 0.23, height = 0.35, x = 0.205, y = 0.31)  # the inset in lower left
+print(seak_map, vp = vp_b)
+print(ak_map + maptheme, vp = vp_a)
+```
+
+
+```{r save_png}
+png(filename = "V:/Documents/5_Coastwide/Multispecies/AHRP/Meetings/3-7-19 Public Informational Meeting/Figures/chum_map.png", width = 6.5, height = 6.5, units = "in", res = 300)
+grid.newpage()
+vp_b <- viewport(width = 1, height = 1, x = 0.5, y = 0.5)  # the larger map
+vp_a <- viewport(width = 0.23, height = 0.35, x = 0.215, y = 0.40)  # the inset in lower left
+print(seak_map, vp = vp_b)
+print(ak_map + maptheme, vp = vp_a)
+dev.off()
+```
