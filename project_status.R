@@ -12,8 +12,8 @@ library(lubridate)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # List of silly's for OceanAK filter
 streams <- c("ADMCR", "PROSCR", "SAWCR", "FISHCR")
-yrs <- c(13:14, 17:18)
-writeClipboard(paste(paste0("CM", rep(streams, each = 5), yrs), collapse = ";"))
+yrs <- c(13:15, 17:19)
+writeClipboard(paste(paste0("CM", rep(streams, each = 6), yrs), collapse = ";"))
 
 oceanak <- read_csv(file = "../OceanAK/PedigreeData_AHRP - Salmon Biological Data 2_SEAK_2013-2018_no_otoliths.csv") %>% 
   unite(SillySource, `Silly Code`, `Fish ID`, sep = "_", remove = FALSE) %>% 
@@ -46,7 +46,7 @@ oceanak <- read_csv(file = "../OceanAK/PedigreeData_AHRP - Salmon Biological Dat
 addmargins(table(oceanak$`Location Code`, oceanak$`Sample Year`))
 
 # otolith code per stream per year
-table(oceanak$`Location Code`, oceanak$`Otolith Mark Present`, oceanak$`Sample Year`, useNA = "always")
+addmargins(table(oceanak$`Location Code`, oceanak$`Otolith Mark Present`, oceanak$`Sample Year`, useNA = "always"))
 table(oceanak$`Location Code`, oceanak$`Otolith Mark Status Code`, oceanak$`Sample Year`, useNA = "always")
 
 # add otolith_read logical, stream as factor, and year
