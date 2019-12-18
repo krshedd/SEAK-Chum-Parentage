@@ -109,6 +109,7 @@ Import the raw data from finsight and check for common errors, including missing
 raw_dat <- read_csv(file = stream_data) %>% 
   filter( str_detect( StreamName, regex(stream, ignore_case = TRUE))) %>% # Overcomplicated, but needs the regex call to include ignore case since data has caps and GIS does not
   filter(Latitude != 0 | Longitude != 0) %>%  # toss if missing GPS info
+  filter(!is.na(SampleCell)) %>% 
   distinct() %>%  # toss duplicated rows
   mutate(Longitude = case_when( Longitude > 0 ~ (-1 * Longitude),
                                 TRUE ~ Longitude)) # convert positive longitudes to negative
