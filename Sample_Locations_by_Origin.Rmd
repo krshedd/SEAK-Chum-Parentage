@@ -1,0 +1,222 @@
+---
+title: "SEAK Chum Spatial Patterns of Hatchery vs. Natural fish"
+output:
+  html_notebook:
+    theme: united
+    toc: yes
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+library(coin)
+library(MASS)
+library(scales)
+library(tidyverse)
+library(leaflet)
+library(lubridate)
+library(ggExtra)
+
+knitr::opts_chunk$set(out.width = "100%", fig.width = 10)
+```
+
+# Read Data
+Read in StreamSpecimens data from Finsight
+```{r}
+(finsight <- read_csv("../Stream Specimens/StreamSpecimens_SEAK_2013-2019_CSVReport.csv"))
+```
+
+# Modify Data
+Modify to add columns
+```{r}
+finsight_mod <- finsight %>% 
+  mutate(date = mdy(SurveyDate),
+         year = year(date),
+         DOY = yday(date),
+         Longitude = -abs(Longitude),
+         otolith_read = case_when(MarkPresent == "Null" ~ FALSE,
+                                  TRUE ~ TRUE),
+         origin = case_when(MarkPresent == "Y" ~ "Hatchery",
+                            MarkPresent == "N" ~ "Natural",
+                            TRUE ~ NA_character_),
+         origin = factor(x = origin, levels = c("Natural", "Hatchery"))) %>% 
+  rename(stream = StreamName)
+```
+
+# Otolith Status
+All otoliths read?
+```{r}
+finsight_mod %>%
+  count(year, otolith_read) %>% 
+  spread(otolith_read, n, fill = 0)
+```
+
+What are otolith reads by year?
+```{r}
+finsight_mod %>% 
+  count(origin, year) %>% 
+  spread(origin, n, fill = 0)
+```
+
+Calculate raw pHOS
+```{r}
+finsight_mod %>% 
+  filter(origin %in% c("Natural", "Hatchery")) %>% 
+  count(stream, year, origin) %>% 
+  spread(origin, n) %>% 
+  group_by(stream, year) %>% 
+  summarize(pHOS = Hatchery / (Hatchery + Natural)) %>% 
+  spread(stream, pHOS)
+```
+
+# Sample Sizes
+Sample size by year?
+```{r}
+finsight_mod %>% 
+  count(stream, year) %>% 
+  spread(stream, n, fill = 0)
+```
+
+## Plot all streams and years
+```{r fig.width=12}
+finsight_mod %>% 
+  # filter(origin %in% c("Natural", "Hatchery")) %>% 
+  ggplot(aes(x = DOY, fill = origin)) +
+  geom_histogram(binwidth = 1) +
+  facet_grid(year ~ stream) +
+  labs(fill = "Origin") +
+  ylab("Number of Samples") +
+  xlab("Day of Year") +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+```
+
+## Plot daily pHOS
+```{r warning=FALSE, fig.width = 12}
+finsight_mod %>% 
+  filter(origin %in% c("Natural", "Hatchery")) %>% 
+  count(stream, year, DOY, origin) %>% 
+  spread(origin, n, fill = 0) %>% 
+  group_by(stream, year, DOY) %>% 
+  summarize(pHOS = Hatchery / (Hatchery + Natural),
+            n = Hatchery + Natural) %>% 
+  # filter(stream == "Fish Creek" & year == 2013) %>% 
+  ggplot(aes(x = DOY, y = pHOS * 100)) +
+  geom_point(aes(size = n), alpha = 0.5) +
+  geom_smooth(method = "loess", se = FALSE, aes(weight = n)) +
+  ylim(c(0, 100)) +
+  facet_grid(year ~ stream) +
+  labs(fill = "Origin") +
+  ylab("pHOS") +
+  xlab("Day of Year") +
+  theme_bw() +
+  theme(text = element_text(size = 20),
+        axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+```
+
+# Location
+
+## Fish Creek
+```{r fig.height=10}
+finsight_mod %>% 
+  filter(stream != "Admiralty Creek" | year != 2019) %>% 
+  filter(origin %in% c("Natural", "Hatchery")) %>% 
+  filter(stream == "Fish Creek") %>% 
+  ggplot(aes(x = Longitude, y = Latitude, colour = origin)) +
+  geom_jitter(alpha = 0.5, size = 3) +
+  coord_quickmap() +
+  facet_grid(year ~ stream) +
+  theme_bw() +
+  theme(text = element_text(size = 20))
+```
+
+## Prospect Creek
+```{r fig.width=12}
+finsight_mod %>% 
+  filter(stream != "Admiralty Creek" | year != 2019) %>% 
+  filter(origin %in% c("Natural", "Hatchery")) %>% 
+  filter(stream == "Prospect Creek") %>% 
+  ggplot(aes(x = Longitude, y = Latitude, colour = origin)) +
+  geom_jitter(alpha = 0.5, size = 3) +
+  coord_quickmap() +
+  facet_grid(stream ~ year) +
+  theme_bw() +
+  theme(text = element_text(size = 20))
+```
+
+## Sawmill Creek
+```{r fig.width=12}
+finsight_mod %>% 
+  filter(stream != "Admiralty Creek" | year != 2019) %>% 
+  filter(origin %in% c("Natural", "Hatchery")) %>% 
+  filter(stream == "Sawmill Creek") %>% 
+  ggplot(aes(x = Longitude, y = Latitude, colour = origin)) +
+  geom_jitter(alpha = 0.5, size = 3) +
+  coord_quickmap() +
+  facet_grid(stream ~ year) +
+  theme_bw() +
+  theme(text = element_text(size = 20))
+```
+
+## Admiralty Creek
+```{r fig.height=10}
+finsight_mod %>% 
+  filter(stream != "Admiralty Creek" | year != 2019) %>% 
+  filter(origin %in% c("Natural", "Hatchery")) %>% 
+  filter(stream == "Admiralty Creek") %>% 
+  ggplot(aes(x = Longitude, y = Latitude, colour = origin)) +
+  geom_jitter(alpha = 0.5, size = 3) +
+  coord_quickmap() +
+  facet_grid(year ~ stream) +
+  theme_bw() +
+  theme(text = element_text(size = 20))
+```
+
+# Very Rough Distance
+
+Use some basic trigonometry to calculate distance from mouth on Fish Creek and Prospect Creek, because they are more or less straight.
+
+```{r}
+mouth <- finsight_mod %>% 
+  filter(stream == "Fish Creek") %>% 
+  summarise(Latitude = max(Latitude, na.rm = TRUE),
+            Longitude = min(Longitude, na.rm = TRUE))
+```
+
+```{r}
+finsight_mod %>% 
+  filter(stream == "Fish Creek") %>% 
+  mutate(distance = sqrt((mouth$Latitude - Latitude)^2 + abs(mouth$Longitude - Longitude)^2)) %>% 
+  ggplot(aes(x = distance, fill = origin)) +
+  geom_histogram() +
+  facet_grid(year ~ stream) +
+  theme_bw() +
+  theme(text = element_text(size = 20))
+```
+
+```{r}
+finsight_mod %>% 
+  filter(stream == "Fish Creek" & origin %in% c("Natural", "Hatchery")) %>% 
+  mutate(distance = sqrt((mouth$Latitude - Latitude)^2 + abs(mouth$Longitude - Longitude)^2)) %>% 
+  ggplot(aes(x = distance, fill = origin)) +
+  geom_density(alpha = 0.5) +
+  facet_grid(year ~ stream) +
+  theme_bw() +
+  theme(text = element_text(size = 20))
+```
+
+
+## Contour density plots
+```{r fig.height=15}
+finsight_mod %>% 
+  filter(stream == "Fish Creek" & origin %in% c("Natural", "Hatchery")) %>% 
+  mutate(distance = sqrt((mouth$Latitude - Latitude)^2 + abs(mouth$Longitude - Longitude)^2)) %>% 
+  ggplot(aes(x = DOY, y = distance, colour = origin)) +
+  stat_density_2d(aes(fill = ..level..), geom = "polygon", alpha = 0.5) +
+  scale_fill_gradient(low = "grey50", high = "black") +
+  facet_grid(year ~ origin) +
+  theme_bw() +
+  theme(text = element_text(size = 20))
+```
+
