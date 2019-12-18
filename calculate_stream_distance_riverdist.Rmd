@@ -16,7 +16,7 @@ We don't have high tide marks like we do for PWS, but I could contact Chance Gra
 # Setup script
 ```{r setup}
 while(!require(pacman)){ install.packages("pacman") }
-  p_load(riverdist, rgdal, sp, tidyverse)  # use pacman to load or install + load necessary packages
+  p_load(riverdist, rgdal, sp, tidyverse, anomalize)  # use pacman to load or install + load necessary packages
 ```
 
 Options for stream are limited to:    
@@ -27,7 +27,7 @@ Options for stream are limited to:
     sawmill
 
 ```{r inputs}
-stream = "fish" # Enter stream name here
+stream = "sawmill" # Enter stream name here
 
 # CSV containing fish data, specifically, Lat/Longs
 stream_data = "../Stream Specimens/StreamSpecimens_SEAK_2013-2019_CSVReport.csv"
@@ -93,6 +93,41 @@ NOTE - Run this chunk in console as the notebook lags 1 graph behind, making it 
     Build segment routes?  This will save time in route calculations. (y/n) y
     
     
+    Cleanup steps taken for <i> ADMIRALTY CREEK </i>:
+    
+    Dissolve: y (Riverdist recommended ["Simplified from 18 to 5 segments."])
+    Insert vertices to reduce distances between vertices and increase point snapping precision? (y/n) y
+    Minimum distance to use: 1
+    Please identify segment number of river mouth: 5
+    Please identify vertex number of river mouth: 4321
+    Accept mouth assignment? (y/n) y
+    Remove any additional segments? (y/n) n
+    Build segment routes?  This will save time in route calculations. (y/n) y
+    
+    
+    Cleanup steps taken for <i> PROSPECT CREEK </i>:
+    
+    Dissolve: y (Riverdist recommended ["Simplified from 17 to 5 segments."])
+    Insert vertices to reduce distances between vertices and increase point snapping precision? (y/n) y
+    Minimum distance to use: 1
+    Please identify segment number of river mouth: 5
+    Please identify vertex number of river mouth: 1485
+    Accept mouth assignment? (y/n) y
+    Remove any additional segments? (y/n) n
+    Build segment routes?  This will save time in route calculations. (y/n) y
+    
+    
+    Cleanup steps taken for <i> SAWMILL CREEK </i>:
+    
+    Dissolve: y (Riverdist recommended ["Simplified from 10 to 1 segments."])
+    Insert vertices to reduce distances between vertices and increase point snapping precision? (y/n) y
+    Minimum distance to use: 1
+    Please identify segment number of river mouth: 1
+    Please identify vertex number of river mouth: 6919
+    Accept mouth assignment? (y/n) y
+    Remove any additional segments? (y/n) n
+    Build segment routes?  This will save time in route calculations. (y/n) y
+    
 ```{r CleanNetwork}
 # run in console if you want / need visual guides
 rivercleaned <- riverdist::cleanup(rivernetwork)
@@ -117,6 +152,27 @@ raw_dat <- read_csv(file = stream_data) %>%
 # Do not have at the moment
 # tide_dat <- read_csv(file = tide_data) %>% 
 #   filter( str_detect( Stream, regex(stream, ignore_case = TRUE))) # Overcomplicated, but needs the regex call to include ignore case since data has caps and GIS does not
+```
+
+Plot GPS points to see if any anomalies.
+```{r}
+raw_dat %>% 
+  ggplot(aes(x = Longitude, y = Latitude)) +
+  geom_point() + 
+  coord_quickmap()
+
+# # Try plotting with anomalies gone
+# raw_dat %>%
+#   anomalize(Latitude, method = "iqr") %>%
+#   filter(anomaly == "No") %>%
+#   ggplot(aes(x = Longitude, y = Latitude)) +
+#   geom_point() +
+#   coord_quickmap()
+# 
+# # Remove anomalies if necessary
+# raw_dat <- raw_dat %>%
+#   anomalize(Latitude, method = "iqr") %>%
+#   filter(anomaly == "No")
 ```
 
 
