@@ -109,6 +109,7 @@ Import the raw data from finsight and check for common errors, including missing
 raw_dat <- read_csv(file = stream_data) %>% 
   filter( str_detect( StreamName, regex(stream, ignore_case = TRUE))) %>% # Overcomplicated, but needs the regex call to include ignore case since data has caps and GIS does not
   filter(Latitude != 0 | Longitude != 0) %>%  # toss if missing GPS info
+  distinct() %>%  # toss duplicated rows
   mutate(Longitude = case_when( Longitude > 0 ~ (-1 * Longitude),
                                 TRUE ~ Longitude)) # convert positive longitudes to negative
 
@@ -116,6 +117,7 @@ raw_dat <- read_csv(file = stream_data) %>%
 # tide_dat <- read_csv(file = tide_data) %>% 
 #   filter( str_detect( Stream, regex(stream, ignore_case = TRUE))) # Overcomplicated, but needs the regex call to include ignore case since data has caps and GIS does not
 ```
+
 
 After importing the data, the coordinates must be converted into AKalberts xy format. This makes sure these are the same projection as the stream.
 ```{r xy2akalbers}
