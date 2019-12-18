@@ -23,7 +23,10 @@ knitr::opts_chunk$set(out.width = "100%", fig.width = 10)
 # Read Data
 Read in StreamSpecimens data from Finsight
 ```{r}
-(finsight <- read_csv("../Stream Specimens/StreamSpecimens_SEAK_2013-2019_CSVReport.csv"))
+(finsight <- read_csv("../Stream Specimens/StreamSpecimens_SEAK_2013-2019_CSVReport.csv") %>% 
+   distinct() %>% 
+   filter(!is.na(SampleCell))
+ )
 ```
 
 # Modify Data
@@ -213,6 +216,136 @@ finsight_mod %>%
   filter(stream == "Fish Creek" & origin %in% c("Natural", "Hatchery")) %>% 
   mutate(distance = sqrt((mouth$Latitude - Latitude)^2 + abs(mouth$Longitude - Longitude)^2)) %>% 
   ggplot(aes(x = DOY, y = distance, colour = origin)) +
+  stat_density_2d(aes(fill = ..level..), geom = "polygon", alpha = 0.5) +
+  scale_fill_gradient(low = "grey50", high = "black") +
+  facet_grid(year ~ origin) +
+  theme_bw() +
+  theme(text = element_text(size = 20))
+```
+
+# Riverdist
+
+## Fish Creek
+```{r}
+(riverdist_fish <- read_csv("../GIS/R/fish/fish_distances.csv") %>% 
+   rename(Distance = mouthdist) %>% 
+   distinct()
+)
+```
+
+```{r}
+(finsight_mod_fish <- finsight_mod %>% 
+   unite(Sample, c(SampleTrayId, SampleCell), sep = "_", remove = FALSE) %>% 
+   filter(stream == "Fish Creek") %>% 
+   select(stream, year, date, DOY, Latitude, Longitude, Sample, SampleTrayId, SampleCell, Sex, MEHLength, SpawningState, Hatchery, Age, origin, otolith_read)
+)
+```
+
+
+```{r}
+join_fish <- riverdist_fish %>% 
+  dplyr::left_join(finsight_mod_fish, by = "Sample")
+
+
+join_fish  %>% 
+  filter(origin %in% c("Natural", "Hatchery")) %>% 
+  ggplot(aes(x = DOY, y = Distance, colour = origin)) +
+  stat_density_2d(aes(fill = ..level..), geom = "polygon", alpha = 0.5) +
+  scale_fill_gradient(low = "grey50", high = "black") +
+  facet_grid(year ~ origin) +
+  theme_bw() +
+  theme(text = element_text(size = 20))
+```
+
+## Sawmill Creek
+```{r}
+(riverdist_sawmill <- read_csv("../GIS/R/sawmill/sawmill_distances.csv") %>% 
+   rename(Distance = mouthdist) %>% 
+   distinct()
+)
+```
+
+```{r}
+(finsight_mod_sawmill <- finsight_mod %>% 
+   unite(Sample, c(SampleTrayId, SampleCell), sep = "_", remove = FALSE) %>% 
+   filter(stream == "Sawmill Creek") %>% 
+   select(stream, year, date, DOY, Latitude, Longitude, Sample, SampleTrayId, SampleCell, Sex, MEHLength, SpawningState, Hatchery, Age, origin, otolith_read)
+)
+```
+
+
+```{r, fig.height=10}
+join_sawmill <- riverdist_sawmill %>% 
+  dplyr::left_join(finsight_mod_sawmill, by = "Sample")
+
+
+join_sawmill  %>% 
+  filter(origin %in% c("Natural", "Hatchery")) %>% 
+  ggplot(aes(x = DOY, y = Distance, colour = origin)) +
+  stat_density_2d(aes(fill = ..level..), geom = "polygon", alpha = 0.5) +
+  scale_fill_gradient(low = "grey50", high = "black") +
+  facet_grid(year ~ origin) +
+  theme_bw() +
+  theme(text = element_text(size = 20))
+```
+
+## Prospect Creek
+```{r}
+(riverdist_prospect <- read_csv("../GIS/R/prospect/prospect_distances.csv") %>% 
+   rename(Distance = mouthdist) %>% 
+   distinct()
+)
+```
+
+```{r}
+(finsight_mod_prospect <- finsight_mod %>% 
+   unite(Sample, c(SampleTrayId, SampleCell), sep = "_", remove = FALSE) %>% 
+   filter(stream == "Prospect Creek") %>% 
+   select(stream, year, date, DOY, Latitude, Longitude, Sample, SampleTrayId, SampleCell, Sex, MEHLength, SpawningState, Hatchery, Age, origin, otolith_read)
+)
+```
+
+
+```{r fig.height=10}
+join_prospect <- riverdist_prospect %>% 
+  dplyr::left_join(finsight_mod_prospect, by = "Sample")
+
+
+join_prospect  %>% 
+  filter(origin %in% c("Natural", "Hatchery")) %>% 
+  ggplot(aes(x = DOY, y = Distance, colour = origin)) +
+  stat_density_2d(aes(fill = ..level..), geom = "polygon", alpha = 0.5) +
+  scale_fill_gradient(low = "grey50", high = "black") +
+  facet_grid(year ~ origin) +
+  theme_bw() +
+  theme(text = element_text(size = 20))
+```
+
+## Admiralty Creek
+```{r}
+(riverdist_admiralty <- read_csv("../GIS/R/admiralty/admiralty_distances.csv") %>% 
+   rename(Distance = mouthdist) %>% 
+   distinct()
+)
+```
+
+```{r}
+(finsight_mod_admiralty <- finsight_mod %>% 
+   unite(Sample, c(SampleTrayId, SampleCell), sep = "_", remove = FALSE) %>% 
+   filter(stream == "Admiralty Creek") %>% 
+   select(stream, year, date, DOY, Latitude, Longitude, Sample, SampleTrayId, SampleCell, Sex, MEHLength, SpawningState, Hatchery, Age, origin, otolith_read)
+)
+```
+
+
+```{r fig.height=10}
+join_admiralty <- riverdist_admiralty %>% 
+  dplyr::left_join(finsight_mod_admiralty, by = "Sample")
+
+
+join_admiralty  %>% 
+  filter(origin %in% c("Natural", "Hatchery")) %>% 
+  ggplot(aes(x = DOY, y = Distance, colour = origin)) +
   stat_density_2d(aes(fill = ..level..), geom = "polygon", alpha = 0.5) +
   scale_fill_gradient(low = "grey50", high = "black") +
   facet_grid(year ~ origin) +
