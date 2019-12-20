@@ -16,6 +16,7 @@ library(tidyverse)
 library(leaflet)
 library(lubridate)
 library(ggExtra)
+while(!require(ggnewscale)){devtools::install_github("eliocamp/ggnewscale")}
 
 knitr::opts_chunk$set(out.width = "100%", fig.width = 10)
 ```
@@ -351,5 +352,74 @@ join_admiralty  %>%
   facet_grid(year ~ origin) +
   theme_bw() +
   theme(text = element_text(size = 20))
+```
+
+# One plot to rule them all
+
+```{r}
+join_fish  %>% 
+  filter(origin %in% c("Natural", "Hatchery")) %>% 
+  ggplot(aes(x = DOY, y = Distance, colour = origin, group = origin)) +
+  stat_density_2d(aes(fill = ..level..), geom = "polygon", alpha = 0.5) +
+  scale_fill_gradient(low = "grey50", high = "black") +
+  facet_grid(year ~ .) +
+  theme_bw() +
+  theme(text = element_text(size = 20))
+
+
+  # new_scale_color() +
+  # scale_colour_manual(name = "Origin", values = c("Natural" = origin_colors[1], "Hatchery" = origin_colors[2])) +
+
+
+gg_color_hue <- function(n) {
+  hues = seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100)[1:n]
+}
+
+origin_colors <- gg_color_hue(2)
+
+join_fish  %>% 
+  filter(origin %in% c("Natural", "Hatchery")) %>% 
+  ggplot(aes(x = DOY, y = Distance, colour = origin)) + 
+  stat_density_2d(geom = "density_2d", show.legend = TRUE) +  # contour lines
+  labs(colour = "Origin") +  # change legend title
+  guides(colour = guide_legend(override.aes = list(size = 4))) +  # make legend line width larger ~ pseudo fill
+  stat_density_2d(data = filter(.data = join_fish, origin == "Natural"), aes(fill = ..level..), geom = "polygon", alpha = 0.5, colour = origin_colors[1], show.legend = FALSE) +  # plot natural
+  scale_fill_gradient(low = "white", high = origin_colors[1]) +  # add custom fill colour
+  new_scale_fill() +  # switch fill
+  stat_density_2d(data = filter(.data = join_fish, origin == "Hatchery"), aes(fill = ..level..), geom = "polygon", alpha = 0.5, colour = origin_colors[2], show.legend = FALSE) +  # add hatchery
+  scale_fill_gradient(low = "white", high = origin_colors[2]) +  # add custom fill colour
+  facet_grid(year ~ .) +  # facet by year
+  theme_bw() +
+  theme(text = element_text(size = 20))
+```
+
+```{r, fig.width=12}
+join_all <- bind_rows(join_fish, join_prospect, join_sawmill)
+
+gg_color_hue <- function(n) {
+  hues = seq(15, 375, length = n + 1)
+  hcl(h = hues, l = 65, c = 100)[1:n]
+}
+
+origin_colors <- gg_color_hue(2)
+
+join_all  %>% 
+  filter(origin %in% c("Natural", "Hatchery")) %>% 
+  ggplot(aes(x = DOY, y = Distance, colour = origin)) + 
+  stat_density_2d(geom = "density_2d", show.legend = TRUE) +  # contour lines
+  labs(colour = "Origin") +  # change legend title
+  guides(colour = guide_legend(override.aes = list(size = 4))) +  # make legend line width larger ~ pseudo fill
+  stat_density_2d(data = filter(.data = join_all, origin == "Natural"), aes(fill = ..level..), geom = "polygon", alpha = 0.5, colour = origin_colors[1], show.legend = FALSE) +  # plot natural
+  scale_fill_gradient(low = "white", high = origin_colors[1]) +  # add custom fill colour
+  new_scale_fill() +  # switch fill
+  stat_density_2d(data = filter(.data = join_all, origin == "Hatchery"), aes(fill = ..level..), geom = "polygon", alpha = 0.5, colour = origin_colors[2], show.legend = FALSE) +  # add hatchery
+  scale_fill_gradient(low = "white", high = origin_colors[2]) +  # add custom fill colour
+  scale_x_continuous(limits = c(195, 245), breaks = seq(195, 245, by = 20), labels = format(x = (as.Date("2012-12-31") + seq(195, 245, by = 20)), "%b %d")) +  # converty day of year to sample date
+  xlab("Sample Date") +
+  ylab("Distance from Stream Mouth (m)") +
+  facet_grid(stream ~ year, scales = "free_y") +  # facet by year
+  theme_bw() +
+  theme(text = element_text(size = 20), axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1))
 ```
 
