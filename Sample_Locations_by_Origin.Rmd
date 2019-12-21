@@ -22,29 +22,95 @@ knitr::opts_chunk$set(out.width = "100%", fig.width = 10)
 ```
 
 # Read Data
-Read in StreamSpecimens data from Finsight
+
+Read in StreamSpecimens data from *Finsight* to get lat/long data
 ```{r}
 (finsight <- read_csv("../Stream Specimens/StreamSpecimens_SEAK_2013-2019_CSVReport.csv") %>% 
    distinct() %>% 
-   filter(!is.na(SampleCell))
+   filter(!is.na(SampleCell)) %>% 
+   unite(key, c("SampleTrayId", "SampleCell"), sep = "_", remove = FALSE)
  )
 ```
 
-# Modify Data
-Modify to add columns
+Read in *OceanAK* data to get latest and greatest otolith reads
+```{r}
+(oceanak <- read_csv("../OceanAK/Salmon Biological Data 2 - Kyle's Filter_20191220.csv") %>% 
+   unite(key, c("DNA Tray Code", "DNA Tray Well Code"), sep = "_", remove = FALSE))
+```
+
+Crap, *OceanAK* doesn't have the 2019 data, presumably because we don't have the 2019 samples in-house yet, thus they are not in *LOKI*, so maybe the view in *OceanAK* doesn't work?
+```{r}
+oceanak %>% 
+  count(`Silly Code`)
+```
+
+Just keep key and Otolith Mark Present
+```{r}
+(oceanak_mod <- oceanak %>% 
+   select(key, `Otolith Mark Present`)
+)
+```
+
+Ugh, it is missing the 2019 data, WTF! Read in 2019 data from Bev
+```{r}
+(mta <- read_csv("../OceanAK/data for Kyle 12-20-19.csv"))
+```
+
+Make key and modify otolith mark to boolean
+```{r}
+(mta_mod <- mta %>% 
+   mutate(dna_tray_cell_code = as.character(as.numeric(CELL_NUMBER)),
+          dna_tray_code = as.numeric(DNA_TRAY_CODE)) %>% 
+   unite(key, c("dna_tray_code", "dna_tray_cell_code"), sep = "_", remove = FALSE) %>% 
+   mutate("Otolith Mark Present" = case_when(MARK_PRESENT == 0 ~ "NO",
+                                             MARK_PRESENT == -1 ~ "YES",
+                                             TRUE ~ NA_character_)) %>% 
+   select(key, "Otolith Mark Present")
+)
+```
+
+Join OceanAK (2013-2018) and MTA (2019) otolith data
+```{r}
+(oto <- bind_rows(oceanak_mod, mta_mod))
+```
+
+
+# Join and Modify Data
+
+Prepare to join *Finsight* and *OceanAK* based on key
+```{r}
+table(oto$key %in% finsight$key)
+table(finsight$key %in% oto$key)
+```
+
+Join otolith data with *Finsight*, verify conflicts first
+```{r}
+finsight %>% 
+  left_join(oto, by = "key") %>% 
+  count(MarkPresent, `Otolith Mark Present`)
+```
+
+Join and create a single variable for origin
 ```{r}
 finsight_mod <- finsight %>% 
+  left_join(oto, by = "key") %>% 
+  mutate(otolith_mark_present = case_when(MarkPresent == "N" ~ FALSE,
+                                          MarkPresent == "Y" ~ TRUE,
+                                          MarkPresent == "Null" & `Otolith Mark Present` == "NO" ~ FALSE,
+                                          MarkPresent == "Null" & `Otolith Mark Present` == "YES" ~ TRUE,
+                                          MarkPresent == "Null" & `Otolith Mark Present` == NA ~ NA,
+                                          MarkPresent == NA ~ NA)) %>% 
   mutate(date = mdy(SurveyDate),
          year = year(date),
          DOY = yday(date),
-         Longitude = -abs(Longitude),
-         otolith_read = case_when(MarkPresent == "Null" ~ FALSE,
+         Longitude = -abs(Longitude)) %>% 
+  rename(stream = StreamName) %>% 
+  mutate(otolith_read = case_when(otolith_mark_present == NA ~ FALSE,
                                   TRUE ~ TRUE),
-         origin = case_when(MarkPresent == "Y" ~ "Hatchery",
-                            MarkPresent == "N" ~ "Natural",
+         origin = case_when(otolith_mark_present == TRUE ~ "Hatchery",
+                            otolith_mark_present == FALSE ~ "Natural",
                             TRUE ~ NA_character_),
-         origin = factor(x = origin, levels = c("Natural", "Hatchery"))) %>% 
-  rename(stream = StreamName)
+         origin = factor(x = origin, levels = c("Natural", "Hatchery")))
 ```
 
 # Otolith Status
@@ -69,7 +135,7 @@ finsight_mod %>%
   count(stream, year, origin) %>% 
   spread(origin, n) %>% 
   group_by(stream, year) %>% 
-  summarize(pHOS = Hatchery / (Hatchery + Natural)) %>% 
+  summarize(pHOS = round(Hatchery / (Hatchery + Natural), 3) * 100) %>% 
   spread(stream, pHOS)
 ```
 
@@ -410,11 +476,11 @@ join_all  %>%
   stat_density_2d(geom = "density_2d", show.legend = TRUE) +  # contour lines
   labs(colour = "Origin") +  # change legend title
   guides(colour = guide_legend(override.aes = list(size = 4))) +  # make legend line width larger ~ pseudo fill
-  stat_density_2d(data = filter(.data = join_all, origin == "Natural"), aes(fill = ..level..), geom = "polygon", alpha = 0.5, colour = origin_colors[1], show.legend = FALSE) +  # plot natural
-  scale_fill_gradient(low = "white", high = origin_colors[1]) +  # add custom fill colour
+  stat_density_2d(data = filter(.data = join_all, origin == "Natural"), aes(fill = ..level..), geom = "polygon", alpha = 0.1, colour = origin_colors[1], show.legend = FALSE) +  # plot natural
+  scale_fill_gradient2(low = "white", mid = origin_colors[1], high = "darkred") +  # add custom fill colour
   new_scale_fill() +  # switch fill
-  stat_density_2d(data = filter(.data = join_all, origin == "Hatchery"), aes(fill = ..level..), geom = "polygon", alpha = 0.5, colour = origin_colors[2], show.legend = FALSE) +  # add hatchery
-  scale_fill_gradient(low = "white", high = origin_colors[2]) +  # add custom fill colour
+  stat_density_2d(data = filter(.data = join_all, origin == "Hatchery"), aes(fill = ..level..), geom = "polygon", alpha = 0.1, colour = origin_colors[2], show.legend = FALSE) +  # add hatchery
+  scale_fill_gradient2(low = "white", mid = origin_colors[2], high = "darkblue") +  # add custom fill colour
   scale_x_continuous(limits = c(195, 245), breaks = seq(195, 245, by = 20), labels = format(x = (as.Date("2012-12-31") + seq(195, 245, by = 20)), "%b %d")) +  # converty day of year to sample date
   xlab("Sample Date") +
   ylab("Distance from Stream Mouth (m)") +
