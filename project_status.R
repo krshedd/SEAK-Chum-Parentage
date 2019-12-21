@@ -15,6 +15,20 @@ streams <- c("ADMCR", "PROSCR", "SAWCR", "FISHCR")
 yrs <- c(13:15, 17:19)
 writeClipboard(paste(paste0("CM", rep(streams, each = 6), yrs), collapse = ";"))
 
+# Get 2019 data out of OceanAK by DWP barcode (sharepoint) because we don't have 2019 samples in LOKI yet
+DWP_ranges <-
+  str_pad(
+    string = c(
+      0000027868:0000028167,
+      0000023196:0000023255,
+      0000037230:0000037329
+    ),
+    width = 10,
+    side = "left",
+    pad = "0"
+  )
+writeClipboard(paste(DWP_ranges, collapse = ";"))
+
 oceanak <- read_csv(file = "../OceanAK/PedigreeData_AHRP - Salmon Biological Data 2_SEAK_2013-2018_no_otoliths.csv") %>% 
   unite(SillySource, `Silly Code`, `Fish ID`, sep = "_", remove = FALSE) %>% 
   unite(TrayCodeID, `DNA Tray Code`, `DNA Tray Well Code`, sep = "_", remove = FALSE)
