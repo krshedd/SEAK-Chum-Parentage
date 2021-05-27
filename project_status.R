@@ -29,7 +29,13 @@ DWP_ranges <-
   )
 writeClipboard(paste(DWP_ranges, collapse = ";"))
 
-oceanak <- read_csv(file = "../OceanAK/PedigreeData_AHRP - Salmon Biological Data 2_SEAK_2013-2018_no_otoliths.csv") %>% 
+og_oceanak <- read_csv(file = "../OceanAK/PedigreeData_AHRP - Salmon Biological Data 2_SEAK_2013-2018_no_otoliths.csv")
+
+oceanak <- read_csv(file = "../OceanAK/AHRP Salmon Biological Data 20201106_142603.csv")
+
+names(oceanak) <- names(og_oceanak)
+
+oceanak <- oceanak %>% 
   unite(SillySource, `Silly Code`, `Fish ID`, sep = "_", remove = FALSE) %>% 
   unite(TrayCodeID, `DNA Tray Code`, `DNA Tray Well Code`, sep = "_", remove = FALSE)
 
@@ -73,7 +79,9 @@ oceanak_mod <- oceanak %>%
   mutate(origin = factor(origin, levels = c("natural", "hatchery")))
 
 # table of stream, year, and otolith_read
-table(oceanak_mod$stream, oceanak_mod$otolith_read, oceanak_mod$year)
+table(oceanak_mod$stream, oceanak_mod$year, oceanak_mod$otolith_read)
+
+table(oceanak_mod$stream, oceanak_mod$year, oceanak_mod$origin)
 
 # table of samples per stream per year
 addmargins(table(oceanak_mod$stream, oceanak_mod$year))
