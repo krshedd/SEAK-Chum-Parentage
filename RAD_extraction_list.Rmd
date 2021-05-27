@@ -1,0 +1,582 @@
+---
+title: "SEAK Chum RAD Selection"
+author: "Kyle Shedd"
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    theme: united
+    toc: yes
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+library(tidyverse)
+library(lubridate)
+```
+
+# Objective
+
+The objective of this notebook is to look through existing DNA plates for AHRP SEAK chum to select 48 fish each from:  
+  * DIPAC  
+  * Fish Creek  
+  * Prospect Creek  
+  * Sawmill Creek  
+
+These fish should *all* be natural-origin (except DIPAC, lol). Make sure to pick fish throughout the run, but try to minimize the number of plates to make it easier on Heather. She can fit 10 source plates on the deck at a time, so that is a max of 5/silly.
+
+# Background
+
+We need to develop a GT-seq panel for the SEAK chum parentage analyses. Kristen is gonna do a quick RAD project and select high MAF markers to develop a panel. We are going to cherry pick DNA (I know, crazy) to create these 2 plates.
+
+# Import Data
+
+## Extraction Plates
+
+```{r}
+(wells <- read_csv("../OceanAK/EX3160_Wells.csv"))
+```
+
+## AHRP Data
+
+```{r}
+(oceanak <- read_csv("../OceanAK/AHRP Salmon Biological Data 20201106_142603.csv"))
+```
+
+## Join
+
+```{r}
+(oceanak_wells <- wells %>%
+   left_join(oceanak, by = c(
+     "Silly Code" = "SILLY_CODE", "Fish" = "FISH_ID"
+   )) %>% 
+   select("Plate ID", "Silly Code", "Fish", "Well", "SAMPLE_DATE", "SEX", "OTOLITH_MARK_PRESENT", "OTOLITH_MARK_ID")
+ )
+```
+
+# Select Fish
+
+## CMDIPAC06
+
+Talked to Kristen about this, and we decided to grab 24 fish from this collection (bulk sampled, no sex data, see collection comments below) and 24 DIPAC strays from CMFISHCR13.
+
+Collection comments:  
+DIPAC-Macaulay Hatchery, JNU - summer run, mixed broodstock with 1-200 in 1:250ml bulk bottle. Sampler: Janelle Mueller, Rick Focht.  10202006 JMB 1-100 transferred to vials (1-95 have genotypes). Unbuilt 101-200 fish. Built 1-95 tissues. ESL 09042008. Retro coordinates, hatchery location. 10072008 ABarclay.
+
+```{r}
+(dipac_selection <- oceanak_wells %>%
+   filter(`Silly Code` == "CMDIPAC06" & Fish %in% 1:24))
+```
+
+## Fish Creek - Natural-origin
+
+Gonna grab the 48 natural-origin fish first, then grab the 24 DIPAC strays. 50/50 sex ratio and spread throughout the run.
+
+### Females
+
+Need 24 spaced throughout the season. How many per sample date?
+```{r}
+oceanak_wells %>%
+  filter(`Silly Code` == "CMFISHCR13",
+         OTOLITH_MARK_PRESENT == "NO",
+         SEX == "F") %>%
+  count(SAMPLE_DATE) %>%
+  mutate(p = n / sum(n)) %>%
+  mutate(select = round(p * 24.2))
+```
+
+Which plate is cherry picked already?
+```{r}
+oceanak_wells %>%
+  filter(`Silly Code` == "CMFISHCR13",
+         OTOLITH_MARK_PRESENT == "NO",
+         SEX == "F") %>%
+  count(SAMPLE_DATE, `Plate ID`) %>%
+  pivot_wider(names_from = SAMPLE_DATE,
+              values_from = n,
+              values_fill = 0)
+```
+
+Decide how many fish per plate and sample date.
+```{r}
+(
+  fish_creek_female_n <- tribble(~ SEX, ~ `Plate ID`, ~ `SAMPLE_DATE`, ~ `n`,
+                                 "F", 56349, "2013-07-21", 8,
+                                 "F", 56349, "2013-07-24", 2,
+                                 "F", 56352, "2013-08-01", 12,
+                                 "F", 56355, "2013-08-12", 2
+  ) %>% 
+    mutate(SAMPLE_DATE = as_date(SAMPLE_DATE))
+)
+```
+
+Select 'dem fish
+```{r}
+(
+  fish_creek_female_selection <- oceanak_wells %>%
+    filter(
+      `Silly Code` == "CMFISHCR13",
+      OTOLITH_MARK_PRESENT == "NO",
+      SEX == "F"
+    ) %>%
+    nest(data = -c(`Plate ID`, SAMPLE_DATE, SEX)) %>%
+    right_join(fish_creek_female_n, by = c("Plate ID", "SAMPLE_DATE", "SEX")) %>%
+    mutate(Sample = map2(data, n, sample_n)) %>%
+    select(-data, -n) %>%
+    unnest(Sample)
+)
+```
+
+### Males
+
+Need 24 spaced throughout the season. How many per sample date?
+```{r}
+oceanak_wells %>%
+  filter(`Silly Code` == "CMFISHCR13",
+         OTOLITH_MARK_PRESENT == "NO",
+         SEX == "M") %>%
+  count(SAMPLE_DATE) %>%
+  mutate(p = n / sum(n)) %>%
+  mutate(select = round(p * 23.6))
+```
+
+Which plate is cherry picked already?
+```{r}
+oceanak_wells %>%
+  filter(`Silly Code` == "CMFISHCR13",
+         OTOLITH_MARK_PRESENT == "NO",
+         SEX == "M") %>%
+  count(SAMPLE_DATE, `Plate ID`) %>%
+  pivot_wider(names_from = SAMPLE_DATE,
+              values_from = n,
+              values_fill = 0)
+```
+
+Decide how many fish per plate and sample date.
+```{r}
+(
+  fish_creek_male_n <- tribble(~ SEX, ~ `Plate ID`, ~ `SAMPLE_DATE`, ~ `n`,
+                                 "M", 56349, "2013-07-21", 12,
+                                 "M", 56349, "2013-07-24", 6,
+                                 "M", 56352, "2013-08-01", 6
+  ) %>% 
+    mutate(SAMPLE_DATE = as_date(SAMPLE_DATE))
+)
+```
+
+Select 'dem fish
+```{r}
+(
+  fish_creek_male_selection <- oceanak_wells %>%
+    filter(
+      `Silly Code` == "CMFISHCR13",
+      OTOLITH_MARK_PRESENT == "NO",
+      SEX == "M"
+    ) %>%
+    nest(data = -c(`Plate ID`, SAMPLE_DATE, SEX)) %>%
+    right_join(fish_creek_male_n, by = c("Plate ID", "SAMPLE_DATE", "SEX")) %>%
+    mutate(Sample = map2(data, n, sample_n)) %>%
+    select(-data, -n) %>%
+    unnest(Sample)
+)
+```
+
+
+## Fish Creek - DIPAC Strays
+
+Gonna grab the the 24 DIPAC strays. 50/50 sex ratio and spread throughout the run.
+
+### Females
+
+Need 12 spaced throughout the season. How many per sample date?
+```{r}
+oceanak_wells %>%
+  filter(
+    `Silly Code` == "CMFISHCR13",
+    OTOLITH_MARK_PRESENT == "YES",
+    str_detect(string = OTOLITH_MARK_ID, pattern = "DIPAC"),
+    SEX == "F"
+  ) %>%
+  count(SAMPLE_DATE) %>%
+  mutate(p = n / sum(n)) %>%
+  mutate(select = round(p * 11.5))
+```
+
+Which plate is cherry picked already?
+```{r}
+oceanak_wells %>%
+  filter(
+    `Silly Code` == "CMFISHCR13",
+    OTOLITH_MARK_PRESENT == "YES",
+    str_detect(string = OTOLITH_MARK_ID, pattern = "DIPAC"),
+    SEX == "F"
+  ) %>%
+  count(SAMPLE_DATE, `Plate ID`) %>%
+  pivot_wider(names_from = SAMPLE_DATE,
+              values_from = n,
+              values_fill = 0)
+```
+
+Decide how many fish per plate and sample date.
+```{r}
+(
+  fish_creek_DIPAC_female_n <- tribble(~ SEX, ~ `Plate ID`, ~ `SAMPLE_DATE`, ~ `n`,
+                                 "F", 56349, "2013-07-21", 1,
+                                 "F", 56349, "2013-07-24", 2,
+                                 "F", 56352, "2013-08-01", 7,
+                                 "F", 56355, "2013-08-12", 2
+  ) %>% 
+    mutate(SAMPLE_DATE = as_date(SAMPLE_DATE))
+)
+```
+
+Select 'dem fish
+```{r}
+(
+  fish_creek_DIPAC_female_selection <- oceanak_wells %>%
+    filter(
+      `Silly Code` == "CMFISHCR13",
+      OTOLITH_MARK_PRESENT == "YES",
+      str_detect(string = OTOLITH_MARK_ID, pattern = "DIPAC"),
+      SEX == "F"
+    ) %>%
+    nest(data = -c(`Plate ID`, SAMPLE_DATE, SEX)) %>%
+    right_join(
+      fish_creek_DIPAC_female_n,
+      by = c("Plate ID", "SAMPLE_DATE", "SEX")
+    ) %>%
+    mutate(Sample = map2(data, n, sample_n)) %>%
+    select(-data, -n) %>%
+    unnest(Sample)
+)
+```
+
+### Males
+
+Need 12 spaced throughout the season. How many per sample date?
+```{r}
+oceanak_wells %>%
+  filter(
+    `Silly Code` == "CMFISHCR13",
+    OTOLITH_MARK_PRESENT == "YES",
+    str_detect(string = OTOLITH_MARK_ID, pattern = "DIPAC"),
+    SEX == "M"
+  ) %>%
+  count(SAMPLE_DATE) %>%
+  mutate(p = n / sum(n)) %>%
+  mutate(select = round(p * 12))
+```
+
+Which plate is cherry picked already?
+```{r}
+oceanak_wells %>%
+  filter(
+    `Silly Code` == "CMFISHCR13",
+    OTOLITH_MARK_PRESENT == "YES",
+    str_detect(string = OTOLITH_MARK_ID, pattern = "DIPAC"),
+    SEX == "M"
+  ) %>%
+  count(SAMPLE_DATE, `Plate ID`) %>%
+  pivot_wider(names_from = SAMPLE_DATE,
+              values_from = n,
+              values_fill = 0)
+```
+
+Decide how many fish per plate and sample date.
+```{r}
+(
+  fish_creek_DIPAC_male_n <- tribble(~ SEX, ~ `Plate ID`, ~ `SAMPLE_DATE`, ~ `n`,
+                                 "M", 56349, "2013-07-21", 3,
+                                 "M", 56349, "2013-07-24", 2,
+                                 "M", 56352, "2013-08-01", 6,
+                                 "M", 56355, "2013-08-12", 1
+  ) %>% 
+    mutate(SAMPLE_DATE = as_date(SAMPLE_DATE))
+)
+```
+
+Select 'dem fish
+```{r}
+(
+  fish_creek_DIPAC_male_selection <- oceanak_wells %>%
+    filter(
+      `Silly Code` == "CMFISHCR13",
+      OTOLITH_MARK_PRESENT == "YES",
+      str_detect(string = OTOLITH_MARK_ID, pattern = "DIPAC"),
+      SEX == "M"
+    ) %>%
+    nest(data = -c(`Plate ID`, SAMPLE_DATE, SEX)) %>%
+    right_join(
+      fish_creek_DIPAC_male_n,
+      by = c("Plate ID", "SAMPLE_DATE", "SEX")
+    ) %>%
+    mutate(Sample = map2(data, n, sample_n)) %>%
+    select(-data, -n) %>%
+    unnest(Sample)
+)
+```
+
+
+## Prospect Creek - Natural-origin
+
+Gonna grab the 48 natural-origin fish, 50/50 sex ratio, and spread throughout the run.
+
+### Females
+
+Need 24 spaced throughout the season. How many per sample date?
+```{r}
+oceanak_wells %>%
+  filter(`Silly Code` == "CMPROSCR13",
+         OTOLITH_MARK_PRESENT == "NO",
+         SEX == "F") %>%
+  count(SAMPLE_DATE) %>%
+  mutate(p = n / sum(n)) %>%
+  mutate(select = round(p * 23.4))
+```
+
+Which plate is cherry picked already?
+```{r}
+oceanak_wells %>%
+  filter(`Silly Code` == "CMPROSCR13",
+         OTOLITH_MARK_PRESENT == "NO",
+         SEX == "F") %>%
+  count(SAMPLE_DATE, `Plate ID`) %>%
+  pivot_wider(names_from = SAMPLE_DATE,
+              values_from = n,
+              values_fill = 0)
+```
+
+Decide how many fish per plate and sample date.
+```{r}
+(
+  prospect_creek_female_n <- tribble(~ SEX, ~ `Plate ID`, ~ `SAMPLE_DATE`, ~ `n`,
+                                 "F", 56356, "2013-07-28", 3,
+                                 "F", 56356, "2013-08-04", 7,
+                                 "F", 56359, "2013-08-05", 8,
+                                 "F", 56359, "2013-08-20", 6
+  ) %>% 
+    mutate(SAMPLE_DATE = as_date(SAMPLE_DATE))
+)
+```
+
+Select 'dem fish
+```{r}
+(
+  prospect_creek_female_selection <- oceanak_wells %>%
+    filter(
+      `Silly Code` == "CMPROSCR13",
+      OTOLITH_MARK_PRESENT == "NO",
+      SEX == "F"
+    ) %>%
+    nest(data = -c(`Plate ID`, SAMPLE_DATE, SEX)) %>%
+    right_join(prospect_creek_female_n, by = c("Plate ID", "SAMPLE_DATE", "SEX")) %>%
+    mutate(Sample = map2(data, n, sample_n)) %>%
+    select(-data, -n) %>%
+    unnest(Sample)
+)
+```
+
+### Males
+
+Need 24 spaced throughout the season. How many per sample date?
+```{r}
+oceanak_wells %>%
+  filter(`Silly Code` == "CMPROSCR13",
+         OTOLITH_MARK_PRESENT == "NO",
+         SEX == "M") %>%
+  count(SAMPLE_DATE) %>%
+  mutate(p = n / sum(n)) %>%
+  mutate(select = round(p * 23.4))
+```
+
+Which plate is cherry picked already?
+```{r}
+oceanak_wells %>%
+  filter(`Silly Code` == "CMPROSCR13",
+         OTOLITH_MARK_PRESENT == "NO",
+         SEX == "M") %>%
+  count(SAMPLE_DATE, `Plate ID`) %>%
+  pivot_wider(names_from = SAMPLE_DATE,
+              values_from = n,
+              values_fill = 0)
+```
+
+Decide how many fish per plate and sample date.
+```{r}
+(
+  prospect_creek_male_n <- tribble(~ SEX, ~ `Plate ID`, ~ `SAMPLE_DATE`, ~ `n`,
+                                   "M", 56356, "2013-07-28", 4,
+                                   "M", 56356, "2013-08-04", 8,
+                                   "M", 56359, "2013-08-05", 7,
+                                   "M", 56359, "2013-08-20", 5
+  ) %>% 
+    mutate(SAMPLE_DATE = as_date(SAMPLE_DATE))
+)
+```
+
+Select 'dem fish
+```{r}
+(
+  prospect_creek_male_selection <- oceanak_wells %>%
+    filter(
+      `Silly Code` == "CMPROSCR13",
+      OTOLITH_MARK_PRESENT == "NO",
+      SEX == "M"
+    ) %>%
+    nest(data = -c(`Plate ID`, SAMPLE_DATE, SEX)) %>%
+    right_join(prospect_creek_male_n, by = c("Plate ID", "SAMPLE_DATE", "SEX")) %>%
+    mutate(Sample = map2(data, n, sample_n)) %>%
+    select(-data, -n) %>%
+    unnest(Sample)
+)
+```
+
+
+## Sawmill Creek - Natural-origin
+
+Gonna grab the 48 natural-origin fish, 50/50 sex ratio, and spread throughout the run.
+
+### Females
+
+Need 24 spaced throughout the season. How many per sample date?
+```{r}
+oceanak_wells %>%
+  filter(`Silly Code` == "CMSAWCR13",
+         OTOLITH_MARK_PRESENT == "NO",
+         SEX == "F") %>%
+  count(SAMPLE_DATE) %>%
+  mutate(p = n / sum(n)) %>%
+  mutate(select = round(p * 23.6))
+```
+
+Which plate is cherry picked already?
+```{r}
+oceanak_wells %>%
+  filter(`Silly Code` == "CMSAWCR13",
+         OTOLITH_MARK_PRESENT == "NO",
+         SEX == "F") %>%
+  count(SAMPLE_DATE, `Plate ID`) %>%
+  pivot_wider(names_from = SAMPLE_DATE,
+              values_from = n,
+              values_fill = 0)
+```
+
+Decide how many fish per plate and sample date.
+```{r}
+(
+  sawmill_creek_female_n <- tribble(~ SEX, ~ `Plate ID`, ~ `SAMPLE_DATE`, ~ `n`,
+                                 "F", 56360, "2013-07-23", 1,
+                                 "F", 56361, "2013-08-09", 17,
+                                 "F", 56363, "2013-08-10", 3,
+                                 "F", 56363, "2013-08-14", 3
+  ) %>% 
+    mutate(SAMPLE_DATE = as_date(SAMPLE_DATE))
+)
+```
+
+Select 'dem fish
+```{r}
+(
+  sawmill_creek_female_selection <- oceanak_wells %>%
+    filter(
+      `Silly Code` == "CMSAWCR13",
+      OTOLITH_MARK_PRESENT == "NO",
+      SEX == "F"
+    ) %>%
+    nest(data = -c(`Plate ID`, SAMPLE_DATE, SEX)) %>%
+    right_join(sawmill_creek_female_n, by = c("Plate ID", "SAMPLE_DATE", "SEX")) %>%
+    mutate(Sample = map2(data, n, sample_n)) %>%
+    select(-data, -n) %>%
+    unnest(Sample)
+)
+```
+
+### Males
+
+Need 24 spaced throughout the season. How many per sample date?
+```{r}
+oceanak_wells %>%
+  filter(`Silly Code` == "CMSAWCR13",
+         OTOLITH_MARK_PRESENT == "NO",
+         SEX == "M") %>%
+  count(SAMPLE_DATE) %>%
+  mutate(p = n / sum(n)) %>%
+  mutate(select = round(p * 24))
+```
+
+Which plate is cherry picked already?
+```{r}
+oceanak_wells %>%
+  filter(`Silly Code` == "CMSAWCR13",
+         OTOLITH_MARK_PRESENT == "NO",
+         SEX == "M") %>%
+  count(SAMPLE_DATE, `Plate ID`) %>%
+  pivot_wider(names_from = SAMPLE_DATE,
+              values_from = n,
+              values_fill = 0)
+```
+
+Decide how many fish per plate and sample date.
+```{r}
+(
+  sawmill_creek_male_n <- tribble(~ SEX, ~ `Plate ID`, ~ `SAMPLE_DATE`, ~ `n`,
+                                  "M", 56360, "2013-07-23", 2,
+                                  "M", 56361, "2013-08-09", 18,
+                                  "M", 56363, "2013-08-10", 2,
+                                  "M", 56363, "2013-08-14", 2
+  ) %>% 
+    mutate(SAMPLE_DATE = as_date(SAMPLE_DATE))
+)
+```
+
+Select 'dem fish
+```{r}
+(
+  sawmill_creek_male_selection <- oceanak_wells %>%
+    filter(
+      `Silly Code` == "CMSAWCR13",
+      OTOLITH_MARK_PRESENT == "NO",
+      SEX == "M"
+    ) %>%
+    nest(data = -c(`Plate ID`, SAMPLE_DATE, SEX)) %>%
+    right_join(sawmill_creek_male_n, by = c("Plate ID", "SAMPLE_DATE", "SEX")) %>%
+    mutate(Sample = map2(data, n, sample_n)) %>%
+    select(-data, -n) %>%
+    unnest(Sample)
+)
+```
+
+# Bind Selection
+
+Bind all `selection` tibbles together into a single *cherry-pick* extraction list for Heather.
+```{r}
+(RAD_selection <- mget(objects(pattern = "selection")) %>%
+   bind_rows())
+```
+
+Verify that we got what we wanted...
+```{r}
+RAD_selection %>%
+  count(`Silly Code`, OTOLITH_MARK_PRESENT, SEX) %>%
+  pivot_wider(names_from = SEX,
+              values_from = n,
+              values_fill = 0)
+```
+
+Bitchin', looks good to me!
+
+```{r}
+dput(x = RAD_selection, file = "../Objects/RAD_selection.txt")
+```
+
+
+# Write Extraction
+
+```{r}
+RAD_selection %>% 
+  select(`Plate ID`, `Silly Code`, Fish, Well) %>% 
+  write_csv(file = "../Extraction/RAD_selection_cherry_pick_DNA_plates.csv")
+```
+
+All done :)
