@@ -1,0 +1,246 @@
+---
+title: "SEAK Chum `rubias` investigation of long-distance PWS strays"
+author: "Kyle Shedd"
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    theme: united
+    toc: yes
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+library(pacman)
+pacman::p_load(tidyverse, lubridate, rubias)
+source("~/../R/Functions.GCL.R")
+username = readLines("~/../R/usr_pw.txt", n = 1)
+.password = readLines("~/../R/usr_pw.txt" , n = 2)[[2]]
+```
+
+# Objective
+
+The objective of this notebook is to analyze 2 fish from Prospect Creek, 2019 that had otolith marks from Wally Norenburg Hatchery in PWS.
+
+# Load Genotypes
+
+```{r}
+CreateLocusControl.GCL(markersuite = "ChumGolden2011_96SNPs", username = username, password = .password)
+
+LOKI2R.GCL(sillyvec = "CMPROSCR19", username = username, .password)
+
+loci <- LocusControl$locusnames %>% 
+  sort() # Initial loci object. This will be used by many fuctions.  
+```
+
+# Data QA
+
+Should just be these 2 fish, right?
+```{r}
+silly_n.GCL("CMPROSCR19")
+```
+
+Make sure they aren't missing a ton of genotypes
+```{r}
+miss_loci <-
+  RemoveIndMissLoci.GCL(sillyvec = "CMPROSCR19", proportion = 0.8)
+```
+
+Great, and they aren't duplicates of eachother, correct?
+```{r}
+(
+  duplicate_check_95 <-
+    CheckDupWithinSilly.GCL(
+      sillyvec = "CMPROSCR19",
+      loci = loci,
+      minnonmissing = 0.6,
+      quantile = NULL,
+      minproportion = 0.95,
+      ncores = 4
+    )
+)
+```
+
+Great, moving on :)
+
+# Baseline
+
+Going to use Andy Barclay's chum baseline that goes from North AK Peninsula to Washington State. For a full description of this baseline, go visit:
+"V:\Analysis\5_Coastwide\Chum\NPen2WA_Chum_baseline"
+
+```{r}
+(
+  chum_baseline <-
+    read_csv(
+      "V:/Analysis/5_Coastwide/Chum/NPen2WA_Chum_baseline/rubias/baseline/NPen2Wa_Chum_227pops_91loci_base.csv",
+      col_types = cols(.default = "c")
+    )
+)
+```
+
+Copy the baseline over to our directory for posterity. First make directory structure.
+```{r}
+dir.make <- function(path) {
+  if(!dir.exists(path)) {dir.create(path)}
+}
+
+dir.make(path = "../rubias")
+dir.make(path = "../rubias/baseline")
+dir.make(path = "../rubias/mixture")
+dir.make(path = "../rubias/output")
+```
+
+```{r}
+file.copy(
+  from = "V:/Analysis/5_Coastwide/Chum/NPen2WA_Chum_baseline/rubias/baseline/NPen2Wa_Chum_227pops_91loci_base.csv",
+  to = "../rubias/baseline/NPen2Wa_Chum_227pops_91loci_base.csv",
+  overwrite = TRUE,
+  recursive = FALSE,
+  copy.date = TRUE
+)
+```
+
+## Get Baseline Objects
+```{r baseline objects}
+attach("V:\\Analysis\\5_Coastwide\\Chum\\NPen2WA_Chum_baseline\\NPen2WA_Chum_baseline.Rdata")
+
+loci91 <- loci91
+sillyvec227 <- sillyvec227
+groupvec19 <- groupvec19
+groups19 <- groups19
+baseline <- baseline
+grcol <- grcol
+
+detach()
+
+source("~/../R/Functions.GCL.R")
+```
+
+# Loci
+
+What loci are in the baseline? I think Andy has some combined markers in there...we should sort that out *prior* to creating our mixture!
+```{r}
+(
+  loci_baseline <-
+    str_subset(string = names(chum_baseline), pattern = "\\.1") %>%
+    str_remove(string = ., pattern = "\\.1")
+)
+```
+
+```{r}
+all.equal(loci_baseline, loci91)
+```
+
+
+Cool, looks like just one combined marker.
+```{r}
+CombineLoci.GCL(
+  sillyvec = "CMPROSCR19",
+  markerset = c("Oke_Cr30", "Oke_Cr386", "Oke_ND3-69"),
+  update = TRUE,
+  delim = "."
+)
+```
+
+
+# Mixture Analysis
+
+## Create Mixture
+```{r}
+(
+  CMPROSCR19_mix <-
+    create_rubias_mixture(
+      sillyvec = "CMPROSCR19",
+      loci = loci_baseline,
+      path = "../rubias/mixture/"
+    )
+)
+```
+
+## Analyze
+
+### MCMC
+
+Flat prior by group (not pop)
+```{r}
+(flat_prior <- tibble(
+  collection = sillyvec227,
+  pi_param = Prior.GCL(groupvec = groupvec19, groupweights = rep(1 /
+                                                                   max(groupvec19), max(groupvec19)))
+))
+```
+
+Run!!!
+```{r}
+(
+  mix.out <-
+    run_rubias_mixture(
+      reference = chum_baseline,
+      mixture = CMPROSCR19_mix,
+      group_names = groups19,
+      gen_start_col = 5,
+      method = "MCMC",
+      pi_prior = flat_prior, 
+      path = "../rubias/output/"
+    )
+)
+```
+
+Summarize stock composition to RG
+```{r}
+(prop_est  <-
+   custom_combine_rubias_output(rubias_output = mix.out, bias_corr = FALSE))
+```
+
+Individual posteriors
+```{r}
+mix.out$indiv_posteriors %>% 
+  group_by(indiv, repunit) %>% 
+  summarize(prob = sum(PofZ)) %>% 
+  slice_max(prob, n = 5)
+```
+
+Hrmm, well it definitely looks like `CMPROSCR19_1090` is from PWS (> 0.95), however, there is a bit more uncertainty around `CMPROSCR19_759` (PWS p ~ 0.80).
+
+### PB
+
+Run!!!
+```{r}
+dir.make("../rubias/output_PB/")
+
+(
+  mix.out_PB <-
+    run_rubias_mixture(
+      reference = chum_baseline,
+      mixture = CMPROSCR19_mix,
+      group_names = groups19,
+      gen_start_col = 5,
+      method = "PB",
+      pi_prior = flat_prior, 
+      path = "../rubias/output_PB/"
+    )
+)
+```
+
+Summarize stock composition to RG
+```{r}
+(prop_est_PB  <-
+   custom_combine_rubias_output(rubias_output = mix.out_PB, bias_corr = TRUE))
+```
+
+Individual posteriors
+```{r}
+mix.out_PB$indiv_posteriors %>% 
+  group_by(indiv, repunit) %>% 
+  summarize(prob = sum(PofZ)) %>% 
+  slice_max(prob, n = 5)
+```
+
+Right, the parametric bootstrap option (bias correction) *only* affects the stock composition estimates, not the individual genotype scaled likelihoods!!!
+
+Hrmm, well it definitely looks like `CMPROSCR19_1090` is from PWS (> 0.95), however, there is a bit more uncertainty around `CMPROSCR19_759` (PWS p ~ 0.80).
+
+# Conclusions
+
+It certainly seems very likely that at least one of these fish is a long-distance stray from PWS (p > 0.95), and the other is most likely from PWS as well (p ~ 0.80.
