@@ -55,6 +55,45 @@ We need to develop a GT-seq panel for the SEAK chum parentage analyses. Kristen 
  )
 ```
 
+## Genotypes
+
+As of 7/12/21 we need to go back and replace some fish that had very low concentrations of DNA, so the idea here is to see if we've already genotyped any of these fish and see which ones had good genotyping success.
+
+Load functions
+```{r}
+source("~/../R/Functions.GCL.R")
+username = readLines("~/../R/usr_pw.txt", n = 1)
+.password = readLines("~/../R/usr_pw.txt" , n = 2)[[2]]
+```
+
+Locus Control
+```{r}
+CreateLocusControl.GCL(markersuite = "ChumGolden2011_96SNPs",
+                       username = username,
+                       password = .password)
+```
+
+Read Genotypes
+```{r}
+LOKI2R.GCL(
+  sillyvec = c("CMPROSCR13", "CMSAWCR13"),
+  username = username,
+  password = .password
+)
+```
+
+View sample size by locus
+```{r}
+sample_size_locus <-
+  SampSizeByLocus.GCL(sillyvec = c("CMPROSCR13", "CMSAWCR13"), loci = LocusControl$locusnames)
+
+```
+
+Damn, not enough genotypes to pick from :(
+```{r}
+CMPROSCR13.gcl$attributes$FK_FISH_ID
+```
+
 # Select Fish
 
 ## CMDIPAC06
@@ -580,3 +619,358 @@ RAD_selection %>%
 ```
 
 All done :)
+
+# Update on 7/12/21 to pick replacement fish
+
+We had 25 fish that had crap DNA concentrations, we should replace them. No genotype data to guide us, so just pick more random fish with roughly the same parameters as the ones that failed.
+
+So...who failed? Just copy paste from the ChumQuantSummary with Pico for Kristen.xlsx, grabbed the 25 fish with <5.0 average concentrations.
+```{r}
+(fish_that_failed <- readClipboard())
+```
+
+Who are the missing fish?
+```{r}
+oceanak_wells %>%
+  unite(col = "SillySource", c(`Silly Code`, Fish), sep = "_", remove = FALSE) %>% 
+  filter(SillySource %in% fish_that_failed) %>%
+  count(`Plate ID`, `Silly Code`, SEX, OTOLITH_MARK_PRESENT, SAMPLE_DATE) %>% 
+  arrange(`Silly Code`, SEX, SAMPLE_DATE)
+```
+
+Read in the RAD_selection
+```{r}
+load_objects(path = "../Objects/", pattern = "RAD")
+RAD_selection
+```
+
+```{r}
+(
+  RAD_selection_failures <-
+    RAD_selection %>%
+    unite(
+      col = "SillySource",
+      c(`Silly Code`, Fish),
+      sep = "_",
+      remove = FALSE
+    ) %>%
+    filter(SillySource %in% fish_that_failed)
+)
+```
+
+How many of each Stream and Sex
+```{r}
+RAD_selection_failures %>% 
+  count(`Silly Code`, SEX)
+```
+
+Filter out fish in the original extraction.
+```{r}
+(
+  oceanak_wells_filter <- oceanak_wells %>%
+    unite(
+      col = "SillySource",
+      c(`Silly Code`, Fish),
+      sep = "_",
+      remove = FALSE
+    ) %>%
+    anti_join(
+      unite(
+        data = RAD_selection,
+        col = "SillySource",
+        c(`Silly Code`, Fish),
+        sep = "_",
+        remove = FALSE
+      ),
+      by = "SillySource"
+    )
+)
+```
+Dang, okay, well I'll strive to **blindly** re-pick fish to replace these and hope for the best :)
+
+## Prospect Creek - Natural-origin
+
+Gonna grab the 48 natural-origin fish, 50/50 sex ratio, and spread throughout the run.
+
+### Females
+
+Need 5 replacement fish
+
+What we picked originally
+```{r}
+RAD_selection %>% 
+  filter(`Silly Code` %in% c("CMPROSCR13", "CMSAWCR13")) %>% 
+  filter(`Silly Code` == "CMPROSCR13" & SEX == "F") %>% 
+  count(`Plate ID`, `Silly Code`, SEX, OTOLITH_MARK_PRESENT, SAMPLE_DATE) %>% 
+  arrange(`Silly Code`, SEX, SAMPLE_DATE)
+```
+
+What failed
+```{r}
+RAD_selection_failures %>% 
+  filter(`Silly Code` == "CMPROSCR13" & SEX == "F") %>% 
+  count(`Plate ID`, `Silly Code`, SEX, OTOLITH_MARK_PRESENT, SAMPLE_DATE) %>% 
+  arrange(`Silly Code`, SEX, SAMPLE_DATE)
+```
+
+How many fish available per plate?
+```{r}
+oceanak_wells_filter %>%
+  filter(`Silly Code` == "CMPROSCR13",
+         OTOLITH_MARK_PRESENT == "NO",
+         SEX == "F") %>%
+  count(SAMPLE_DATE, `Plate ID`) %>%
+  pivot_wider(names_from = SAMPLE_DATE,
+              values_from = n,
+              values_fill = 0)
+```
+
+Decide how many fish per plate and sample date.
+```{r}
+(
+  prospect_creek_female_n_redo <- tribble(~ SEX, ~ `Plate ID`, ~ `SAMPLE_DATE`, ~ `n`,
+                                 "F", 56356, "2013-08-04", 1,
+                                 "F", 56360, "2013-08-20", 4
+  ) %>% 
+    mutate(SAMPLE_DATE = as_date(SAMPLE_DATE))
+)
+```
+
+Select 'dem fish
+```{r}
+(
+  prospect_creek_female_selection_redo <- oceanak_wells_filter %>%
+    filter(
+      `Silly Code` == "CMPROSCR13",
+      OTOLITH_MARK_PRESENT == "NO",
+      SEX == "F"
+    ) %>%
+    nest(data = -c(`Plate ID`, SAMPLE_DATE, SEX)) %>%
+    right_join(prospect_creek_female_n_redo, by = c("Plate ID", "SAMPLE_DATE", "SEX")) %>%
+    mutate(Sample = map2(data, n, sample_n)) %>%
+    select(-data, -n) %>%
+    unnest(Sample)
+)
+```
+
+### Males
+
+Need 6 replacement fish
+
+What we picked originally
+```{r}
+RAD_selection %>% 
+  filter(`Silly Code` %in% c("CMPROSCR13", "CMSAWCR13")) %>% 
+  filter(`Silly Code` == "CMPROSCR13" & SEX == "M") %>% 
+  count(`Plate ID`, `Silly Code`, SEX, OTOLITH_MARK_PRESENT, SAMPLE_DATE) %>% 
+  arrange(`Silly Code`, SEX, SAMPLE_DATE)
+```
+
+What failed
+```{r}
+RAD_selection_failures %>% 
+  filter(`Silly Code` == "CMPROSCR13" & SEX == "M") %>% 
+  count(`Plate ID`, `Silly Code`, SEX, OTOLITH_MARK_PRESENT, SAMPLE_DATE) %>% 
+  arrange(`Silly Code`, SEX, SAMPLE_DATE)
+```
+
+How many fish available per plate?
+```{r}
+oceanak_wells_filter %>%
+  filter(`Silly Code` == "CMPROSCR13",
+         OTOLITH_MARK_PRESENT == "NO",
+         SEX == "M") %>%
+  count(SAMPLE_DATE, `Plate ID`) %>%
+  pivot_wider(names_from = SAMPLE_DATE,
+              values_from = n,
+              values_fill = 0)
+```
+
+Decide how many fish per plate and sample date.
+```{r}
+(
+  prospect_creek_male_n_redo <- tribble(~ SEX, ~ `Plate ID`, ~ `SAMPLE_DATE`, ~ `n`,
+                                 "M", 56356, "2013-08-04", 1,
+                                 "M", 56360, "2013-08-20", 5
+  ) %>% 
+    mutate(SAMPLE_DATE = as_date(SAMPLE_DATE))
+)
+```
+
+Select 'dem fish
+```{r}
+(
+  prospect_creek_male_selection_redo <- oceanak_wells_filter %>%
+    filter(
+      `Silly Code` == "CMPROSCR13",
+      OTOLITH_MARK_PRESENT == "NO",
+      SEX == "M"
+    ) %>%
+    nest(data = -c(`Plate ID`, SAMPLE_DATE, SEX)) %>%
+    right_join(prospect_creek_male_n_redo, by = c("Plate ID", "SAMPLE_DATE", "SEX")) %>%
+    mutate(Sample = map2(data, n, sample_n)) %>%
+    select(-data, -n) %>%
+    unnest(Sample)
+)
+```
+
+## Sawmill Creek - Natural-origin
+
+Gonna grab the 48 natural-origin fish, 50/50 sex ratio, and spread throughout the run.
+
+### Females
+
+Need 7 replacement fish
+
+What we picked originally
+```{r}
+RAD_selection %>% 
+  filter(`Silly Code` %in% c("CMPROSCR13", "CMSAWCR13")) %>% 
+  filter(`Silly Code` == "CMSAWCR13" & SEX == "F") %>% 
+  count(`Plate ID`, `Silly Code`, SEX, OTOLITH_MARK_PRESENT, SAMPLE_DATE) %>% 
+  arrange(`Silly Code`, SEX, SAMPLE_DATE)
+```
+
+What failed
+```{r}
+RAD_selection_failures %>% 
+  filter(`Silly Code` == "CMSAWCR13" & SEX == "F") %>% 
+  count(`Plate ID`, `Silly Code`, SEX, OTOLITH_MARK_PRESENT, SAMPLE_DATE) %>% 
+  arrange(`Silly Code`, SEX, SAMPLE_DATE)
+```
+
+How many fish available per plate?
+```{r}
+oceanak_wells_filter %>%
+  filter(`Silly Code` == "CMSAWCR13",
+         OTOLITH_MARK_PRESENT == "NO",
+         SEX == "F") %>%
+  count(SAMPLE_DATE, `Plate ID`) %>%
+  pivot_wider(names_from = SAMPLE_DATE,
+              values_from = n,
+              values_fill = 0)
+```
+
+Decide how many fish per plate and sample date.
+```{r}
+(
+  sawmill_creek_female_n_redo <- tribble(~ SEX, ~ `Plate ID`, ~ `SAMPLE_DATE`, ~ `n`,
+                                 "F", 56360, "2013-08-09", 4,
+                                 "F", 56363, "2013-08-10", 2,
+                                 "F", 56363, "2013-08-14", 1
+  ) %>% 
+    mutate(SAMPLE_DATE = as_date(SAMPLE_DATE))
+)
+```
+
+Select 'dem fish
+```{r}
+(
+  sawmill_creek_female_selection_redo <- oceanak_wells_filter %>%
+    filter(
+      `Silly Code` == "CMSAWCR13",
+      OTOLITH_MARK_PRESENT == "NO",
+      SEX == "F"
+    ) %>%
+    nest(data = -c(`Plate ID`, SAMPLE_DATE, SEX)) %>%
+    right_join(sawmill_creek_female_n_redo, by = c("Plate ID", "SAMPLE_DATE", "SEX")) %>%
+    mutate(Sample = map2(data, n, sample_n)) %>%
+    select(-data, -n) %>%
+    unnest(Sample)
+)
+```
+
+### Males
+
+Need 7 replacement fish
+
+What we picked originally
+```{r}
+RAD_selection %>% 
+  filter(`Silly Code` %in% c("CMPROSCR13", "CMSAWCR13")) %>% 
+  filter(`Silly Code` == "CMSAWCR13" & SEX == "M") %>% 
+  count(`Plate ID`, `Silly Code`, SEX, OTOLITH_MARK_PRESENT, SAMPLE_DATE) %>% 
+  arrange(`Silly Code`, SEX, SAMPLE_DATE)
+```
+
+What failed
+```{r}
+RAD_selection_failures %>% 
+  filter(`Silly Code` == "CMSAWCR13" & SEX == "M") %>% 
+  count(`Plate ID`, `Silly Code`, SEX, OTOLITH_MARK_PRESENT, SAMPLE_DATE) %>% 
+  arrange(`Silly Code`, SEX, SAMPLE_DATE)
+```
+
+How many fish available per plate?
+```{r}
+oceanak_wells_filter %>%
+  filter(`Silly Code` == "CMSAWCR13",
+         OTOLITH_MARK_PRESENT == "NO",
+         SEX == "M") %>%
+  count(SAMPLE_DATE, `Plate ID`) %>%
+  pivot_wider(names_from = SAMPLE_DATE,
+              values_from = n,
+              values_fill = 0)
+```
+
+Decide how many fish per plate and sample date.
+```{r}
+(
+  sawmill_creek_male_n_redo <- tribble(~ SEX, ~ `Plate ID`, ~ `SAMPLE_DATE`, ~ `n`,
+                                 "M", 56362, "2013-08-09", 7
+  ) %>% 
+    mutate(SAMPLE_DATE = as_date(SAMPLE_DATE))
+)
+```
+
+Select 'dem fish
+```{r}
+(
+  sawmill_creek_male_selection_redo <- oceanak_wells_filter %>%
+    filter(
+      `Silly Code` == "CMSAWCR13",
+      OTOLITH_MARK_PRESENT == "NO",
+      SEX == "M"
+    ) %>%
+    nest(data = -c(`Plate ID`, SAMPLE_DATE, SEX)) %>%
+    right_join(sawmill_creek_male_n_redo, by = c("Plate ID", "SAMPLE_DATE", "SEX")) %>%
+    mutate(Sample = map2(data, n, sample_n)) %>%
+    select(-data, -n) %>%
+    unnest(Sample)
+)
+```
+
+# Bind Selection
+
+Bind all `selection` tibbles together into a single *cherry-pick* extraction list for Heather.
+```{r}
+(RAD_selection_redo <- mget(objects(pattern = "selection_redo")) %>%
+   bind_rows())
+```
+
+Verify that we got what we wanted...
+```{r}
+RAD_selection_redo %>%
+  count(`Silly Code`, OTOLITH_MARK_PRESENT, SEX) %>%
+  pivot_wider(names_from = SEX,
+              values_from = n,
+              values_fill = 0)
+```
+
+Bitchin', looks good to me!
+
+```{r}
+dput(x = RAD_selection_redo, file = "../Objects/RAD_selection_redo.txt")
+```
+
+
+# Write Extraction
+
+```{r}
+RAD_selection_redo %>% 
+  select(`Plate ID`, `Silly Code`, Fish, Well) %>% 
+  write_csv(file = "../Extraction/RAD_selection_cherry_pick_DNA_plates_redo.csv")
+```
+
+All done :) Hopefully this time for good!
+
