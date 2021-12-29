@@ -14,13 +14,13 @@ species = "CM"  # P = pink, CM = chum
 
 streams <- c("ADMCR", "PROSCR", "SAWCR", "FISHCR")  # these are the back half of the silly codes
 
-yrs <- 13:20  # 2 digit years
+yrs <- 13:21  # 2 digit years
 
 sillyvec <- paste0(species, rep(streams, each = length(yrs)), yrs)  # put it all together to get all possible silly codes
 
 not_tissues = "Otolith"  # OceanAK has 1 row of data per tissue, including both otolith and genetic tissues, we do not want the otolith stuff (this is different than otolith reads)
 
-source("~/R/Functions.GCL.R")  # set to your own path as necessary
+source("~/../R/Functions.GCL.R")  # set to your own path as necessary
 
 # End user input ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -89,7 +89,7 @@ dataAll0 %>%
 # Write out the data to "V:\Analysis\5_Coastwide\Multispecies\Alaska Hatchery Research Program\SEAK Chum\OceanAK" with timestamp
 write_csv(
   x = dataAll0,
-  path = paste0(
+  file = paste0(
     "../OceanAK/AHRP Salmon Biological Data ",
     Sys.time() %>% str_remove_all(pattern = "-") %>% str_remove_all(pattern = ":") %>% str_replace(pattern = " ", replacement = "_"),
     ".csv"
