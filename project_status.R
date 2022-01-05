@@ -29,11 +29,13 @@ DWP_ranges <-
   )
 writeClipboard(paste(DWP_ranges, collapse = ";"))
 
-og_oceanak <- read_csv(file = "../OceanAK/PedigreeData_AHRP - Salmon Biological Data 2_SEAK_2013-2018_no_otoliths.csv")
+# og_oceanak <- read_csv(file = "../OceanAK/PedigreeData_AHRP - Salmon Biological Data 2_SEAK_2013-2018_no_otoliths.csv")
+og_oceanak <- read_csv(file = "../Parentage-Simulations/data/PedigreeData_AHRP - Salmon Biological Data 2_SEAK_2013-2018_no_otoliths.csv")
 
-oceanak <- read_csv(file = "../OceanAK/AHRP Salmon Biological Data 20201106_142603.csv")
+# oceanak <- read_csv(file = "../OceanAK/AHRP Salmon Biological Data 20201106_142603.csv")
+oceanak <- read_csv(file = "../Parentage-Simulations/data/AHRP Salmon Biological Data 20211228_150756.csv")
 
-names(oceanak) <- names(og_oceanak)
+names(oceanak)[1:17] <- names(og_oceanak)
 
 oceanak <- oceanak %>% 
   unite(SillySource, `Silly Code`, `Fish ID`, sep = "_", remove = FALSE) %>% 
@@ -132,17 +134,26 @@ oceanak_mod %>%
   filter(!is.na(origin) & Sex != "U") %>% 
   group_by(year, stream, origin, julian_date) %>% 
   summarise(n = n()) %>% 
+  mutate(year = factor(year, levels = 2013:2021)) %>% 
   ggplot(aes(x = julian_date, y = n, fill = origin)) +
   geom_col() +
   ylim(0, 345) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
-  facet_grid(year ~ stream) +
+  facet_grid(year ~ stream, drop = FALSE) +
   labs(fill = "Origin") +
   ylab("Number of Samples") +
   xlab("Day of Year") +
-  theme(text = element_text(size = 20)) 
-  # ggtitle("AHRP SEAK Chum - number of samples") 
+  theme(text = element_text(size = 18)) 
+  # ggtitle("AHRP SEAK Chum - number of samples") # export at 1000 x 650 (with 2016)
+
+# how many 2017 samples for power analyses 12/30/21
+oceanak_mod %>% 
+  filter(year == 2017,
+         `Location Code` != "Admiralty Creek",
+         !is.na(origin),
+         Sex == "M") %>% 
+  count(stream, Sex, origin)
 
 # blank
 oceanak_mod %>% 
