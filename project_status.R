@@ -29,11 +29,11 @@ DWP_ranges <-
   )
 writeClipboard(paste(DWP_ranges, collapse = ";"))
 
-# og_oceanak <- read_csv(file = "../OceanAK/PedigreeData_AHRP - Salmon Biological Data 2_SEAK_2013-2018_no_otoliths.csv")
-og_oceanak <- read_csv(file = "../Parentage-Simulations/data/PedigreeData_AHRP - Salmon Biological Data 2_SEAK_2013-2018_no_otoliths.csv")
+og_oceanak <- read_csv(file = "../OceanAK/PedigreeData_AHRP - Salmon Biological Data 2_SEAK_2013-2018_no_otoliths.csv")
+# og_oceanak <- read_csv(file = "../Parentage-Simulations/data/PedigreeData_AHRP - Salmon Biological Data 2_SEAK_2013-2018_no_otoliths.csv")
 
-# oceanak <- read_csv(file = "../OceanAK/AHRP Salmon Biological Data 20201106_142603.csv")
-oceanak <- read_csv(file = "../Parentage-Simulations/data/AHRP Salmon Biological Data 20211228_150756.csv")
+oceanak <- read_csv(file = "../OceanAK/AHRP Salmon Biological Data 20221212_162544.csv")
+# oceanak <- read_csv(file = "../Parentage-Simulations/data/AHRP Salmon Biological Data 20211228_150756.csv")
 
 names(oceanak)[1:17] <- names(og_oceanak)
 
@@ -134,12 +134,13 @@ oceanak_mod %>%
   filter(!is.na(origin) & Sex != "U") %>% 
   group_by(year, stream, origin, julian_date) %>% 
   summarise(n = n()) %>% 
-  mutate(year = factor(year, levels = 2013:2021)) %>% 
+  mutate(year = factor(year, levels = 2013:2022)) %>% 
   ggplot(aes(x = julian_date, y = n, fill = origin)) +
   geom_col() +
   ylim(0, 345) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  scale_x_continuous(limits = c(195, 244), breaks = c(196, 213, 227, 244), labels = format(x = (as.Date("2012-12-31") + c(196, 213, 227, 244)), "%b %d")) +
   facet_grid(year ~ stream, drop = FALSE) +
   labs(fill = "Origin") +
   ylab("Number of Samples") +

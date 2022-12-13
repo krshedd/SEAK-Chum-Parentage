@@ -14,7 +14,7 @@ species = "CM"  # P = pink, CM = chum
 
 streams <- c("ADMCR", "PROSCR", "SAWCR", "FISHCR")  # these are the back half of the silly codes
 
-yrs <- 13:21  # 2 digit years
+yrs <- 13:22  # 2 digit years
 
 sillyvec <- paste0(species, rep(streams, each = length(yrs)), yrs)  # put it all together to get all possible silly codes
 
