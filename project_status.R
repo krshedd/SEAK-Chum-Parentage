@@ -33,7 +33,7 @@ og_oceanak <- read_csv(file = "../OceanAK/PedigreeData_AHRP - Salmon Biological 
 # og_oceanak <- read_csv(file = "../Parentage-Simulations/data/PedigreeData_AHRP - Salmon Biological Data 2_SEAK_2013-2018_no_otoliths.csv")
 
 oceanak <- read_csv(file = "../OceanAK/AHRP Salmon Biological Data 20221212_162544.csv")
-# oceanak <- read_csv(file = "../Parentage-Simulations/data/AHRP Salmon Biological Data 20211228_150756.csv")
+# oceanak <- read_csv(file = "../Parentage-Simulations/data/AHRP Salmon Biological Data 20220914_130541.csv")
 
 names(oceanak)[1:17] <- names(og_oceanak)
 
@@ -209,3 +209,16 @@ gg_color_hue <- function(n) {
 }
 
 col2rgb(gg_color_hue(2))
+
+# Potential Extraction list for Winter 2022/2023
+glimpse(oceanak_mod)
+
+seak_chum_extraction <- oceanak_mod %>% 
+  dplyr::filter(stream == "Fish Creek - Douglas Island" & year %in% c(2014, 2017, 2018, 2019) |
+                  stream == "Fish Creek - Douglas Island" & year %in% c(2021, 2022) & origin == "natural" |
+                  stream %in% c("Prospect Creek", "Sawmill Creek") & year == 2017 |
+                  stream %in% c("Prospect Creek", "Sawmill Creek") & year %in% c(2021, 2022) & origin == "natural")
+
+table(seak_chum_extraction$stream, seak_chum_extraction$year, seak_chum_extraction$origin)
+
+nrow(seak_chum_extraction)
