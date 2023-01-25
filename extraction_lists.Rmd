@@ -90,7 +90,7 @@ Nope, doesn't look like it
 
 ### Missing samples?
 
-Are there any double samples as indicated by `IS_MISSING_PAIRED_DATA_EXISTS == 1`
+Are there any missing samples as indicated by `IS_MISSING_PAIRED_DATA_EXISTS == 1`
 ```{r}
 oceanak %>% 
   dplyr::count(IS_MISSING_PAIRED_DATA_EXISTS)
@@ -113,11 +113,18 @@ oceanak %>%
   dplyr::count(SILLY_CODE)
 ```
 
+Per business rules with PWS Pink Salmon, we are only going to keep fish with known sex, even though they could be offspring.
+
 ### DWP Formating
 
 Looks like the DWP barcodes are already all 10 characters?
 ```{r}
 table(nchar(oceanak$DNA_TRAY_CODE))
+```
+
+Make sure there are no more lingering characters in our DWP barcodes (found one earlier in one of the floy tag collections)
+```{r}
+table(as.numeric(oceanak$DNA_TRAY_CODE), useNA = "always")["<NA>"]
 ```
 
 Yup, no problems there, just need to modify the `DNA_TRAY_WELL_CODE` to 2-digit character.
@@ -177,7 +184,6 @@ oceanak_mod %>%
   dplyr::count(SILLY_CODE, LOCATION_CODE, OTOLITH_MARK_PRESENT) %>% 
   tidyr::pivot_wider(names_from = OTOLITH_MARK_PRESENT, values_from = n)
 ```
-
 
 # Filter for Extraction
 
@@ -256,6 +262,18 @@ Confirm
 extraction_eCM001 %>% 
   dplyr::count(SILLY_CODE, LOCATION_CODE, OTOLITH_MARK_PRESENT) %>% 
   tidyr::pivot_wider(names_from = OTOLITH_MARK_PRESENT, values_from = n)
+```
+
+How much cherry picking per silly?
+```{r}
+oceanak %>% dplyr::count(SILLY_CODE) %>%
+  dplyr::left_join(
+    y = dplyr::count(x = extraction_eCM001, SILLY_CODE),
+    by = "SILLY_CODE",
+    suffix = c("", "_extract")
+  ) %>% 
+  tidyr::replace_na(list(n_extract = 0)) %>% 
+  dplyr::mutate(p_extract = round(n_extract / n * 100))
 ```
 
 # Write Extraction
