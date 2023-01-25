@@ -18,6 +18,12 @@ yrs <- 13:22  # 2 digit years
 
 sillyvec <- paste0(species, rep(streams, each = length(yrs)), yrs)  # put it all together to get all possible silly codes
 
+(sillyvec <-
+    c(sillyvec, paste0(
+      species, rep(streams[-1], each = length(21:22)), "T", 21:22
+    ), "CMFISHCRT13")  # add in the Tagged collections for FISH, PROSCR and SAWCR 2021 and 2022 + Fish Creek 2013 (but doesn't appear to be included here)
+)
+
 not_tissues = "Otolith"  # OceanAK has 1 row of data per tissue, including both otolith and genetic tissues, we do not want the otolith stuff (this is different than otolith reads)
 
 source("~/../R/Functions.GCL.R")  # set to your own path as necessary
