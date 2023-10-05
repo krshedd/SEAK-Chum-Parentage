@@ -32,7 +32,7 @@ writeClipboard(paste(DWP_ranges, collapse = ";"))
 og_oceanak <- read_csv(file = "../OceanAK/PedigreeData_AHRP - Salmon Biological Data 2_SEAK_2013-2018_no_otoliths.csv")
 # og_oceanak <- read_csv(file = "../Parentage-Simulations/data/PedigreeData_AHRP - Salmon Biological Data 2_SEAK_2013-2018_no_otoliths.csv")
 
-oceanak <- read_csv(file = "../OceanAK/AHRP Salmon Biological Data 20221212_162544.csv")
+oceanak <- read_csv(file = "../OceanAK/AHRP Salmon Biological Data 20231004_163602.447727.csv")
 # oceanak <- read_csv(file = "../Parentage-Simulations/data/AHRP Salmon Biological Data 20220914_130541.csv")
 
 names(oceanak)[1:17] <- names(og_oceanak)
@@ -127,7 +127,7 @@ oceanak_mod %>%
   facet_grid(year ~ .)
 
 # histogram of samples per date per year per stream
-oceanak_mod %>% 
+samples_collected_by_date <- oceanak_mod %>% 
   mutate(julian_date = yday(`Sample Date`)) %>% 
   mutate(stream = case_when(stream == "Fish Creek - Douglas Island" ~ "Fish Creek",
                             TRUE ~ as.character(stream))) %>% 
@@ -145,8 +145,11 @@ oceanak_mod %>%
   labs(fill = "Origin") +
   ylab("Number of Samples") +
   xlab("Day of Year") +
-  theme(text = element_text(size = 18)) 
+  theme(text = element_text(size = 16)) 
   # ggtitle("AHRP SEAK Chum - number of samples") # export at 1000 x 650 (with 2016)
+
+samples_collected_by_date
+ggplot2::ggsave(filename = "../Output/SEAK_chum_sample_sizes_by_year_origin.png", plot = samples_collected_by_date, width = 10, height = 6.5)
 
 # how many 2017 samples for power analyses 12/30/21
 oceanak_mod %>% 

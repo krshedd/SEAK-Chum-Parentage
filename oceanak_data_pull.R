@@ -14,7 +14,7 @@ species = "CM"  # P = pink, CM = chum
 
 streams <- c("ADMCR", "PROSCR", "SAWCR", "FISHCR")  # these are the back half of the silly codes
 
-yrs <- 13:22  # 2 digit years
+yrs <- 13:23  # 2 digit years
 
 sillyvec <- paste0(species, rep(streams, each = length(yrs)), yrs)  # put it all together to get all possible silly codes
 
@@ -26,7 +26,7 @@ sillyvec <- paste0(species, rep(streams, each = length(yrs)), yrs)  # put it all
 
 not_tissues = "Otolith"  # OceanAK has 1 row of data per tissue, including both otolith and genetic tissues, we do not want the otolith stuff (this is different than otolith reads)
 
-source("~/../R/Functions.GCL.R")  # set to your own path as necessary
+# source("~/../R/Functions.GCL.R")  # set to your own path as necessary; update 2023-10-04 use GCLr package
 
 # End user input ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -66,7 +66,7 @@ if(file.exists("C:/Program Files/R/RequiredLibraries/ojdbc8.jar")) {
   
 }
 
-url <-LOKI_URL.GCL()
+url <- GCLr:::loki_url()
 
 con <- dbConnect(drv,url=url,user=username,password=password)
 
@@ -101,3 +101,5 @@ write_csv(
     ".csv"
   )
 )
+
+# End
