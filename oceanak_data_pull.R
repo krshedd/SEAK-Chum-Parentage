@@ -5,9 +5,8 @@ rm(list = ls())
 
 # Begin user input ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-username = "krshedd"  # LOKI username
-
-password = ""  # LOKI passowrd
+.username = readLines("~/R/usr_pw.txt", n = 1)  # LOKI username
+.password = readLines("~/R/usr_pw.txt" , n = 2)[[2]]  # LOKI password
 
 # Currently set up to read all pink data from all years
 species = "CM"  # P = pink, CM = chum
@@ -68,7 +67,10 @@ if(file.exists("C:/Program Files/R/RequiredLibraries/ojdbc8.jar")) {
 
 url <- GCLr:::loki_url()
 
-con <- dbConnect(drv,url=url,user=username,password=password)
+con <- dbConnect(drv,
+                 url = url,
+                 user = .username,
+                 password = .password)
 
 data_qry <-
   paste(
@@ -90,7 +92,6 @@ glimpse(dataAll0)   # what does out data look like?
 
 dataAll0 %>% 
   count(SILLY_CODE, TISSUE_TYPE)  # sample size by silly code and tissue type, should only be hearts and occassionally other random tissues
-
 
 # Write out the data to "V:\Analysis\5_Coastwide\Multispecies\Alaska Hatchery Research Program\SEAK Chum\OceanAK" with timestamp
 write_csv(
