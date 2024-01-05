@@ -1,3 +1,7 @@
+# get "OceanAK" data from Eric Lardizabal's genetics view of the Salmon Biological Fact Warehouse, includes scale ages
+# Kyle Shedd
+# updated 2024-01-05
+
 library(tidyverse)
 library(lubridate)
 
@@ -19,58 +23,25 @@ sillyvec <- paste0(species, rep(streams, each = length(yrs)), yrs)  # put it all
 
 (sillyvec <-
     c(sillyvec, paste0(
-      species, rep(streams[-1], each = length(21:22)), "T", 21:22
+      species, rep(streams[-1], each = length(21:23)), "T", 21:23
     ), "CMFISHCRT13")  # add in the Tagged collections for FISH, PROSCR and SAWCR 2021 and 2022 + Fish Creek 2013 (but doesn't appear to be included here)
 )
 
 not_tissues = "Otolith"  # OceanAK has 1 row of data per tissue, including both otolith and genetic tissues, we do not want the otolith stuff (this is different than otolith reads)
 
-# source("~/../R/Functions.GCL.R")  # set to your own path as necessary; update 2023-10-04 use GCLr package
-
 # End user input ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-start_time <- proc.time()
-
-while(!require(RJDBC)){install.packages("RJDBC")}
-
-if(!file.exists(path.expand("~/R"))){
-  
-  dir<-path.expand("~/R")
-  
-  dir.create(dir)
-  
-  bool <- file.copy(from="V:/Analysis/R files/OJDBC_Jar/ojdbc8.jar",to=path.expand("~/R/ojdbc8.jar"))
-  
-} else {
-  
-  if(!file.exists(path.expand("~/R/ojdbc8.jar"))){
-    
-    bool <- file.copy(from="V:/Analysis/R files/OJDBC_Jar/ojdbc8.jar",to=path.expand("~/R/ojdbc8.jar"))
-    
-  }
-  
-}
 
 start.time <- Sys.time() 
 
 options(java.parameters = "-Xmx10g")
 
-if(file.exists("C:/Program Files/R/RequiredLibraries/ojdbc8.jar")) {
-  
-  drv <- JDBC("oracle.jdbc.OracleDriver",classPath="C:/Program Files/R/RequiredLibraries/ojdbc8.jar"," ")#https://blogs.oracle.com/R/entry/r_to_oracle_database_connectivity    C:/app/awbarclay/product/11.1.0/db_1/jdbc/lib
-  
-} else {
-  
-  drv <- JDBC("oracle.jdbc.OracleDriver",classPath=path.expand("~/R/ojdbc8.jar")," ")
-  
-}
+url <- GCLr:::loki_url() #This is a function that gets the correct URL to access the database on the oracle cloud
 
-url <- GCLr:::loki_url()
+drvpath <- system.file("java", "ojdbc8.jar", package = "GCLr")
 
-con <- dbConnect(drv,
-                 url = url,
-                 user = .username,
-                 password = .password)
+drv <- RJDBC::JDBC("oracle.jdbc.OracleDriver", classPath = drvpath, " ")
+
+con <- RJDBC::dbConnect(drv, url = url, user = .username, password = .password)
 
 data_qry <-
   paste(
@@ -82,23 +53,38 @@ data_qry <-
     sep = ""
   )
 
-dataAll0 <- dbGetQuery(con, data_qry)   
+dataAll0 <- RJDBC::dbGetQuery(con, data_qry)   
 
-discon <- dbDisconnect(con)  # disconnect from OceanAK
+discon <- RJDBC::dbDisconnect(con)  # disconnect from OceanAK
 
-proc.time() - start_time  # how long did it take?
+stop.time <- Sys.time()
 
-glimpse(dataAll0)   # what does out data look like?
+fulltime <- stop.time - start.time
+
+print(fulltime)
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+dplyr::glimpse(dataAll0)   # what does out data look like?
 
 dataAll0 %>% 
-  count(SILLY_CODE, TISSUE_TYPE)  # sample size by silly code and tissue type, should only be hearts and occassionally other random tissues
+  dplyr::count(SILLY_CODE, TISSUE_TYPE)  # sample size by silly code and tissue type, should only be hearts and occassionally other random tissues
+
+# sample size by stream by year
+dataAll0 %>% 
+  janitor::clean_names() %>% 
+  dplyr::mutate(sample_date = lubridate::as_date(sample_date),
+                sample_year = lubridate::year(sample_date)) %>% 
+  dplyr::count(sample_year, location_code) %>% 
+  tidyr::pivot_wider(names_from = sample_year, values_from = n)
+
 
 # Write out the data to "V:\Analysis\5_Coastwide\Multispecies\Alaska Hatchery Research Program\SEAK Chum\OceanAK" with timestamp
-write_csv(
+readr::write_csv(
   x = dataAll0,
   file = paste0(
     "../OceanAK/AHRP Salmon Biological Data ",
-    Sys.time() %>% str_remove_all(pattern = "-") %>% str_remove_all(pattern = ":") %>% str_replace(pattern = " ", replacement = "_"),
+    Sys.time() %>% stringr::str_remove_all(pattern = "-") %>% stringr::str_remove_all(pattern = ":") %>% stringr::str_replace(pattern = " ", replacement = "_"),
     ".csv"
   )
 )
