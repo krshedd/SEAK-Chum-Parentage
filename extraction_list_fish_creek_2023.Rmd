@@ -1,0 +1,289 @@
+---
+title: "SEAK Chum Parentage Extraction List"
+subtitle: "Fish Creek 2023"
+author: "Kyle Shedd"
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    theme: united
+    toc: yes
+    toc_float: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+rm(list = ls(all.names = TRUE))
+
+if(!require("pacman")) install.packages("pacman"); library(pacman)
+
+pacman::p_load(
+  tidyverse,
+  lubridate,
+  scales,
+  janitor,
+  GCLr
+)
+
+knitr::opts_chunk$set(fig.width = 10)
+# rmarkdown::find_pandoc(dir = "C:/Users/krshedd/Program Files/rstudio-pandoc/")  # needed for old laptop
+
+.username = readLines("~/R/usr_pw.txt", n = 1)
+.password = readLines("~/R/usr_pw.txt" , n = 2)[[2]]
+```
+
+# Objective
+
+The objective of this notebook is to create an extraction list for SEAK Chum fitness streams for parentage:
+
+-   Fish Creek
+    -   2023 (natural + unknown; include all tag samples)
+
+Similar to PWS Pink Salmon, we are going to filter for known sex individuals
+
+# Background
+
+These samples are for the AHRP fitness study (parentage) looking at the relative reproductive success of hatchery strays compared to natural-origin fish. We've already extracted ALL of the 2013 samples way back in 2014 when this study was first getting going. After that, we held back on extractions given the less than desired samples sizes collected by Sitka Sound Science Center, due to a combination of rotten weather (drought or flood) and lackluster sampling effort. Now that this project is reaching its conclusion, the Science Panel has signed off on going whole hog, despite low likelihood of success due to low sample sizes. Note as well that floy tagging happened in 2021-2023, in an effort to both boost sample sizes and get a population estimate so we could determine sampling rate (important due to likely differences in sampling rate across age classes due to overlapping generations).
+
+Fish Creek was the only stream sampled in 2023, and included the floy tagging component. Now that we have otolith reads from Fish Creek 2023, this is the last set of samples to be extracted for the AHRP SEAK Chum pedigree project.
+
+This extraction list is an update to eCM001 - AHRP SEAK Chum 2014-2022, which was created on 2023-01-25. 
+
+Plates from 2013 were already extracted and selected for genotyping in `genotyping_plates_2013.R`, results here \<../OceanAK/extraction_plates_for_genotyping_2013.csv\>.
+
+# Load Data
+
+## `OceanAK` Data Warehouse
+
+Latest and greatest data from `OceanAK` as of 2024-01-05 + scale age data! See `oceanak_data_pull.R` for details.
+```{r}
+(
+  oceanak <-
+    readr::read_csv(file = "../OceanAK/AHRP Salmon Biological Data 20240105_122404.368459.csv", show_col_types = FALSE) %>%
+    janitor::clean_names()
+)
+```
+
+## `Finsight` Contractor Database
+
+Latest and greatest data form `Finsight` contractor database, raw copy at ADFG `dwasl.HWI_STREAM_RAW`, see `get_finsight_stream_specimens_data.R` for details.
+```{r}
+(
+  finsight <-
+    readr::read_csv(
+      "../Stream Specimens/finsight_stream_specimens_SEAK_chum_fitness_2013-2023.csv"
+    ) %>%
+    janitor::clean_names()
+)
+```
+
+# QA/QC Data
+
+## `OceanAK`
+
+### Double samples?
+
+Are there any double samples as indicated by `WELL_HAS_MORE_THAN_ONE_SAMPLE == 1`
+
+```{r}
+oceanak %>% 
+  dplyr::count(well_has_more_than_one_sample)
+```
+
+Hrmm, yup, just 1, which stream?
+```{r}
+oceanak %>% 
+  dplyr::filter(well_has_more_than_one_sample == 1)
+```
+
+Ah, Prospect 2022 tag release group. We've already extracted those samples, so no concerns here.
+
+### Missing samples?
+
+Are there any missing samples as indicated by `IS_MISSING_PAIRED_DATA_EXISTS == 1`
+```{r}
+oceanak %>% 
+  dplyr::count(is_missing_paired_data_exists)
+```
+
+Looks like there are 76 missing samples, we'll make sure to filter those out prior to extraction selection.
+
+In which sillys?
+```{r}
+oceanak %>% 
+  dplyr::filter(is_missing_paired_data_exists == 1) %>% 
+  dplyr::count(silly_code)
+```
+
+Looks like we are missing 13 samples from Fish Creek 2023
+
+### Unknown Sex
+
+How many unknown sex fish do we have? We filtered those out for PWS Pink Salmon, so planning to do the same here unless it is a lot of fish.
+```{r}
+oceanak %>% 
+  dplyr::count(sex)
+```
+
+Looks like there are definitely a few, which years?
+```{r}
+oceanak %>% 
+  dplyr::filter(sex == "U") %>% 
+  dplyr::count(silly_code)
+```
+
+Looks like 15 from Fish Creek 2023
+
+Per business rules with PWS Pink Salmon, we are only going to keep fish with known sex, even though they could be offspring.
+
+### DWP Formating
+
+Looks like the DWP barcodes are already all 10 characters?
+```{r}
+table(nchar(oceanak$dna_tray_code))
+```
+
+Make sure there are no more lingering characters in our DWP barcodes (found one earlier in one of the floy tag collections)
+```{r}
+table(as.numeric(oceanak$dna_tray_code), useNA = "always")["<NA>"]
+```
+
+Yup, no problems there, just need to modify the `DNA_TRAY_WELL_CODE` to 2-digit character.
+
+### `Finsight`
+
+Do we have similar sample sizes for the floy tag fish?
+```{r}
+oceanak %>% 
+  dplyr::filter(stringr::str_detect(string = silly_code, pattern = "CRT23")) %>% 
+  dplyr::count(silly_code)
+```
+
+How about `finsight`?
+```{r}
+finsight %>% 
+  dplyr::filter(sample_year == 2023,
+                stringr::str_detect(string = stream_name, pattern = "Tag Release")) %>% 
+  dplyr::count(stream_name, sample_year)
+```
+
+Perfect, matchy matchy.
+
+# Modify Data
+
+## `OceanAK`
+
+Filter out missing tissues, known sex, create date and year, format `DNA_TRAY_WELL_CODE`.
+```{r}
+(
+  oceanak_mod <- oceanak %>%
+    tidyr::replace_na(
+      list(
+        well_has_more_than_one_sample = 0,
+        is_missing_paired_data_exists = 0
+      )
+    ) %>%  # necessary to prevent dropping `NA` values when we filter for != 1
+    dplyr::mutate(
+      sample_date = lubridate::as_date(sample_date),
+      year = lubridate::year(sample_date),
+      dna_tray_well_code = stringr::str_pad(
+        string = dna_tray_well_code,
+        width = 2,
+        side = "left",
+        pad = "0"
+      )
+    ) %>%
+    dplyr::filter(is_missing_paired_data_exists != 1,  # danger, !=1  will toss out `NA`s, that's why we replace them above!!!
+                  sex %in% c("M", "F"))  # same as PWS pinks, only known sex
+)
+```
+
+What do we have for sample sizes by year, stream, and origin?
+```{r}
+oceanak_mod %>% 
+  dplyr::count(silly_code, location_code, otolith_mark_present) %>% 
+  tidyr::pivot_wider(names_from = otolith_mark_present, values_from = n)
+```
+
+Just 2023?
+```{r}
+oceanak_mod %>% 
+  dplyr::filter(year == 2023) %>% 
+  dplyr::count(silly_code, location_code, otolith_mark_present) %>% 
+  tidyr::pivot_wider(names_from = otolith_mark_present, values_from = n)
+```
+
+# Filter for Extraction
+
+## F2 Years (2023)
+
+We already selected F2 fish from 2019-2022 (except for Fish Creek 2019, which we had as a F1 year) in `extraction_lists.Rmd` for eCM001.
+
+Here, we'll get Fish Creek 2023 and we are **only** interested in potential offspring (natural + unknown).
+```{r}
+(
+  F2_2023 <- oceanak_mod %>%
+    dplyr::filter(
+      location_code == "Fish Creek - Douglas Island" & year %in% c(2023)
+    ) %>% 
+    dplyr::filter(is.na(otolith_mark_present) | otolith_mark_present == "NO")
+)
+```
+
+Confirm
+```{r}
+F2_2023 %>% 
+  dplyr::count(silly_code, location_code, otolith_mark_present) %>% 
+  tidyr::pivot_wider(names_from = otolith_mark_present, values_from = n)
+```
+
+## Bind Together
+
+```{r}
+(extraction_eCM002 <- dplyr::bind_rows(F2_2023))
+```
+
+Confirm
+```{r}
+extraction_eCM002 %>% 
+  dplyr::count(silly_code, location_code, otolith_mark_present) %>% 
+  tidyr::pivot_wider(names_from = otolith_mark_present, values_from = n)
+```
+
+How much cherry picking per silly?
+```{r}
+oceanak %>% dplyr::count(silly_code) %>%
+  dplyr::left_join(
+    y = dplyr::count(x = extraction_eCM002, silly_code),
+    by = "silly_code",
+    suffix = c("", "_extract")
+  ) %>% 
+  tidyr::replace_na(list(n_extract = 0)) %>% 
+  dplyr::mutate(p_extract = round(n_extract / n * 100)) %>% 
+  dplyr::filter(n_extract > 0)
+```
+
+# Write Extraction
+
+Write out in Extraction List format
+```{r}
+extraction_eCM002 %>%
+  dplyr::select(silly_code,
+                fish_id,
+                dna_tray_code,
+                dna_tray_well_code,
+                tissue_type) %>%
+  dplyr::arrange(silly_code, fish_id) %>% 
+  readr::write_csv(file = "../Extraction/eCM002_2023_Extraction_List_240105.csv")
+
+save.image("../Extraction/eCM002_2023_Extraction_List_240105.RData")
+```
+
+Get silly and tissue counts for Extraction List
+```{r}
+extraction_eCM002 %>%
+  dplyr::count(silly_code, tissue_type) %>% 
+  dplyr::select(silly_code, n, tissue_type)
+```
+
+End
