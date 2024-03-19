@@ -46,11 +46,35 @@ print(fulltime)
 
 glimpse(dataAll0)   # what does out data look like?
 
+# is 2023 data in there?
+dataAll0 %>% dplyr::count(SAMPLE_YEAR)
+
 # quick count of samples from 2023, should just be Fish Creek
 dataAll0 %>% 
   janitor::clean_names() %>% 
   dplyr::mutate(sample_date = lubridate::as_date(sample_date)) %>% 
   dplyr::count(sample_year, species, gcl_location_code) %>% 
   tidyr::pivot_wider(names_from = sample_year, values_from = n)
+
+# which streams have age data?
+dataAll0 %>% 
+  janitor::clean_names() %>% 
+  dplyr::filter(!is.na(sw_age)) %>% 
+  dplyr::count(sample_year, gcl_location_code, sw_age)
+
+# ditch NA columns
+data_noNA <- dataAll0 %>% 
+  dplyr::select_if(~any(!is.na(.)))
+
+glimpse(data_noNA)
+
+# fix NA locations, write out SEAK fitness stream scale age + length data for Julia McMahon (UAF)
+data_noNA %>% 
+  dplyr::mutate(GCL_LOCATION_CODE = dplyr::case_when(is.na(GCL_LOCATION_CODE) & STREAM == "111-41-10050" ~ "Admiralty Creek",
+                                                     is.na(GCL_LOCATION_CODE) & STREAM == "111-50-10690" ~ "Fish Creek - Douglas Island",
+                                                     is.na(GCL_LOCATION_CODE) & STREAM == "111-33-10100" ~ "Prospect Creek",
+                                                     is.na(GCL_LOCATION_CODE) & STREAM == "115-20-10520" ~ "Sawmill Creek",
+                                                     TRUE ~ GCL_LOCATION_CODE)) %>% 
+  readr::write_csv("../Stream Specimens/StreamSpecimens_SEAK_2013-2022_for_JuliaMcMahon.csv")
 
 # end
