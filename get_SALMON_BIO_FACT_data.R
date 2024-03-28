@@ -30,7 +30,7 @@ drv <- RJDBC::JDBC("oracle.jdbc.OracleDriver", classPath = drvpath, " ")
 
 con <- RJDBC::dbConnect(drv, url = url, user = .username, password = .password)
 
-data_qry <- paste0("SELECT * FROM dwasl.SALMON_BIO_FACT@dwprod_readonly T WHERE T.BATCH_NUMBER LIKE 'HWI%' AND T.CARD_NUMBER IS NOT NULL")  # get all HWI data
+data_qry <- paste0("SELECT * FROM dwasl.SALMON_BIO_FACT@dwprod_readonly T WHERE T.BATCH_NUMBER LIKE 'HWI%' AND T.CARD_NUMBER IS NOT NULL")  # get all HWI data, but only for fish with scale ages, need to modify `T.CARD_NUMBER IS NOT NULL` to get everything
 
 dataAll0 <- RJDBC::dbGetQuery(con, data_qry)   
 
