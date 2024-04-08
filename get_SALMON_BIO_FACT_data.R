@@ -1,7 +1,7 @@
 # get Raw Warehouse Data from dwasl.SALMON_BIO_FACT (i.e., MTAL data, including scale ages!!!)
 # however, note that Eric L. added `fw_age` and `sw_age` to AKFINADM.V_SALMON_BIO_FACT_GEN_TISS as of 2024-01-05
 # Kyle Shedd
-# 2024-01-05
+# 2024-01-05; updated 2024-04-08
 
 library(tidyverse)
 library(lubridate)
@@ -30,7 +30,9 @@ drv <- RJDBC::JDBC("oracle.jdbc.OracleDriver", classPath = drvpath, " ")
 
 con <- RJDBC::dbConnect(drv, url = url, user = .username, password = .password)
 
-data_qry <- paste0("SELECT * FROM dwasl.SALMON_BIO_FACT@dwprod_readonly T WHERE T.BATCH_NUMBER LIKE 'HWI%' AND T.CARD_NUMBER IS NOT NULL")  # get all HWI data, but only for fish with scale ages, need to modify `T.CARD_NUMBER IS NOT NULL` to get everything
+# data_qry <- paste0("SELECT * FROM dwasl.SALMON_BIO_FACT@dwprod_readonly T WHERE T.BATCH_NUMBER LIKE 'HWI%' AND T.CARD_NUMBER IS NOT NULL")  # get all HWI data, but only for fish with scale ages, need to modify `T.CARD_NUMBER IS NOT NULL` to get everything
+
+data_qry <- paste0("SELECT * FROM dwasl.SALMON_BIO_FACT@dwprod_readonly T WHERE T.STREAM IN '111-50-10690' AND T.SAMPLE_YEAR IN '2023'")  # get all HWI data, but only for fish with scale ages, need to modify `T.CARD_NUMBER IS NOT NULL` to get everything
 
 dataAll0 <- RJDBC::dbGetQuery(con, data_qry)   
 
@@ -47,7 +49,9 @@ print(fulltime)
 glimpse(dataAll0)   # what does out data look like?
 
 # is 2023 data in there?
-dataAll0 %>% dplyr::count(SAMPLE_YEAR)
+dataAll0 %>% 
+  dplyr::count(STREAM, SAMPLE_YEAR) %>% 
+  tidyr::pivot_wider(names_from = STREAM, values_from = n)
 
 # quick count of samples from 2023, should just be Fish Creek
 dataAll0 %>% 
