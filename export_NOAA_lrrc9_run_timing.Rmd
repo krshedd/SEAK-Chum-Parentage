@@ -144,10 +144,10 @@ chum_extractions_date %>%
   dplyr::filter(!is.na(sample_date),
                 fk_plate_id == 65642) %>%
   dplyr::mutate(plate_id = as.character(fk_plate_id)) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = plate_id, y = doy)) +
-  ggplot2::geom_boxplot() + 
+  ggplot2::ggplot(ggplot2::aes(x = doy)) +
+  ggplot2::geom_histogram() + 
   ggplot2::theme_bw() + 
-  ggplot2::facet_grid(rows = dplyr::vars(sex), cols = dplyr::vars(otolith_mark_present))
+  ggplot2::facet_grid(rows = dplyr::vars(sex))
 ```
 
 ### 64545 CMPROSCR18
@@ -172,10 +172,10 @@ chum_extractions_date %>%
 Write out for Wes
 ```{r}
 chum_extractions_date %>% 
-  dplyr::filter(fk_plate_id == 64545) %>% 
-  readr::write_csv(file = "../Export to NOAA/ProspectCreek_2017_2018_plateID_64545_lrrc9.csv")
+  dplyr::filter(fk_plate_id %in% c(64545, 65642)) %>% 
+  readr::write_csv(file = "../Export to NOAA/ProspectCreek_2017_2018_plateID_64545_FishCreek_2023_plateID_65642_lrrc9.csv")
 ```
 
-E-mailed ot him on 2024-07-18 to see if that is what he wants.
+E-mailed to him on 2024-07-18 to see if that is what he wants.
 
 End
