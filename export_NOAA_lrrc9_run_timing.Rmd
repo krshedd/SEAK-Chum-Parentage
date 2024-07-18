@@ -1,0 +1,181 @@
+---
+title: "lrrc9 in AHRP chum?"
+subtitle: "Send an aliquot of samples across run timing to Wes?"
+author: "Kyle Shedd"
+date: "`r Sys.Date()`"
+output:
+  html_notebook:
+    theme: united
+    toc: yes
+    toc_float: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+rm(list = ls(all.names = TRUE))
+
+if(!require("pacman")) install.packages("pacman"); library(pacman)
+
+pacman::p_load(
+  tidyverse,
+  lubridate,
+  scales,
+  janitor,
+  GCLr
+)
+
+knitr::opts_chunk$set(fig.width = 10)
+
+.username = readLines("~/R/usr_pw.txt", n = 1)
+.password = readLines("~/R/usr_pw.txt" , n = 2)[[2]]
+```
+
+# Objective
+
+The objective of this notebook is to see if we have any existing plates of DNA that we could send Wes to test out his lrrc9 adaptive loci (run timing) panel. Ideally we are looking for a plate with a diversity of sample dates.
+
+# Background
+
+E-mail from Wes on 2024-04-19
+
+    We whole genome sequenced samples Liz shared from the Lower Yukon summer (Gisasa) and Upper Yukon fall (Pelly). A few notable peaks (see below). But most interestingly lrrc9 popped up again!!!!! It's on chr 35. For folks keeping score at home that's lrrc9 associated with run timing in sockeye, pink, and chum. Greb1l in chinook and steelhead. And coho is the last one to look at (request for samples coming soon). The lrrc9 peak looks more similar between chum and sockeye than to pink, which is interesting. 
+
+    Anyway, besides showing you the good news I wanted to see if you would be up for the idea of us adding some lrrc9 markers to the chum gtseq panel Kristen just developed. Like the pink salmon, we would develop the markers, test them with the already made gtseq panel, and give you directions for spiking in. Getting these data for the SE chum I think would be super fascinating and would be an excellent component of the hatchery/wild dynamics. Kristen said you've already run 12 plates with the existing GTseq panel. We would be up for running those plates with the lrrc9 markers to make sure the full dataset has lrrc9 genotypes.
+
+    Kristen and I chatted about timeline. If necessary we could fast track this but sounds like you might not be running any more of those chum until the fall?
+
+# Get Extraction Info
+
+Vector of sillys.
+```{r}
+species = "CM"  # P = pink, CM = chum
+
+streams <- c("ADMCR", "PROSCR", "PROSCRT", "SAWCR", "SAWCRT", "FISHCR", "FISHCRT")  # these are the back half of the silly codes, don't forget tagged fish!
+
+yrs <- 13:23  # 2 digit years
+
+sillyvec <- paste0(species, rep(streams, each = length(yrs)), yrs)  # put it all together to get all possible silly codes
+```
+
+Get extraction plates
+```{r}
+(
+  chum_extractions <- GCLr::get_extraction_info(
+    sillyvec = sillyvec,
+    username = .username,
+    password = .password
+  ) %>% janitor::clean_names()
+)
+```
+
+Get OceanAK data
+```{r}
+(
+  oceanak <- readr::read_csv(file = "../OceanAK/AHRP Salmon Biological Data 20240105_122404.368459_with_spawning_state.csv")
+)
+```
+
+Join date with plate
+```{r}
+(
+  chum_extractions_date <- chum_extractions %>%
+    dplyr::left_join(
+      y = oceanak %>% dplyr::select(location_code, silly_code, fish_id, sample_date, sex, otolith_mark_present),
+      by = join_by(silly_code, fish_no == fish_id),
+      relationship = "many-to-many"
+    ) %>% 
+    dplyr::mutate(year = lubridate::year(sample_date),
+                  doy = lubridate::yday(sample_date))
+) 
+```
+
+# Filter Existing Plates
+
+Let's get the date range for each plate.
+```{r}
+chum_extractions_date %>% 
+  dplyr::filter(!is.na(sample_date)) %>% 
+  dplyr::group_by(fk_plate_id, silly_code) %>% 
+  dplyr::summarise(min_doy = min(doy),
+                   max_doy = max(doy),
+                   range_doy = max_doy-min_doy) %>% 
+  dplyr::arrange(dplyr::desc(range_doy))
+```
+
+How does that compare to date ranges for each collection?
+```{r}
+oceanak %>% 
+  dplyr::mutate(year = lubridate::year(sample_date),
+                  doy = lubridate::yday(sample_date)) %>% 
+  dplyr::group_by(silly_code) %>% 
+  dplyr::summarise(min_doy = min(doy),
+                   max_doy = max(doy),
+                   range_doy = max_doy-min_doy) %>% 
+  dplyr::arrange(dplyr::desc(range_doy))
+```
+
+Awesome, some of these have pretty much the full range of dates. Let's start looking at some of these plates in depth.
+
+Make a fun facetted boxplot showing the range of dates for each plate of DNA!
+```{r}
+chum_extractions_date %>% 
+  dplyr::filter(!is.na(sample_date)) %>%
+  dplyr::mutate(plate_id = as.character(fk_plate_id)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = plate_id, y = doy)) +
+  ggplot2::geom_boxplot() + 
+  ggplot2::theme_bw() +
+  ggplot2::facet_wrap(~location_code, scales = "free_x")
+```
+
+## Pick a Plate
+
+### 65642 CMFISHCR23
+
+Note - all CMFISHCR23 extractions are natural-origin since it was the final year of F2s
+
+```{r}
+chum_extractions_date %>% 
+  dplyr::filter(fk_plate_id == 65642)
+```
+
+```{r}
+chum_extractions_date %>% 
+  dplyr::filter(!is.na(sample_date),
+                fk_plate_id == 65642) %>%
+  dplyr::mutate(plate_id = as.character(fk_plate_id)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = plate_id, y = doy)) +
+  ggplot2::geom_boxplot() + 
+  ggplot2::theme_bw() + 
+  ggplot2::facet_grid(rows = dplyr::vars(sex), cols = dplyr::vars(otolith_mark_present))
+```
+
+### 64545 CMPROSCR18
+
+This should have a nice mix of hatchery and wild. Most are from 2018, but some from 2017. Note that 2018 was a flood year.
+```{r}
+chum_extractions_date %>% 
+  dplyr::filter(fk_plate_id == 64545)
+```
+
+```{r}
+chum_extractions_date %>% 
+  dplyr::filter(!is.na(sample_date),
+                fk_plate_id == 64545) %>%
+  dplyr::mutate(plate_id = as.character(fk_plate_id)) %>% 
+  ggplot2::ggplot(ggplot2::aes(x = silly_code, y = doy)) +
+  ggplot2::geom_boxplot() + 
+  ggplot2::theme_bw() + 
+  ggplot2::facet_grid(rows = dplyr::vars(sex), cols = dplyr::vars(otolith_mark_present))
+```
+
+Write out for Wes
+```{r}
+chum_extractions_date %>% 
+  dplyr::filter(fk_plate_id == 64545) %>% 
+  readr::write_csv(file = "../Export to NOAA/ProspectCreek_2017_2018_plateID_64545_lrrc9.csv")
+```
+
+E-mailed ot him on 2024-07-18 to see if that is what he wants.
+
+End
