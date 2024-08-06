@@ -2,7 +2,7 @@
 title: "lrrc9 in AHRP chum?"
 subtitle: "Send an aliquot of samples across run timing to Wes?"
 author: "Kyle Shedd"
-date: "`r Sys.Date()`"
+date: "2024-07-18; update 2024-08-06"
 output:
   html_notebook:
     theme: united
@@ -177,5 +177,77 @@ chum_extractions_date %>%
 ```
 
 E-mailed to him on 2024-07-18 to see if that is what he wants.
+
+# Update 2024-08-06 Prospect Lat/Long
+
+E-mail from Pat Barry on 2024-08-06
+
+    Hey Kyle, can you give me more information for the prospect creek sampling location like lat and long?
+
+## Get Prosepct Fish
+
+```{r}
+(
+  chum_export_3197 <- readr::read_csv(file = "../Export to NOAA/ProspectCreek_2017_2018_plateID_64545_FishCreek_2023_plateID_65642_lrrc9.csv")
+)
+```
+
+## Get Finsight Location Data
+
+Read in all of the Finsight StreamSpecimens data
+```{r}
+(finsight <- readr::read_csv(file = "../Stream Specimens/finsight_stream_specimens_SEAK_chum_fitness_2013-2023.csv"))
+```
+
+Gah, the `finsight` data doesn't have any of the data keys I need to join, better get the `oceanak` data so I can get DWP number and cell.
+
+Get OceanAK data
+```{r}
+(
+  oceanak <- readr::read_csv(file = "../OceanAK/AHRP Salmon Biological Data 20240105_122404.368459_with_spawning_state.csv")
+)
+```
+
+## Join
+
+Get `dna_tray_code` and `dna_tray_well_code` from `oceanak` using `silly_code` and `fish_id`, use that to join with `finsight` to get lat/long data.
+```{r}
+(
+  chum_export_3197_locations <- chum_export_3197 %>%
+    dplyr::left_join(
+      y = oceanak %>% dplyr::select(
+        silly_code,
+        fish_id,
+        dna_tray_code,
+        dna_tray_well_code,
+        length_mm,
+        otolith_mark_id,
+        fw_age,
+        sw_age
+      ),
+      by = dplyr::join_by(silly_code, fish_no == fish_id)
+    ) %>%
+    dplyr::relocate(year, .before = sample_date) %>%
+    dplyr::relocate(doy, .after = sample_date) %>%
+    dplyr::relocate(length_mm, .after = sex) %>%
+    dplyr::relocate(dplyr::contains("dna_tray"), .after = fish_no) %>%
+    dplyr::left_join(
+      y = finsight %>% dplyr::select(sample_tray_id, sample_cell, spawning_state, latitude, longitude) %>%
+        dplyr::mutate(sample_cell = as.numeric(sample_cell)),
+      by = dplyr::join_by(
+        dna_tray_code == sample_tray_id,
+        dna_tray_well_code == sample_cell
+      )
+    )
+)
+```
+
+## Write
+
+Write this out and send to Pat.
+```{r}
+chum_export_3197_locations %>% 
+  readr::write_csv(file = "../Export to NOAA/ProspectCreek_2017_2018_plateID_64545_FishCreek_2023_plateID_65642_lrrc9_latlong.csv")
+```
 
 End
