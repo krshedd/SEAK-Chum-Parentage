@@ -1,0 +1,932 @@
+structure(list(MarkerSuite = c("Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", 
+"Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0", "Chum_AHRP_257_v1.3.0"
+), locusnames = c("Oke_101292_210_F", "Oke_101292_40_F", "Oke_101524_156_F", 
+"Oke_101646_209_F", "Oke_101646_26_F", "Oke_103435_79_F", "Oke_103795_165_F", 
+"Oke_103849_149_F", "Oke_107402_180_F", "Oke_107402_21_F", "Oke_107546_143_F", 
+"Oke_107546_5_F", "Oke_114270_151_F", "Oke_114418_108_F", "Oke_117781_109_F", 
+"Oke_118111_153_F", "Oke_118111_24_F", "Oke_118996_194_F", "Oke_11958_40_F", 
+"Oke_121177_115_F", "Oke_121355_28_F", "Oke_121649_11_F", "Oke_121649_154_F", 
+"Oke_121937_175_F", "Oke_121937_50_F", "Oke_122557_120_F", "Oke_122557_16_F", 
+"Oke_122764_93_F", "Oke_124453_35_F", "Oke_124788_50_F", "Oke_125847_51_F", 
+"Oke_126703_127_F", "Oke_126755_59_F", "Oke_127217_10_F", "Oke_127345_114_F", 
+"Oke_127345_14_F", "Oke_128148_17_F", "Oke_128273_163_F", "Oke_128300_76_F", 
+"Oke_128387_152_F", "Oke_128438_1_F", "Oke_128877_165_F", "Oke_128893_176_F", 
+"Oke_128893_5_F", "Oke_128957_119_F", "Oke_129474_138_F", "Oke_129474_19_F", 
+"Oke_12975_161_F", "Oke_12975_18_F", "Oke_130208_98_F", "Oke_131566_83_F", 
+"Oke_131724_7_F", "Oke_131796_9_F", "Oke_132828_28_F", "Oke_132845_170_F", 
+"Oke_132845_33_F", "Oke_13319_9_F", "Oke_13373_122_F", "Oke_138495_33_F", 
+"Oke_140182_20_F", "Oke_143293_53_F", "Oke_14481_149_F", "Oke_145657_107_F", 
+"Oke_145657_2_F", "Oke_146080_9_F", "Oke_14812_141_F", "Oke_14812_3_F", 
+"Oke_1617_47_F", "Oke_1627_146_F", "Oke_16424_85_F", "Oke_182860_44_F", 
+"Oke_18339_225_F", "Oke_18339_69_F", "Oke_20250_46_F", "Oke_20536_33_F", 
+"Oke_20929_85_F", "Oke_21767_133_F", "Oke_21767_2_F", "Oke_217728_189_F", 
+"Oke_217728_69_F", "Oke_21828_1_F", "Oke_21828_126_F", "Oke_218991_137_F", 
+"Oke_218991_39_F", "Oke_221_13_F", "Oke_221_145_F", "Oke_22367_4_F", 
+"Oke_22710_172_F", "Oke_22710_66_F", "Oke_23166_169_F", "Oke_23166_50_F", 
+"Oke_23889_197_F", "Oke_24220_162_F", "Oke_24348_126_F", "Oke_24690_124_F", 
+"Oke_24868_173_F", "Oke_25056_184_F", "Oke_26255_4_F", "Oke_262726_101_F", 
+"Oke_26556_205_F", "Oke_266_57_F", "Oke_26781_1_F", "Oke_26781_124_F", 
+"Oke_27007_154_F", "Oke_30650_38_F", "Oke_30947_129_F", "Oke_31351_168_F", 
+"Oke_32521_33_F", "Oke_34660_175_F", "Oke_34740_1_F", "Oke_34740_103_F", 
+"Oke_35702_6_F", "Oke_39618_6_F", "Oke_39729_164_F", "Oke_39729_28_F", 
+"Oke_40007_204_F", "Oke_40007_62_F", "Oke_40408_147_F", "Oke_40905_115_F", 
+"Oke_40905_19_F", "Oke_40952_1_F", "Oke_42318_126_F", "Oke_42931_121_F", 
+"Oke_43057_89_F", "Oke_4441_14_F", "Oke_44535_179_F", "Oke_44768_45_F", 
+"Oke_46014_119_F", "Oke_46341_30_F", "Oke_49605_2_F", "Oke_49891_1_F", 
+"Oke_49891_120_F", "Oke_52079_20_F", "Oke_5335_133_F", "Oke_5335_29_F", 
+"Oke_537_98_F", "Oke_53820_100_F", "Oke_54224_95_F", "Oke_54343_161_F", 
+"Oke_55450_183_F", "Oke_55766_54_F", "Oke_57072_25_F", "Oke_58286_194_F", 
+"Oke_58286_47_F", "Oke_59630_22_F", "Oke_60288_160_F", "Oke_60393_144_F", 
+"Oke_61287_1_F", "Oke_61287_113_F", "Oke_61677_157_F", "Oke_61677_41_F", 
+"Oke_6182_38_F", "Oke_62099_1_F", "Oke_62099_97_F", "Oke_62310_62_F", 
+"Oke_62657_225_F", "Oke_62668_232_F", "Oke_63126_12_F", "Oke_63344_45_F", 
+"Oke_63425_151_F", "Oke_63425_25_F", "Oke_65403_21_F", "Oke_65411_167_F", 
+"Oke_67367_140_F", "Oke_6754_23_F", "Oke_68267_113_F", "Oke_68309_141_F", 
+"Oke_68572_131_F", "Oke_68900_81_F", "Oke_69068_98_F", "Oke_70316_77_F", 
+"Oke_7055_73_F", "Oke_70587_32_F", "Oke_70873_198_F", "Oke_70873_22_F", 
+"Oke_71306_165_F", "Oke_7201_89_F", "Oke_73640_182_F", "Oke_73640_36_F", 
+"Oke_73925_2_F", "Oke_73925_204_F", "Oke_75269_140_F", "Oke_75776_29_F", 
+"Oke_76267_80_F", "Oke_7639_135_F", "Oke_76612_1_F", "Oke_76709_177_F", 
+"Oke_76834_47_F", "Oke_76870_214_F", "Oke_76883_208_F", "Oke_77197_15_F", 
+"Oke_77197_151_F", "Oke_78337_1_F", "Oke_78337_140_F", "Oke_79567_154_F", 
+"Oke_81211_215_F", "Oke_81211_59_F", "Oke_82671_90_F", "Oke_82853_15_F", 
+"Oke_82853_178_F", "Oke_82887_125_F", "Oke_85166_182_F", "Oke_85166_24_F", 
+"Oke_86023_134_F", "Oke_86023_5_F", "Oke_87843_139_F", "Oke_88666_143_F", 
+"Oke_88666_2_F", "Oke_89752_136_F", "Oke_90483_92_F", "Oke_90659_74_F", 
+"Oke_90777_129_F", "Oke_91334_31_F", "Oke_91488_117_F", "Oke_92032_87_F", 
+"Oke_92177_140_F", "Oke_9237_75_F", "Oke_92484_232_F", "Oke_92484_76_F", 
+"Oke_92523_8_F", "Oke_92612_82_F", "Oke_93132_46_F", "Oke_93429_181_F", 
+"Oke_93429_28_F", "Oke_94104_75_F", "Oke_94362_123_F", "Oke_94532_195_F", 
+"Oke_95188_18_F", "Oke_95924_147_F", "Oke_96269_108_F", "Oke_96439_177_F", 
+"Oke_96524_128_F", "Oke_96598_140_F", "Oke_96598_36_F", "Oke_96926_125_F", 
+"Oke_96926_3_F", "Oke_98037_103_F", "Oke_98329_157_F", "Oke_98655_58_F", 
+"Oke_98780_149_F", "Oke_99532_61_F", "Oke_99808_232_F", "OkeV2_LG23_10546237", 
+"OkeV2_LG29_25450752", "OkeV2_LG29_25455833", "OkeV2_LG29_25483595", 
+"OkeV2_LG29_25515161", "OkeV2_LG35_28078867", "OkeV2_LG35_28128687", 
+"OkeV2_LG35_28165076", "OkeV2_LG35_28167172"), Publishedlocusnames = c(Oke_101292_210_F = NA, 
+Oke_101292_40_F = NA, Oke_101524_156_F = NA, Oke_101646_209_F = NA, 
+Oke_101646_26_F = NA, Oke_103435_79_F = NA, Oke_103795_165_F = NA, 
+Oke_103849_149_F = NA, Oke_107402_180_F = NA, Oke_107402_21_F = NA, 
+Oke_107546_143_F = NA, Oke_107546_5_F = NA, Oke_114270_151_F = NA, 
+Oke_114418_108_F = NA, Oke_117781_109_F = NA, Oke_118111_153_F = NA, 
+Oke_118111_24_F = NA, Oke_118996_194_F = NA, Oke_11958_40_F = NA, 
+Oke_121177_115_F = NA, Oke_121355_28_F = NA, Oke_121649_11_F = NA, 
+Oke_121649_154_F = NA, Oke_121937_175_F = NA, Oke_121937_50_F = NA, 
+Oke_122557_120_F = NA, Oke_122557_16_F = NA, Oke_122764_93_F = NA, 
+Oke_124453_35_F = NA, Oke_124788_50_F = NA, Oke_125847_51_F = NA, 
+Oke_126703_127_F = NA, Oke_126755_59_F = NA, Oke_127217_10_F = NA, 
+Oke_127345_114_F = NA, Oke_127345_14_F = NA, Oke_128148_17_F = NA, 
+Oke_128273_163_F = NA, Oke_128300_76_F = NA, Oke_128387_152_F = NA, 
+Oke_128438_1_F = NA, Oke_128877_165_F = NA, Oke_128893_176_F = NA, 
+Oke_128893_5_F = NA, Oke_128957_119_F = NA, Oke_129474_138_F = NA, 
+Oke_129474_19_F = NA, Oke_12975_161_F = NA, Oke_12975_18_F = NA, 
+Oke_130208_98_F = NA, Oke_131566_83_F = NA, Oke_131724_7_F = NA, 
+Oke_131796_9_F = NA, Oke_132828_28_F = NA, Oke_132845_170_F = NA, 
+Oke_132845_33_F = NA, Oke_13319_9_F = NA, Oke_13373_122_F = NA, 
+Oke_138495_33_F = NA, Oke_140182_20_F = NA, Oke_143293_53_F = NA, 
+Oke_14481_149_F = NA, Oke_145657_107_F = NA, Oke_145657_2_F = NA, 
+Oke_146080_9_F = NA, Oke_14812_141_F = NA, Oke_14812_3_F = NA, 
+Oke_1617_47_F = NA, Oke_1627_146_F = NA, Oke_16424_85_F = NA, 
+Oke_182860_44_F = NA, Oke_18339_225_F = NA, Oke_18339_69_F = NA, 
+Oke_20250_46_F = NA, Oke_20536_33_F = NA, Oke_20929_85_F = NA, 
+Oke_21767_133_F = NA, Oke_21767_2_F = NA, Oke_217728_189_F = NA, 
+Oke_217728_69_F = NA, Oke_21828_1_F = NA, Oke_21828_126_F = NA, 
+Oke_218991_137_F = NA, Oke_218991_39_F = NA, Oke_221_13_F = NA, 
+Oke_221_145_F = NA, Oke_22367_4_F = NA, Oke_22710_172_F = NA, 
+Oke_22710_66_F = NA, Oke_23166_169_F = NA, Oke_23166_50_F = NA, 
+Oke_23889_197_F = NA, Oke_24220_162_F = NA, Oke_24348_126_F = NA, 
+Oke_24690_124_F = NA, Oke_24868_173_F = NA, Oke_25056_184_F = NA, 
+Oke_26255_4_F = NA, Oke_262726_101_F = NA, Oke_26556_205_F = NA, 
+Oke_266_57_F = NA, Oke_26781_1_F = NA, Oke_26781_124_F = NA, 
+Oke_27007_154_F = NA, Oke_30650_38_F = NA, Oke_30947_129_F = NA, 
+Oke_31351_168_F = NA, Oke_32521_33_F = NA, Oke_34660_175_F = NA, 
+Oke_34740_1_F = NA, Oke_34740_103_F = NA, Oke_35702_6_F = NA, 
+Oke_39618_6_F = NA, Oke_39729_164_F = NA, Oke_39729_28_F = NA, 
+Oke_40007_204_F = NA, Oke_40007_62_F = NA, Oke_40408_147_F = NA, 
+Oke_40905_115_F = NA, Oke_40905_19_F = NA, Oke_40952_1_F = NA, 
+Oke_42318_126_F = NA, Oke_42931_121_F = NA, Oke_43057_89_F = NA, 
+Oke_4441_14_F = NA, Oke_44535_179_F = NA, Oke_44768_45_F = NA, 
+Oke_46014_119_F = NA, Oke_46341_30_F = NA, Oke_49605_2_F = NA, 
+Oke_49891_1_F = NA, Oke_49891_120_F = NA, Oke_52079_20_F = NA, 
+Oke_5335_133_F = NA, Oke_5335_29_F = NA, Oke_537_98_F = NA, Oke_53820_100_F = NA, 
+Oke_54224_95_F = NA, Oke_54343_161_F = NA, Oke_55450_183_F = NA, 
+Oke_55766_54_F = NA, Oke_57072_25_F = NA, Oke_58286_194_F = NA, 
+Oke_58286_47_F = NA, Oke_59630_22_F = NA, Oke_60288_160_F = NA, 
+Oke_60393_144_F = NA, Oke_61287_1_F = NA, Oke_61287_113_F = NA, 
+Oke_61677_157_F = NA, Oke_61677_41_F = NA, Oke_6182_38_F = NA, 
+Oke_62099_1_F = NA, Oke_62099_97_F = NA, Oke_62310_62_F = NA, 
+Oke_62657_225_F = NA, Oke_62668_232_F = NA, Oke_63126_12_F = NA, 
+Oke_63344_45_F = NA, Oke_63425_151_F = NA, Oke_63425_25_F = NA, 
+Oke_65403_21_F = NA, Oke_65411_167_F = NA, Oke_67367_140_F = NA, 
+Oke_6754_23_F = NA, Oke_68267_113_F = NA, Oke_68309_141_F = NA, 
+Oke_68572_131_F = NA, Oke_68900_81_F = NA, Oke_69068_98_F = NA, 
+Oke_70316_77_F = NA, Oke_7055_73_F = NA, Oke_70587_32_F = NA, 
+Oke_70873_198_F = NA, Oke_70873_22_F = NA, Oke_71306_165_F = NA, 
+Oke_7201_89_F = NA, Oke_73640_182_F = NA, Oke_73640_36_F = NA, 
+Oke_73925_2_F = NA, Oke_73925_204_F = NA, Oke_75269_140_F = NA, 
+Oke_75776_29_F = NA, Oke_76267_80_F = NA, Oke_7639_135_F = NA, 
+Oke_76612_1_F = NA, Oke_76709_177_F = NA, Oke_76834_47_F = NA, 
+Oke_76870_214_F = NA, Oke_76883_208_F = NA, Oke_77197_15_F = NA, 
+Oke_77197_151_F = NA, Oke_78337_1_F = NA, Oke_78337_140_F = NA, 
+Oke_79567_154_F = NA, Oke_81211_215_F = NA, Oke_81211_59_F = NA, 
+Oke_82671_90_F = NA, Oke_82853_15_F = NA, Oke_82853_178_F = NA, 
+Oke_82887_125_F = NA, Oke_85166_182_F = NA, Oke_85166_24_F = NA, 
+Oke_86023_134_F = NA, Oke_86023_5_F = NA, Oke_87843_139_F = NA, 
+Oke_88666_143_F = NA, Oke_88666_2_F = NA, Oke_89752_136_F = NA, 
+Oke_90483_92_F = NA, Oke_90659_74_F = NA, Oke_90777_129_F = NA, 
+Oke_91334_31_F = NA, Oke_91488_117_F = NA, Oke_92032_87_F = NA, 
+Oke_92177_140_F = NA, Oke_9237_75_F = NA, Oke_92484_232_F = NA, 
+Oke_92484_76_F = NA, Oke_92523_8_F = NA, Oke_92612_82_F = NA, 
+Oke_93132_46_F = NA, Oke_93429_181_F = NA, Oke_93429_28_F = NA, 
+Oke_94104_75_F = NA, Oke_94362_123_F = NA, Oke_94532_195_F = NA, 
+Oke_95188_18_F = NA, Oke_95924_147_F = NA, Oke_96269_108_F = NA, 
+Oke_96439_177_F = NA, Oke_96524_128_F = NA, Oke_96598_140_F = NA, 
+Oke_96598_36_F = NA, Oke_96926_125_F = NA, Oke_96926_3_F = NA, 
+Oke_98037_103_F = NA, Oke_98329_157_F = NA, Oke_98655_58_F = NA, 
+Oke_98780_149_F = NA, Oke_99532_61_F = NA, Oke_99808_232_F = NA, 
+OkeV2_LG23_10546237 = "OkeV2_LG23_10546237", OkeV2_LG29_25450752 = "OkeV2_LG29_25450752", 
+OkeV2_LG29_25455833 = "OkeV2_LG29_25455833", OkeV2_LG29_25483595 = "OkeV2_LG29_25483595", 
+OkeV2_LG29_25515161 = "OkeV2_LG29_25515161", OkeV2_LG35_28078867 = "OkeV2_LG35_28078867", 
+OkeV2_LG35_28128687 = "OkeV2_LG35_28128687", OkeV2_LG35_28165076 = "OkeV2_LG35_28165076", 
+OkeV2_LG35_28167172 = "OkeV2_LG35_28167172"), nalleles = c(Oke_101292_210_F = 2L, 
+Oke_101292_40_F = 2L, Oke_101524_156_F = 4L, Oke_101646_209_F = 4L, 
+Oke_101646_26_F = 2L, Oke_103435_79_F = 4L, Oke_103795_165_F = 2L, 
+Oke_103849_149_F = 4L, Oke_107402_180_F = 4L, Oke_107402_21_F = 4L, 
+Oke_107546_143_F = 2L, Oke_107546_5_F = 4L, Oke_114270_151_F = 16L, 
+Oke_114418_108_F = 2L, Oke_117781_109_F = 2L, Oke_118111_153_F = 4L, 
+Oke_118111_24_F = 4L, Oke_118996_194_F = 2L, Oke_11958_40_F = 4L, 
+Oke_121177_115_F = 2L, Oke_121355_28_F = 2L, Oke_121649_11_F = 8L, 
+Oke_121649_154_F = 4L, Oke_121937_175_F = 2L, Oke_121937_50_F = 2L, 
+Oke_122557_120_F = 4L, Oke_122557_16_F = 2L, Oke_122764_93_F = 4L, 
+Oke_124453_35_F = 4L, Oke_124788_50_F = 2L, Oke_125847_51_F = 4L, 
+Oke_126703_127_F = 4L, Oke_126755_59_F = 2L, Oke_127217_10_F = 4L, 
+Oke_127345_114_F = 2L, Oke_127345_14_F = 2L, Oke_128148_17_F = 4L, 
+Oke_128273_163_F = 2L, Oke_128300_76_F = 8L, Oke_128387_152_F = 2L, 
+Oke_128438_1_F = 2L, Oke_128877_165_F = 2L, Oke_128893_176_F = 2L, 
+Oke_128893_5_F = 2L, Oke_128957_119_F = 4L, Oke_129474_138_F = 2L, 
+Oke_129474_19_F = 2L, Oke_12975_161_F = 2L, Oke_12975_18_F = 4L, 
+Oke_130208_98_F = 4L, Oke_131566_83_F = 4L, Oke_131724_7_F = 2L, 
+Oke_131796_9_F = 2L, Oke_132828_28_F = 8L, Oke_132845_170_F = 2L, 
+Oke_132845_33_F = 2L, Oke_13319_9_F = 4L, Oke_13373_122_F = 8L, 
+Oke_138495_33_F = 8L, Oke_140182_20_F = 2L, Oke_143293_53_F = 2L, 
+Oke_14481_149_F = 2L, Oke_145657_107_F = 2L, Oke_145657_2_F = 2L, 
+Oke_146080_9_F = 8L, Oke_14812_141_F = 2L, Oke_14812_3_F = 2L, 
+Oke_1617_47_F = 2L, Oke_1627_146_F = 4L, Oke_16424_85_F = 4L, 
+Oke_182860_44_F = 8L, Oke_18339_225_F = 2L, Oke_18339_69_F = 2L, 
+Oke_20250_46_F = 4L, Oke_20536_33_F = 4L, Oke_20929_85_F = 2L, 
+Oke_21767_133_F = 4L, Oke_21767_2_F = 4L, Oke_217728_189_F = 2L, 
+Oke_217728_69_F = 2L, Oke_21828_1_F = 2L, Oke_21828_126_F = 2L, 
+Oke_218991_137_F = 4L, Oke_218991_39_F = 2L, Oke_221_13_F = 2L, 
+Oke_221_145_F = 8L, Oke_22367_4_F = 4L, Oke_22710_172_F = 4L, 
+Oke_22710_66_F = 2L, Oke_23166_169_F = 8L, Oke_23166_50_F = 8L, 
+Oke_23889_197_F = 4L, Oke_24220_162_F = 4L, Oke_24348_126_F = 2L, 
+Oke_24690_124_F = 4L, Oke_24868_173_F = 4L, Oke_25056_184_F = 16L, 
+Oke_26255_4_F = 4L, Oke_262726_101_F = 4L, Oke_26556_205_F = 4L, 
+Oke_266_57_F = 4L, Oke_26781_1_F = 2L, Oke_26781_124_F = 4L, 
+Oke_27007_154_F = 8L, Oke_30650_38_F = 16L, Oke_30947_129_F = 2L, 
+Oke_31351_168_F = 4L, Oke_32521_33_F = 4L, Oke_34660_175_F = 2L, 
+Oke_34740_1_F = 2L, Oke_34740_103_F = 4L, Oke_35702_6_F = 4L, 
+Oke_39618_6_F = 2L, Oke_39729_164_F = 2L, Oke_39729_28_F = 2L, 
+Oke_40007_204_F = 2L, Oke_40007_62_F = 2L, Oke_40408_147_F = 4L, 
+Oke_40905_115_F = 4L, Oke_40905_19_F = 2L, Oke_40952_1_F = 4L, 
+Oke_42318_126_F = 2L, Oke_42931_121_F = 4L, Oke_43057_89_F = 8L, 
+Oke_4441_14_F = 2L, Oke_44535_179_F = 4L, Oke_44768_45_F = 4L, 
+Oke_46014_119_F = 4L, Oke_46341_30_F = 2L, Oke_49605_2_F = 2L, 
+Oke_49891_1_F = 2L, Oke_49891_120_F = 2L, Oke_52079_20_F = 4L, 
+Oke_5335_133_F = 4L, Oke_5335_29_F = 2L, Oke_537_98_F = 4L, Oke_53820_100_F = 4L, 
+Oke_54224_95_F = 4L, Oke_54343_161_F = 4L, Oke_55450_183_F = 2L, 
+Oke_55766_54_F = 4L, Oke_57072_25_F = 2L, Oke_58286_194_F = 2L, 
+Oke_58286_47_F = 2L, Oke_59630_22_F = 8L, Oke_60288_160_F = 8L, 
+Oke_60393_144_F = 2L, Oke_61287_1_F = 2L, Oke_61287_113_F = 2L, 
+Oke_61677_157_F = 2L, Oke_61677_41_F = 2L, Oke_6182_38_F = 4L, 
+Oke_62099_1_F = 2L, Oke_62099_97_F = 2L, Oke_62310_62_F = 2L, 
+Oke_62657_225_F = 16L, Oke_62668_232_F = 2L, Oke_63126_12_F = 2L, 
+Oke_63344_45_F = 4L, Oke_63425_151_F = 2L, Oke_63425_25_F = 2L, 
+Oke_65403_21_F = 2L, Oke_65411_167_F = 4L, Oke_67367_140_F = 16L, 
+Oke_6754_23_F = 2L, Oke_68267_113_F = 2L, Oke_68309_141_F = 2L, 
+Oke_68572_131_F = 4L, Oke_68900_81_F = 4L, Oke_69068_98_F = 2L, 
+Oke_70316_77_F = 2L, Oke_7055_73_F = 8L, Oke_70587_32_F = 8L, 
+Oke_70873_198_F = 2L, Oke_70873_22_F = 2L, Oke_71306_165_F = 4L, 
+Oke_7201_89_F = 2L, Oke_73640_182_F = 2L, Oke_73640_36_F = 2L, 
+Oke_73925_2_F = 4L, Oke_73925_204_F = 4L, Oke_75269_140_F = 4L, 
+Oke_75776_29_F = 8L, Oke_76267_80_F = 4L, Oke_7639_135_F = 4L, 
+Oke_76612_1_F = 2L, Oke_76709_177_F = 4L, Oke_76834_47_F = 2L, 
+Oke_76870_214_F = 2L, Oke_76883_208_F = 2L, Oke_77197_15_F = 2L, 
+Oke_77197_151_F = 4L, Oke_78337_1_F = 2L, Oke_78337_140_F = 8L, 
+Oke_79567_154_F = 2L, Oke_81211_215_F = 8L, Oke_81211_59_F = 4L, 
+Oke_82671_90_F = 2L, Oke_82853_15_F = 2L, Oke_82853_178_F = 4L, 
+Oke_82887_125_F = 4L, Oke_85166_182_F = 2L, Oke_85166_24_F = 2L, 
+Oke_86023_134_F = 4L, Oke_86023_5_F = 4L, Oke_87843_139_F = 4L, 
+Oke_88666_143_F = 2L, Oke_88666_2_F = 4L, Oke_89752_136_F = 2L, 
+Oke_90483_92_F = 4L, Oke_90659_74_F = 2L, Oke_90777_129_F = 4L, 
+Oke_91334_31_F = 4L, Oke_91488_117_F = 4L, Oke_92032_87_F = 2L, 
+Oke_92177_140_F = 4L, Oke_9237_75_F = 8L, Oke_92484_232_F = 2L, 
+Oke_92484_76_F = 4L, Oke_92523_8_F = 4L, Oke_92612_82_F = 4L, 
+Oke_93132_46_F = 2L, Oke_93429_181_F = 2L, Oke_93429_28_F = 2L, 
+Oke_94104_75_F = 2L, Oke_94362_123_F = 2L, Oke_94532_195_F = 4L, 
+Oke_95188_18_F = 16L, Oke_95924_147_F = 4L, Oke_96269_108_F = 4L, 
+Oke_96439_177_F = 2L, Oke_96524_128_F = 4L, Oke_96598_140_F = 4L, 
+Oke_96598_36_F = 2L, Oke_96926_125_F = 2L, Oke_96926_3_F = 2L, 
+Oke_98037_103_F = 2L, Oke_98329_157_F = 2L, Oke_98655_58_F = 8L, 
+Oke_98780_149_F = 4L, Oke_99532_61_F = 2L, Oke_99808_232_F = 2L, 
+OkeV2_LG23_10546237 = 2L, OkeV2_LG29_25450752 = 2L, OkeV2_LG29_25455833 = 2L, 
+OkeV2_LG29_25483595 = 2L, OkeV2_LG29_25515161 = 2L, OkeV2_LG35_28078867 = 2L, 
+OkeV2_LG35_28128687 = 2L, OkeV2_LG35_28165076 = 2L, OkeV2_LG35_28167172 = 2L
+), ploidy = c(Oke_101292_210_F = 2, Oke_101292_40_F = 2, Oke_101524_156_F = 2, 
+Oke_101646_209_F = 2, Oke_101646_26_F = 2, Oke_103435_79_F = 2, 
+Oke_103795_165_F = 2, Oke_103849_149_F = 2, Oke_107402_180_F = 2, 
+Oke_107402_21_F = 2, Oke_107546_143_F = 2, Oke_107546_5_F = 2, 
+Oke_114270_151_F = 2, Oke_114418_108_F = 2, Oke_117781_109_F = 2, 
+Oke_118111_153_F = 2, Oke_118111_24_F = 2, Oke_118996_194_F = 2, 
+Oke_11958_40_F = 2, Oke_121177_115_F = 2, Oke_121355_28_F = 2, 
+Oke_121649_11_F = 2, Oke_121649_154_F = 2, Oke_121937_175_F = 2, 
+Oke_121937_50_F = 2, Oke_122557_120_F = 2, Oke_122557_16_F = 2, 
+Oke_122764_93_F = 2, Oke_124453_35_F = 2, Oke_124788_50_F = 2, 
+Oke_125847_51_F = 2, Oke_126703_127_F = 2, Oke_126755_59_F = 2, 
+Oke_127217_10_F = 2, Oke_127345_114_F = 2, Oke_127345_14_F = 2, 
+Oke_128148_17_F = 2, Oke_128273_163_F = 2, Oke_128300_76_F = 2, 
+Oke_128387_152_F = 2, Oke_128438_1_F = 2, Oke_128877_165_F = 2, 
+Oke_128893_176_F = 2, Oke_128893_5_F = 2, Oke_128957_119_F = 2, 
+Oke_129474_138_F = 2, Oke_129474_19_F = 2, Oke_12975_161_F = 2, 
+Oke_12975_18_F = 2, Oke_130208_98_F = 2, Oke_131566_83_F = 2, 
+Oke_131724_7_F = 2, Oke_131796_9_F = 2, Oke_132828_28_F = 2, 
+Oke_132845_170_F = 2, Oke_132845_33_F = 2, Oke_13319_9_F = 2, 
+Oke_13373_122_F = 2, Oke_138495_33_F = 2, Oke_140182_20_F = 2, 
+Oke_143293_53_F = 2, Oke_14481_149_F = 2, Oke_145657_107_F = 2, 
+Oke_145657_2_F = 2, Oke_146080_9_F = 2, Oke_14812_141_F = 2, 
+Oke_14812_3_F = 2, Oke_1617_47_F = 2, Oke_1627_146_F = 2, Oke_16424_85_F = 2, 
+Oke_182860_44_F = 2, Oke_18339_225_F = 2, Oke_18339_69_F = 2, 
+Oke_20250_46_F = 2, Oke_20536_33_F = 2, Oke_20929_85_F = 2, Oke_21767_133_F = 2, 
+Oke_21767_2_F = 2, Oke_217728_189_F = 2, Oke_217728_69_F = 2, 
+Oke_21828_1_F = 2, Oke_21828_126_F = 2, Oke_218991_137_F = 2, 
+Oke_218991_39_F = 2, Oke_221_13_F = 2, Oke_221_145_F = 2, Oke_22367_4_F = 2, 
+Oke_22710_172_F = 2, Oke_22710_66_F = 2, Oke_23166_169_F = 2, 
+Oke_23166_50_F = 2, Oke_23889_197_F = 2, Oke_24220_162_F = 2, 
+Oke_24348_126_F = 2, Oke_24690_124_F = 2, Oke_24868_173_F = 2, 
+Oke_25056_184_F = 2, Oke_26255_4_F = 2, Oke_262726_101_F = 2, 
+Oke_26556_205_F = 2, Oke_266_57_F = 2, Oke_26781_1_F = 2, Oke_26781_124_F = 2, 
+Oke_27007_154_F = 2, Oke_30650_38_F = 2, Oke_30947_129_F = 2, 
+Oke_31351_168_F = 2, Oke_32521_33_F = 2, Oke_34660_175_F = 2, 
+Oke_34740_1_F = 2, Oke_34740_103_F = 2, Oke_35702_6_F = 2, Oke_39618_6_F = 2, 
+Oke_39729_164_F = 2, Oke_39729_28_F = 2, Oke_40007_204_F = 2, 
+Oke_40007_62_F = 2, Oke_40408_147_F = 2, Oke_40905_115_F = 2, 
+Oke_40905_19_F = 2, Oke_40952_1_F = 2, Oke_42318_126_F = 2, Oke_42931_121_F = 2, 
+Oke_43057_89_F = 2, Oke_4441_14_F = 2, Oke_44535_179_F = 2, Oke_44768_45_F = 2, 
+Oke_46014_119_F = 2, Oke_46341_30_F = 2, Oke_49605_2_F = 2, Oke_49891_1_F = 2, 
+Oke_49891_120_F = 2, Oke_52079_20_F = 2, Oke_5335_133_F = 2, 
+Oke_5335_29_F = 2, Oke_537_98_F = 2, Oke_53820_100_F = 2, Oke_54224_95_F = 2, 
+Oke_54343_161_F = 2, Oke_55450_183_F = 2, Oke_55766_54_F = 2, 
+Oke_57072_25_F = 2, Oke_58286_194_F = 2, Oke_58286_47_F = 2, 
+Oke_59630_22_F = 2, Oke_60288_160_F = 2, Oke_60393_144_F = 2, 
+Oke_61287_1_F = 2, Oke_61287_113_F = 2, Oke_61677_157_F = 2, 
+Oke_61677_41_F = 2, Oke_6182_38_F = 2, Oke_62099_1_F = 2, Oke_62099_97_F = 2, 
+Oke_62310_62_F = 2, Oke_62657_225_F = 2, Oke_62668_232_F = 2, 
+Oke_63126_12_F = 2, Oke_63344_45_F = 2, Oke_63425_151_F = 2, 
+Oke_63425_25_F = 2, Oke_65403_21_F = 2, Oke_65411_167_F = 2, 
+Oke_67367_140_F = 2, Oke_6754_23_F = 2, Oke_68267_113_F = 2, 
+Oke_68309_141_F = 2, Oke_68572_131_F = 2, Oke_68900_81_F = 2, 
+Oke_69068_98_F = 2, Oke_70316_77_F = 2, Oke_7055_73_F = 2, Oke_70587_32_F = 2, 
+Oke_70873_198_F = 2, Oke_70873_22_F = 2, Oke_71306_165_F = 2, 
+Oke_7201_89_F = 2, Oke_73640_182_F = 2, Oke_73640_36_F = 2, Oke_73925_2_F = 2, 
+Oke_73925_204_F = 2, Oke_75269_140_F = 2, Oke_75776_29_F = 2, 
+Oke_76267_80_F = 2, Oke_7639_135_F = 2, Oke_76612_1_F = 2, Oke_76709_177_F = 2, 
+Oke_76834_47_F = 2, Oke_76870_214_F = 2, Oke_76883_208_F = 2, 
+Oke_77197_15_F = 2, Oke_77197_151_F = 2, Oke_78337_1_F = 2, Oke_78337_140_F = 2, 
+Oke_79567_154_F = 2, Oke_81211_215_F = 2, Oke_81211_59_F = 2, 
+Oke_82671_90_F = 2, Oke_82853_15_F = 2, Oke_82853_178_F = 2, 
+Oke_82887_125_F = 2, Oke_85166_182_F = 2, Oke_85166_24_F = 2, 
+Oke_86023_134_F = 2, Oke_86023_5_F = 2, Oke_87843_139_F = 2, 
+Oke_88666_143_F = 2, Oke_88666_2_F = 2, Oke_89752_136_F = 2, 
+Oke_90483_92_F = 2, Oke_90659_74_F = 2, Oke_90777_129_F = 2, 
+Oke_91334_31_F = 2, Oke_91488_117_F = 2, Oke_92032_87_F = 2, 
+Oke_92177_140_F = 2, Oke_9237_75_F = 2, Oke_92484_232_F = 2, 
+Oke_92484_76_F = 2, Oke_92523_8_F = 2, Oke_92612_82_F = 2, Oke_93132_46_F = 2, 
+Oke_93429_181_F = 2, Oke_93429_28_F = 2, Oke_94104_75_F = 2, 
+Oke_94362_123_F = 2, Oke_94532_195_F = 2, Oke_95188_18_F = 2, 
+Oke_95924_147_F = 2, Oke_96269_108_F = 2, Oke_96439_177_F = 2, 
+Oke_96524_128_F = 2, Oke_96598_140_F = 2, Oke_96598_36_F = 2, 
+Oke_96926_125_F = 2, Oke_96926_3_F = 2, Oke_98037_103_F = 2, 
+Oke_98329_157_F = 2, Oke_98655_58_F = 2, Oke_98780_149_F = 2, 
+Oke_99532_61_F = 2, Oke_99808_232_F = 2, OkeV2_LG23_10546237 = 2, 
+OkeV2_LG29_25450752 = 2, OkeV2_LG29_25455833 = 2, OkeV2_LG29_25483595 = 2, 
+OkeV2_LG29_25515161 = 2, OkeV2_LG35_28078867 = 2, OkeV2_LG35_28128687 = 2, 
+OkeV2_LG35_28165076 = 2, OkeV2_LG35_28167172 = 2), alleles = list(
+    Oke_101292_210_F = structure(list(allele = 1:2, call = c("A", 
+    "G")), class = c("tbl_df", "tbl", "data.frame"), row.names = c(NA, 
+    -2L)), Oke_101292_40_F = structure(list(allele = 1:2, call = c("A", 
+    "T")), class = c("tbl_df", "tbl", "data.frame"), row.names = c(NA, 
+    -2L)), Oke_101524_156_F = structure(list(allele = 1:4, call = c("AA", 
+    "AC", "TA", "TC")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -4L)), Oke_101646_209_F = structure(list(
+        allele = 1:4, call = c("AG", "AT", "GG", "GT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_101646_26_F = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_103435_79_F = structure(list(
+        allele = 1:4, call = c("CA", "CT", "TA", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_103795_165_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_103849_149_F = structure(list(
+        allele = 1:4, call = c("CA", "CT", "TA", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_107402_180_F = structure(list(
+        allele = 1:4, call = c("GA", "GC", "TA", "TC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_107402_21_F = structure(list(
+        allele = 1:4, call = c("CA", "CC", "GA", "GC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_107546_143_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_107546_5_F = structure(list(
+        allele = 1:4, call = c("CC", "CT", "TC", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_114270_151_F = structure(list(
+        allele = 1:16, call = c("CAGG", "CAGT", "CATG", "CATT", 
+        "CGGG", "CGGT", "CGTG", "CGTT", "TAGG", "TAGT", "TATG", 
+        "TATT", "TGGG", "TGGT", "TGTG", "TGTT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -16L)), Oke_114418_108_F = structure(list(
+        allele = 1:2, call = c("A", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_117781_109_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_118111_153_F = structure(list(
+        allele = 1:4, call = c("CA", "CC", "TA", "TC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_118111_24_F = structure(list(
+        allele = 1:4, call = c("CA", "CG", "GA", "GG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_118996_194_F = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_11958_40_F = structure(list(
+        allele = 1:4, call = c("CC", "CT", "TC", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_121177_115_F = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_121355_28_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_121649_11_F = structure(list(
+        allele = 1:8, call = c("AAA", "AAC", "ATA", "ATC", "TAA", 
+        "TAC", "TTA", "TTC")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_121649_154_F = structure(list(
+        allele = 1:4, call = c("AA", "AC", "GA", "GC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_121937_175_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_121937_50_F = structure(list(
+        allele = 1:2, call = c("A", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_122557_120_F = structure(list(
+        allele = 1:4, call = c("CC", "CG", "GC", "GG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_122557_16_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_122764_93_F = structure(list(
+        allele = 1:4, call = c("CG", "CT", "TG", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_124453_35_F = structure(list(
+        allele = 1:4, call = c("GC", "GG", "TC", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_124788_50_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_125847_51_F = structure(list(
+        allele = 1:4, call = c("AA", "AG", "GA", "GG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_126703_127_F = structure(list(
+        allele = 1:4, call = c("GG", "GT", "TG", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_126755_59_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_127217_10_F = structure(list(
+        allele = 1:4, call = c("AG", "AT", "CG", "CT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_127345_114_F = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_127345_14_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_128148_17_F = structure(list(
+        allele = 1:4, call = c("CA", "CC", "TA", "TC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_128273_163_F = structure(list(
+        allele = 1:2, call = c("A", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_128300_76_F = structure(list(
+        allele = 1:8, call = c("GAC", "GAG", "GGC", "GGG", "TAC", 
+        "TAG", "TGC", "TGG")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_128387_152_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_128438_1_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_128877_165_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_128893_176_F = structure(list(
+        allele = 1:2, call = c("A", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_128893_5_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_128957_119_F = structure(list(
+        allele = 1:4, call = c("GA", "GG", "TA", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_129474_138_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_129474_19_F = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_12975_161_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_12975_18_F = structure(list(
+        allele = 1:4, call = c("AA", "AG", "GA", "GG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_130208_98_F = structure(list(
+        allele = 1:4, call = c("AA", "AG", "CA", "CG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_131566_83_F = structure(list(
+        allele = 1:4, call = c("AC", "AT", "CC", "CT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_131724_7_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_131796_9_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_132828_28_F = structure(list(
+        allele = 1:8, call = c("ACA", "ACG", "ATA", "ATG", "GCA", 
+        "GCG", "GTA", "GTG")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_132845_170_F = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_132845_33_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_13319_9_F = structure(list(
+        allele = 1:4, call = c("CC", "CT", "TC", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_13373_122_F = structure(list(
+        allele = 1:8, call = c("AAA", "AAG", "AGA", "AGG", "TAA", 
+        "TAG", "TGA", "TGG")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_138495_33_F = structure(list(
+        allele = 1:8, call = c("CGG", "CGT", "CTG", "CTT", "TGG", 
+        "TGT", "TTG", "TTT")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_140182_20_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_143293_53_F = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_14481_149_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_145657_107_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_145657_2_F = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_146080_9_F = structure(list(
+        allele = 1:8, call = c("CAA", "CAC", "CGA", "CGC", "TAA", 
+        "TAC", "TGA", "TGC")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_14812_141_F = structure(list(
+        allele = 1:2, call = c("A", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_14812_3_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_1617_47_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_1627_146_F = structure(list(
+        allele = 1:4, call = c("AA", "AC", "GA", "GC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_16424_85_F = structure(list(
+        allele = 1:4, call = c("AG", "AT", "GG", "GT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_182860_44_F = structure(list(
+        allele = 1:8, call = c("AAA", "AAT", "ATA", "ATT", "TAA", 
+        "TAT", "TTA", "TTT")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_18339_225_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_18339_69_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_20250_46_F = structure(list(
+        allele = 1:4, call = c("AA", "AT", "TA", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_20536_33_F = structure(list(
+        allele = 1:4, call = c("AG", "AT", "GG", "GT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_20929_85_F = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_21767_133_F = structure(list(
+        allele = 1:4, call = c("AC", "AT", "CC", "CT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_21767_2_F = structure(list(
+        allele = 1:4, call = c("GG", "GT", "TG", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_217728_189_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_217728_69_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_21828_1_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_21828_126_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_218991_137_F = structure(list(
+        allele = 1:4, call = c("AA", "AC", "GA", "GC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_218991_39_F = structure(list(
+        allele = 1:2, call = c("C", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_221_13_F = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_221_145_F = structure(list(
+        allele = 1:8, call = c("AAG", "AAT", "AGG", "AGT", "CAG", 
+        "CAT", "CGG", "CGT")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_22367_4_F = structure(list(
+        allele = 1:4, call = c("CC", "CG", "TC", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_22710_172_F = structure(list(
+        allele = 1:4, call = c("AA", "AG", "CA", "CG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_22710_66_F = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_23166_169_F = structure(list(
+        allele = 1:8, call = c("AAA", "AAG", "ACA", "ACG", "CAA", 
+        "CAG", "CCA", "CCG")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_23166_50_F = structure(list(
+        allele = 1:8, call = c("CGA", "CGC", "CTA", "CTC", "TGA", 
+        "TGC", "TTA", "TTC")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_23889_197_F = structure(list(
+        allele = 1:4, call = c("CC", "CT", "TC", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_24220_162_F = structure(list(
+        allele = 1:4, call = c("CA", "CG", "TA", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_24348_126_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_24690_124_F = structure(list(
+        allele = 1:4, call = c("AA", "AC", "TA", "TC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_24868_173_F = structure(list(
+        allele = 1:4, call = c("GA", "GG", "TA", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_25056_184_F = structure(list(
+        allele = 1:16, call = c("AAGC", "AAGT", "AATC", "AATT", 
+        "AGGC", "AGGT", "AGTC", "AGTT", "CAGC", "CAGT", "CATC", 
+        "CATT", "CGGC", "CGGT", "CGTC", "CGTT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -16L)), Oke_26255_4_F = structure(list(
+        allele = 1:4, call = c("AA", "AG", "TA", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_262726_101_F = structure(list(
+        allele = 1:4, call = c("CC", "CT", "GC", "GT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_26556_205_F = structure(list(
+        allele = 1:4, call = c("GA", "GG", "TA", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_266_57_F = structure(list(
+        allele = 1:4, call = c("CA", "CC", "TA", "TC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_26781_1_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_26781_124_F = structure(list(
+        allele = 1:4, call = c("CA", "CG", "TA", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_27007_154_F = structure(list(
+        allele = 1:8, call = c("CAC", "CAT", "CGC", "CGT", "GAC", 
+        "GAT", "GGC", "GGT")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_30650_38_F = structure(list(
+        allele = 1:16, call = c("CACG", "CACT", "CATG", "CATT", 
+        "CTCG", "CTCT", "CTTG", "CTTT", "TACG", "TACT", "TATG", 
+        "TATT", "TTCG", "TTCT", "TTTG", "TTTT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -16L)), Oke_30947_129_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_31351_168_F = structure(list(
+        allele = 1:4, call = c("AA", "AG", "GA", "GG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_32521_33_F = structure(list(
+        allele = 1:4, call = c("AA", "AC", "GA", "GC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_34660_175_F = structure(list(
+        allele = 1:2, call = c("A", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_34740_1_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_34740_103_F = structure(list(
+        allele = 1:4, call = c("AC", "AT", "GC", "GT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_35702_6_F = structure(list(
+        allele = 1:4, call = c("CA", "CG", "GA", "GG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_39618_6_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_39729_164_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_39729_28_F = structure(list(
+        allele = 1:2, call = c("C", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_40007_204_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_40007_62_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_40408_147_F = structure(list(
+        allele = 1:4, call = c("AA", "AG", "TA", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_40905_115_F = structure(list(
+        allele = 1:4, call = c("AA", "AT", "GA", "GT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_40905_19_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_40952_1_F = structure(list(
+        allele = 1:4, call = c("GA", "GG", "TA", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_42318_126_F = structure(list(
+        allele = 1:2, call = c("A", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_42931_121_F = structure(list(
+        allele = 1:4, call = c("AG", "AT", "GG", "GT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_43057_89_F = structure(list(
+        allele = 1:8, call = c("CAC", "CAT", "CGC", "CGT", "TAC", 
+        "TAT", "TGC", "TGT")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_4441_14_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_44535_179_F = structure(list(
+        allele = 1:4, call = c("AA", "AG", "GA", "GG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_44768_45_F = structure(list(
+        allele = 1:4, call = c("AC", "AT", "GC", "GT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_46014_119_F = structure(list(
+        allele = 1:4, call = c("CG", "CT", "TG", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_46341_30_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_49605_2_F = structure(list(
+        allele = 1:2, call = c("A", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_49891_1_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_49891_120_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_52079_20_F = structure(list(
+        allele = 1:4, call = c("AC", "AG", "CC", "CG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_5335_133_F = structure(list(
+        allele = 1:4, call = c("GG", "GT", "TG", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_5335_29_F = structure(list(
+        allele = 1:2, call = c("A", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_537_98_F = structure(list(
+        allele = 1:4, call = c("CA", "CC", "TA", "TC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_53820_100_F = structure(list(
+        allele = 1:4, call = c("CC", "CT", "TC", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_54224_95_F = structure(list(
+        allele = 1:4, call = c("GA", "GC", "TA", "TC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_54343_161_F = structure(list(
+        allele = 1:4, call = c("CA", "CG", "TA", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_55450_183_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_55766_54_F = structure(list(
+        allele = 1:4, call = c("CA", "CC", "GA", "GC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_57072_25_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_58286_194_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_58286_47_F = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_59630_22_F = structure(list(
+        allele = 1:8, call = c("CAC", "CAT", "CGC", "CGT", "TAC", 
+        "TAT", "TGC", "TGT")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_60288_160_F = structure(list(
+        allele = 1:8, call = c("CAG", "CAT", "CGG", "CGT", "TAG", 
+        "TAT", "TGG", "TGT")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_60393_144_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_61287_1_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_61287_113_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_61677_157_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_61677_41_F = structure(list(
+        allele = 1:2, call = c("A", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_6182_38_F = structure(list(
+        allele = 1:4, call = c("AA", "AG", "CA", "CG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_62099_1_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_62099_97_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_62310_62_F = structure(list(
+        allele = 1:2, call = c("C", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_62657_225_F = structure(list(
+        allele = 1:16, call = c("ACCA", "ACCG", "ACTA", "ACTG", 
+        "AGCA", "AGCG", "AGTA", "AGTG", "GCCA", "GCCG", "GCTA", 
+        "GCTG", "GGCA", "GGCG", "GGTA", "GGTG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -16L)), Oke_62668_232_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_63126_12_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_63344_45_F = structure(list(
+        allele = 1:4, call = c("GC", "GG", "TC", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_63425_151_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_63425_25_F = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_65403_21_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_65411_167_F = structure(list(
+        allele = 1:4, call = c("CA", "CC", "TA", "TC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_67367_140_F = structure(list(
+        allele = 1:16, call = c("AACG", "AACT", "AAGG", "AAGT", 
+        "ATCG", "ATCT", "ATGG", "ATGT", "TACG", "TACT", "TAGG", 
+        "TAGT", "TTCG", "TTCT", "TTGG", "TTGT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -16L)), Oke_6754_23_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_68267_113_F = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_68309_141_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_68572_131_F = structure(list(
+        allele = 1:4, call = c("CC", "CT", "TC", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_68900_81_F = structure(list(
+        allele = 1:4, call = c("CA", "CC", "GA", "GC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_69068_98_F = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_70316_77_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_7055_73_F = structure(list(
+        allele = 1:8, call = c("AAA", "AAG", "ACA", "ACG", "GAA", 
+        "GAG", "GCA", "GCG")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_70587_32_F = structure(list(
+        allele = 1:8, call = c("CGA", "CGC", "CTA", "CTC", "TGA", 
+        "TGC", "TTA", "TTC")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_70873_198_F = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_70873_22_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_71306_165_F = structure(list(
+        allele = 1:4, call = c("AG", "AT", "GG", "GT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_7201_89_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_73640_182_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_73640_36_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_73925_2_F = structure(list(
+        allele = 1:4, call = c("AC", "AT", "TC", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_73925_204_F = structure(list(
+        allele = 1:4, call = c("AA", "AG", "CA", "CG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_75269_140_F = structure(list(
+        allele = 1:4, call = c("GA", "GG", "TA", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_75776_29_F = structure(list(
+        allele = 1:8, call = c("ACA", "ACG", "ATA", "ATG", "TCA", 
+        "TCG", "TTA", "TTG")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_76267_80_F = structure(list(
+        allele = 1:4, call = c("CG", "CT", "GG", "GT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_7639_135_F = structure(list(
+        allele = 1:4, call = c("CC", "CG", "TC", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_76612_1_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_76709_177_F = structure(list(
+        allele = 1:4, call = c("CC", "CT", "TC", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_76834_47_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_76870_214_F = structure(list(
+        allele = 1:2, call = c("C", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_76883_208_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_77197_15_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_77197_151_F = structure(list(
+        allele = 1:4, call = c("AA", "AG", "GA", "GG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_78337_1_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_78337_140_F = structure(list(
+        allele = 1:8, call = c("GCC", "GCG", "GTC", "GTG", "TCC", 
+        "TCG", "TTC", "TTG")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_79567_154_F = structure(list(
+        allele = 1:2, call = c("A", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_81211_215_F = structure(list(
+        allele = 1:8, call = c("ACC", "ACT", "ATC", "ATT", "GCC", 
+        "GCT", "GTC", "GTT")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_81211_59_F = structure(list(
+        allele = 1:4, call = c("AA", "AG", "CA", "CG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_82671_90_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_82853_15_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_82853_178_F = structure(list(
+        allele = 1:4, call = c("AA", "AC", "CA", "CC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_82887_125_F = structure(list(
+        allele = 1:4, call = c("AC", "AT", "GC", "GT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_85166_182_F = structure(list(
+        allele = 1:2, call = c("A", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_85166_24_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_86023_134_F = structure(list(
+        allele = 1:4, call = c("AA", "AC", "GA", "GC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_86023_5_F = structure(list(
+        allele = 1:4, call = c("AA", "AT", "CA", "CT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_87843_139_F = structure(list(
+        allele = 1:4, call = c("CC", "CT", "GC", "GT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_88666_143_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_88666_2_F = structure(list(
+        allele = 1:4, call = c("AG", "AT", "CG", "CT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_89752_136_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_90483_92_F = structure(list(
+        allele = 1:4, call = c("CA", "CT", "TA", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_90659_74_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_90777_129_F = structure(list(
+        allele = 1:4, call = c("GG", "GT", "TG", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_91334_31_F = structure(list(
+        allele = 1:4, call = c("AA", "AG", "GA", "GG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_91488_117_F = structure(list(
+        allele = 1:4, call = c("CA", "CG", "TA", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_92032_87_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_92177_140_F = structure(list(
+        allele = 1:4, call = c("AA", "AC", "TA", "TC")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_9237_75_F = structure(list(
+        allele = 1:8, call = c("AAG", "AAT", "ACG", "ACT", "GAG", 
+        "GAT", "GCG", "GCT")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_92484_232_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_92484_76_F = structure(list(
+        allele = 1:4, call = c("CA", "CT", "TA", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_92523_8_F = structure(list(
+        allele = 1:4, call = c("AA", "AT", "CA", "CT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_92612_82_F = structure(list(
+        allele = 1:4, call = c("AA", "AG", "TA", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_93132_46_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_93429_181_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_93429_28_F = structure(list(
+        allele = 1:2, call = c("A", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_94104_75_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_94362_123_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_94532_195_F = structure(list(
+        allele = 1:4, call = c("GC", "GT", "TC", "TT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_95188_18_F = structure(list(
+        allele = 1:16, call = c("GACA", "GACG", "GATA", "GATG", 
+        "GTCA", "GTCG", "GTTA", "GTTG", "TACA", "TACG", "TATA", 
+        "TATG", "TTCA", "TTCG", "TTTA", "TTTG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -16L)), Oke_95924_147_F = structure(list(
+        allele = 1:4, call = c("CC", "CT", "GC", "GT")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_96269_108_F = structure(list(
+        allele = 1:4, call = c("AC", "AG", "GC", "GG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_96439_177_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_96524_128_F = structure(list(
+        allele = 1:4, call = c("CA", "CG", "TA", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_96598_140_F = structure(list(
+        allele = 1:4, call = c("AA", "AG", "TA", "TG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_96598_36_F = structure(list(
+        allele = 1:2, call = c("C", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_96926_125_F = structure(list(
+        allele = 1:2, call = c("A", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_96926_3_F = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_98037_103_F = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_98329_157_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_98655_58_F = structure(list(
+        allele = 1:8, call = c("GAC", "GAT", "GGC", "GGT", "TAC", 
+        "TAT", "TGC", "TGT")), class = c("tbl_df", "tbl", "data.frame"
+    ), row.names = c(NA, -8L)), Oke_98780_149_F = structure(list(
+        allele = 1:4, call = c("AA", "AG", "CA", "CG")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -4L)), Oke_99532_61_F = structure(list(
+        allele = 1:2, call = c("C", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), Oke_99808_232_F = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), OkeV2_LG23_10546237 = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), OkeV2_LG29_25450752 = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), OkeV2_LG29_25455833 = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), OkeV2_LG29_25483595 = structure(list(
+        allele = 1:2, call = c("A", "G")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), OkeV2_LG29_25515161 = structure(list(
+        allele = 1:2, call = c("A", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), OkeV2_LG35_28078867 = structure(list(
+        allele = 1:2, call = c("G", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), OkeV2_LG35_28128687 = structure(list(
+        allele = 1:2, call = c("A", "C")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), OkeV2_LG35_28165076 = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)), OkeV2_LG35_28167172 = structure(list(
+        allele = 1:2, call = c("C", "T")), class = c("tbl_df", 
+    "tbl", "data.frame"), row.names = c(NA, -2L)))), class = c("tbl_df", 
+"tbl", "data.frame"), row.names = c(NA, -251L))
