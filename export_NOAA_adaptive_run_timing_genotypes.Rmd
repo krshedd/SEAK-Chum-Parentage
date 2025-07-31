@@ -1,5 +1,5 @@
 ---
-title: "Export Genotypes for 9 Adaptive Run Timing Loci to NOAA"
+title: "Export Genotypes for 9 Adaptive Run Timing Loci to NOAA ABL"
 subtitle: "Filtered for Plates Not Needing QC Crosschecks"
 author: "Kyle Shedd"
 date: "Started: 2025-07-24, last opened: `r Sys.Date()`"
@@ -36,7 +36,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Objective
 
-The purpose of this notebook is to provide Wes Larson (NOAA ABL) with adaptive run timing genotypes (9 loci) for AHRP chum samples. Filter out plates undergoing QC crosschecks due to poor genotyping success. Wes is interested in representation across years, less across multiple streams. He wants to see how the patterns hold up over time.
+The purpose of this notebook is to provide Wes Larson (NOAA ABL) with adaptive run timing genotypes (9 loci) for AHRP chum samples. Filter out plates undergoing QC crosschecks due to poor genotyping success. Wes is interested in representation across years, less across multiple streams. He wants to see how the patterns hold up over time. Might as well send everything we have though!
 
 ## Steps
 
@@ -49,7 +49,7 @@ The purpose of this notebook is to provide Wes Larson (NOAA ABL) with adaptive r
 
 # Background
 
-An adaptive marker panel associated with run timing variation in chum salmon was developed by NOAA ABL and used to genotype two plates of samples from the ADFG Alaska Hatchery Research Program (AHRP) study being conducted within SE Alaska. AHRP samples (Fish Creek - Douglas Island 2023 + Prospect Creek 2017/2018) were genotyped in August 2024 for 20 single nucleotide polymorphisms and weighted linear regressions were performed to assess the association of different SNPs with run timing (date of collection). The chum salmon adaptive marker panel contains 20 loci spread among 5 chromosomes and was developed from variation detected between Yukon River summer (Gisasa River) and fall (Pelly River) run chum salmon with low coverage whole genome sequencing.These populations spawn approximately two months and over 1500 river km apart. NOAA targeted the major peaks in differentiation with particular interest in markers within the genes leucine rich repeat containing nine (LRRC9; LG35) and estrogen receptor β (ESRB; LG29) as they were associated with return timing in other salmonid species. Eight SNPs (four on LG29 and four on LG35) appear to be associated with run timing within these collections. The strength of association for AHRP samples appears to vary by population. No markers on LGs 5, 23 or 15 appear to have a strong association with run timing within these collections. Overall, the results from LG29 and LG35 are promising and variation in these SNPs should be surveyed for a larger collection of samples.
+An adaptive marker panel associated with run timing variation in chum salmon was developed by NOAA ABL and used to genotype two plates of samples from the ADFG Alaska Hatchery Research Program (AHRP) study being conducted within SE Alaska. AHRP samples (Fish Creek - Douglas Island 2023 + Prospect Creek 2017/2018) were genotyped in August 2024 for 20 single nucleotide polymorphisms and weighted linear regressions were performed to assess the association of different SNPs with run timing (collection date). The chum salmon adaptive marker panel contains 20 loci spread among 5 chromosomes and was developed from variation detected between Yukon River summer (Gisasa River) and fall (Pelly River) run chum salmon with low coverage whole genome sequencing. These populations spawn approximately two months and over 1500 river km apart. NOAA targeted the major peaks in differentiation with particular interest in markers within the genes leucine rich repeat containing nine (LRRC9; LG35) and estrogen receptor β (ESRB; LG29) as they were associated with return timing in other salmonid species. Eight SNPs (four on LG29 and four on LG35) appear to be associated with run timing within these collections. The strength of association for AHRP samples appears to vary by population. No markers on LGs 5, 23 or 15 appear to have a strong association with run timing within these collections. Overall, the results from LG29 and LG35 are promising and variation in these SNPs should be surveyed for a larger collection of samples.
 
 A total of 9 adaptive, run timing loci were added to the AHRP SEAK Chum parentage panel: 
 
@@ -97,18 +97,18 @@ GCLr::save_objects(objects = "loci251", path = "objects")
 
 ## Genotypes
 
-Read in genotypes by projec to get sillyvec.
+Read in genotypes by project to get `sillyvec`.
 ```{r, eval=FALSE}
 rm(LocusControl)
 # GCLr::loki2r_proj(project_name = paste0("CM0", 64:70), username = .username, password = .password)  # comment out to avoid re-running
 ```
 
-What collections?
+Confirm collections.
 ```{r, eval=FALSE}
 (sillyvec <- sort(project_sillys))
 ```
 
-Subset `sillyvec` to remove alevin collection
+Subset `sillyvec` to remove alevin collection.
 ```{r, eval=FALSE}
 (sillyvec <- grep(pattern = "a", x = sillyvec, ignore.case = FALSE, value = TRUE, invert = TRUE))
 ```
@@ -140,7 +140,6 @@ fs::dir_create("data/genotypes/raw")
 # GCLr::save_sillys(sillyvec = sillyvec, path = "data/genotypes/raw", rds = TRUE)  # hide so you don't overwrite on accident!
 ```
 
-
 ### Re-load
 
 Re-load, if necessary
@@ -151,29 +150,30 @@ GCLr::load_sillys(sillyvec = sillyvec, path = "data/genotypes/raw", rds = TRUE)
 
 ## Metadata
 
-Read in paired metadata from Salmon Biological Fact and Stream Specimens, format similar to `pws_pink_ped_dat`. **NOTE** I'm doing this in a bit of a hurry, so make sure to proof read carefully if recycling this code!
+Read in paired metadata from Salmon Biological Fact and Stream Specimens, format similar to `pws_pink_ped_dat`.
+**NOTE** I'm doing this in a bit of a hurry, so make sure to proof read carefully if recycling this code!
 ```{r}
 (metadata <- readr::read_csv(file = "../OceanAK/AHRP Salmon Biological Data 20240105_122404.368459_with_spawning_state.csv"))
 ```
 
-Modify
+Modify to make similar to `pws_pink_ped_dat`, despite lack of location data from `riverdist`.
 ```{r}
 (
   metadata <- metadata %>% 
-    dplyr::select(-dplyr::contains("target")) %>% 
-    dplyr::select(-dplyr::contains("determination")) %>% 
+    dplyr::select(-dplyr::contains("target")) %>%  # drop GOD columns
+    dplyr::select(-dplyr::contains("determination")) %>%  # drop GOD columns
     dplyr::rename(date = sample_date,
                   length = length_mm,
                   silly = silly_code) %>% 
-    tidyr::unite(col = "sample", dna_tray_code:dna_tray_well_code, sep = "_", remove = FALSE) %>% 
-    tidyr::unite(col = "silly_source", c(silly, fish_id), sep = "_", remove = FALSE) %>% 
+    tidyr::unite(col = "sample", dna_tray_code:dna_tray_well_code, sep = "_", remove = FALSE) %>%  # primary data key for AHRP, DWP barcode _ well code
+    tidyr::unite(col = "silly_source", c(silly, fish_id), sep = "_", remove = FALSE) %>%  # primary data key for GCL collections
     dplyr::mutate(franz_id = stringr::str_c(stringr::str_sub(silly, 1, 2),  # 1st letter of species name, 1st letter of stream name
                                             stringr::str_sub(silly, -2, -1),  # 2 digit sample year
                                             "_",
-                                            stringr::str_pad(fish_id, width = 5, pad = "0", side = "left")),  # 5 digit fishid using padded zeros up front)
+                                            stringr::str_pad(fish_id, width = 5, pad = "0", side = "left")),  # 5 digit fishid using padded zeros up front
                   year = lubridate::year(date),
                   stream = stringr::str_remove(string = location_code, pattern = " Creek"),
-                  DOY = lubridate::yday(date),  # day of year
+                  DOY = lubridate::yday(date),  # day of year; DOY
                   sex = dplyr::case_when(
                     sex == "M" ~ "Male",
                     sex == "F" ~ "Female",
@@ -240,12 +240,12 @@ table(geno_silly_source %in% metadata$silly_source)
 
 Shoot, which samples do not have any metadata?
 
-Ah, I bet they are the Fish Creek tag samples from 2013 that Tyler Dann and Heather Liller collected!
+Ah, I bet they are the Fish Creek tag samples from 2013 that Tyler Dann and Heather Liller collected pre-AHRP field collections!
 ```{r}
 setdiff(geno_silly_source, metadata$silly_source)
 ```
 
-Correct. Add these to metadata.
+Correct. Add these to metadata with sample date info.
 ```{r}
 metadata <- 
   dplyr::bind_rows(metadata,
@@ -284,7 +284,7 @@ metadata <- metadata %>%
   dplyr::mutate(genotyped = silly_source %in% geno_silly_source)
 ```
 
-How many samples per collection (silly)?
+How many samples genotyped per collection (silly)?
 ```{r}
 metadata %>% 
   dplyr::count(genotyped, silly) %>% 
@@ -307,7 +307,7 @@ Any duplicate `SillySource`?
 table(table(my.gcl$SillySource))
 ```
 
-Clean up
+Nope, all good there. Clean up.
 ```{r}
 rm(my.gcl)
 ```
@@ -324,7 +324,7 @@ metadata %>%
   dplyr::arrange(silly_source)
 ```
 
-Okay, they appear to be true duplicates, no conflicting columns. Remove duplicate rows.
+Okay, they appear to be true duplicates in `metadata`, no conflicting columns. Remove duplicate rows.
 ```{r}
 metadata <- metadata %>% 
   dplyr::distinct(silly_source, .keep_all = TRUE)
@@ -442,7 +442,7 @@ metadata %>%
   dplyr::arrange(spawning_state)
 ```
 
-As expected, genotyping success was much lower for rotting fish.
+As expected, genotyping success was lower for rotting fish, but honestly, not terrible!
 
 ## Contamination (Heterozygosity > +/- 3.5 modified Z-score)
 
@@ -467,7 +467,7 @@ source("~/GitHub_repos/AHRP-PWS-Pink-Salmon-Pedigrees/code/functions/calc_ind_he
 ```
 
 Calculate +/- 3.5 modified z-score cutoffs by *stream*. 
-**NOTE** this means that the exact heterozygosity cutoff will vary slightly by stream. For PWS Pink Salmon, I did it separately by silly, but some of our sample sizes are pretty small here and we have the separate "tag" sillys. I'm opting to do this by stream to allow for subtle changes in allele frequency per stream.
+**NOTE** this means that the exact heterozygosity cutoff will vary slightly by stream. For PWS Pink Salmon, I did it separately by silly, but some of our sample sizes are pretty small here and we have the separate "tag" sillys. I'm opting to do this by stream (all years together) to allow for subtle changes in allele frequency per stream.
 ```{r}
 # Function to calculate median absolute deviation (MAD)
 mad <- function(x) {
@@ -538,6 +538,22 @@ Not too many contaminated samples! Most likely culled during missing loci.
 
 Overall `r format(sum(sample_size_qa$heterozygosity), big.mark = ",")` samples dropped due to sample contamination. 
 
+What was contamination by spawning state?
+```{r}
+metadata %>% 
+  dplyr::filter(genotyped) %>% 
+  dplyr::mutate(het_outlier = silly_source %in% (ind_het %>% dplyr::filter(outlier) %>% dplyr::pull(SillySource))) %>% 
+  dplyr::count(het_outlier, spawning_state) %>% 
+  tidyr::pivot_wider(names_from = het_outlier, values_from = n) %>% 
+  dplyr::rename(n_drop = `TRUE`, n_keep = `FALSE`) %>% 
+  dplyr::mutate(n = n_keep + n_drop,
+                p_keep = n_keep / n,
+                spawning_state = factor(spawning_state, levels = c("Alive", "Pink Gill", "Grey Gill", "Rotting"))) %>% 
+  dplyr::arrange(spawning_state)
+```
+
+As expected, contamination (heterozygosity outliers) was higher for rotting fish, but honestly, not terrible!
+
 ## Duplicate (>=95%)
 
 Identify potential duplicate genotypes (>=95% loci).
@@ -560,7 +576,7 @@ duplicate_check_95 %>%
   dplyr::arrange(dplyr::desc(n))
 ```
 
-Remove **both** duplicates! As opposed to GSI work, where we want to keep individuals but aren’t typically worried about paired data, here we want to remove both individuals as the paired data integrity (including otolith reads!) is lost.
+Remove **both** duplicates! As opposed to GSI work, where we want to keep individuals but aren’t typically worried about paired data, here we want to remove both individuals as the paired data integrity (including sample date, otolith reads, etc.) is lost.
 ```{r}
 duplicates_removed <-
   GCLr::remove_dups(dupcheck = duplicate_check_95, remove_both = TRUE)
@@ -635,39 +651,55 @@ Overall `r format(sum(metadata$genotyped), big.mark = ",")` total pedigree sampl
 
 # Adaptive Loci Genotypes
 
-Create a single object with just the metadata and adaptive loci genotypes.
+Create a single object with just the metadata and adaptive loci genotypes for NOAA ABL.
 ```{r}
 (
   chum_adaptive_geno <- sapply(sillyvec, function(silly) {
     get(paste0(silly, ".gcl"))
   }, simplify = FALSE) %>%
-    dplyr::bind_rows() %>%
+    dplyr::bind_rows() %>%  # bind all .gcl objects from separate sillys together
     dplyr::select(
       silly_source = SillySource,
       plate_id = PLATE_ID,
       stream:sw_age,
       dplyr::contains("OkeV2")
-    )
+    )  # keep field data and adaptive loci
 )
 ```
 
 ## Calculate Allele Frequencies
 
+I'm going to look at this three different ways:  
+
+  1) naive, all samples (including hatchery strays) with collection date,
+  2) natural-origin fish only (no hatchery strays) with collection date, and
+  3) natural-origin fish only (no hatchery strays) with *adjusted* collection date based on `spawning_state` (re-scaling to *Alive*)
+    * Alive = collection date
+    * Pink Gill = collection date - 2 days
+    * Grey Gill = collection date - 5 days
+    * Rotting = collection date - 10 days
+
+Stream sampling was limited by both crew availability and weather conditions (flooding), so collection date is not a perfect proxy for run timing. Additionally, in some of the later years crews were tagging live fish near the intertidal to boost genetic sample size; so these live fish were sampled much earlier than post-spawn carcasses with the same run timing.
+
+### All Samples (Hatchery + Natural)
+
 Calculate the allele counts for each locus by stream, year, and DOY.
 Adapted from Pat Barry's code in `AHRP_ChumAdaptive.html`
 ```{r}
 loci_adaptive <- grep(pattern = "OkeV2", x = loci251, value = TRUE)
+GCLr::save_objects(objects = "loci_adaptive", path = "objects/")
 
 # testing
 # chum_adaptive_geno %>%
 #   dplyr::select(silly_source, stream, year, DOY, tidyselect::starts_with(loci_adaptive[1])) %>%
 #   tidyr::pivot_longer(cols = tidyselect::starts_with(loci_adaptive[1]), names_to = "locus", values_to = "allele") %>%
-#   dplyr::mutate(allele = factor(allele),
+#   dplyr::mutate(allele = factor(allele, levels = LocusControl$alleles[[loci_adaptive[1]]]$call),
 #                 allele = as.numeric(allele)) %>%  # make factor and convert to numeric
 #   dplyr::count(stream, year, DOY, allele) %>%
 #   dplyr::mutate(locus = loci_adaptive[1])
 
-# calculate the number of each allele observed per stream, year, day
+# calculate the number of each allele observed per stream, year, day by looping through each locus
+# NOTE: there is no filtering for hatchery/natural origin
 (chum_adaptive_allele_counts <- lapply(loci_adaptive, function(locus) {
   chum_adaptive_geno %>%
     dplyr::select(silly_source,
@@ -680,18 +712,83 @@ loci_adaptive <- grep(pattern = "OkeV2", x = loci251, value = TRUE)
       names_to = "locus",
       values_to = "allele"
     ) %>%
-    dplyr::mutate(allele = factor(allele),
-                allele = as.numeric(allele)) %>%  # make factor and convert to numeric
+    dplyr::mutate(allele = factor(allele, levels = LocusControl$alleles[[{{locus}}]]$call),  # order alleles as per LocusControl
+                  allele = as.numeric(allele)) %>%  # make factor and convert to numeric
     dplyr::count(stream, year, DOY, allele) %>%
     dplyr::mutate(locus = locus)
 }) %>%
     dplyr::bind_rows())
 ```
 
-Convert to alelle frequencies.
+Convert to allele frequencies.
 ```{r}
 (
   chum_adaptive_allele_freq <- chum_adaptive_allele_counts %>%
+    tidyr::pivot_wider(names_from = allele, values_from = n) %>%
+    dplyr::select(-`NA`) %>%  # drop no-calls
+    dplyr::mutate(
+      `1` = replace_na(`1`, 0),
+      `2` = replace_na(`2`, 0)
+    ) %>%  # account for unobserved alleles on a given day
+    tidyr::pivot_longer(
+      cols = `1`:`2`,
+      names_to = "allele",
+      values_to = "n"
+    ) %>%
+    dplyr::group_by(stream, year, DOY, locus) %>%
+    dplyr::mutate(
+      n_alleles = sum(n),
+      p_alleles = n / n_alleles,
+      SNP = paste(locus, allele, sep = "_")
+    ) %>% 
+    dplyr::ungroup() %>% 
+    dplyr::filter(n_alleles > 0)  # remove any stream/year/DOY/locus combinations without data
+)
+```
+
+Confirm data structure.
+```{r}
+chum_adaptive_allele_freq %>% 
+  dplyr::group_by(locus) %>% 
+  dplyr::summarise(min(p_alleles),
+                   max(p_alleles))
+
+chum_adaptive_allele_freq %>% 
+  dplyr::filter(is.na(p_alleles))
+```
+
+### Natural-origin Samples (no Hatchery Strays)
+
+Re-calculate the allele counts for **natural-origin** fish only for each locus by stream, year, and DOY. No hatchery strays!
+Adapted from Pat Barry's code in `AHRP_ChumAdaptive.html`
+```{r}
+# calculate the number of each allele observed per stream, year, day by looping through each locus
+# NOTE: removing all hatchery-origin strays!!!
+(chum_adaptive_allele_counts_wild <- lapply(loci_adaptive, function(locus) {
+  chum_adaptive_geno %>%
+    dplyr::filter(origin == "Natural") %>%  # no hatchery strays or unknown origin fish
+    dplyr::select(silly_source,
+                  stream,
+                  year,
+                  DOY,
+                  tidyselect::starts_with(locus)) %>%
+    tidyr::pivot_longer(
+      cols = tidyselect::starts_with(locus),
+      names_to = "locus",
+      values_to = "allele"
+    ) %>%
+    dplyr::mutate(allele = factor(allele, levels = LocusControl$alleles[[{{locus}}]]$call),  # order alleles as per LocusControl
+                  allele = as.numeric(allele)) %>%  # make factor and convert to numeric
+    dplyr::count(stream, year, DOY, allele) %>%
+    dplyr::mutate(locus = locus)
+}) %>%
+    dplyr::bind_rows())
+```
+
+Convert to allele frequencies.
+```{r}
+(
+  chum_adaptive_allele_freq_wild <- chum_adaptive_allele_counts_wild %>%
     tidyr::pivot_wider(names_from = allele, values_from = n) %>%
     dplyr::select(-`NA`) %>%  # drop no-calls
     dplyr::mutate(
@@ -710,75 +807,310 @@ Convert to alelle frequencies.
       p_alleles = n / n_alleles,
       SNP = paste(locus, allele, sep = "_")
     ) %>% 
-    dplyr::ungroup()
+    dplyr::ungroup() %>% 
+    dplyr::filter(n_alleles > 0)  # remove any stream/year/DOY/locus combinations without data
+)
+```
+
+### Adjust for Spawning State
+
+Re-calculate the allele counts for **natural-origin** fish only for each locus by stream, year, and DOY. No hatchery strays! Adjust DOY based on spawning state, re-scaling to *Alive*. Adjustments are **verrrry** rough guesses.
+
+  * Rotting = Alive + 10 days
+  * Grey Gill = Alive + 5 days
+  * Pink Gill = Alive + 2 days
+
+Adapted from Pat Barry's code in `AHRP_ChumAdaptive.html`
+```{r}
+# calculate the number of each allele observed per stream, year, day by looping through each locus
+# NOTE: removing all hatchery-origin strays!!!
+(chum_adaptive_allele_counts_wild_adj_spawning <- lapply(loci_adaptive, function(locus) {
+  chum_adaptive_geno %>%
+    dplyr::filter(origin == "Natural") %>%  # no hatchery strays or unknown origin fish
+    dplyr::mutate(DOY = dplyr::case_when(spawning_state == "Pink Gill" ~ DOY - 2,
+                                         spawning_state == "Grey Gill" ~ DOY - 5,
+                                         spawning_state == "Rotting" ~ DOY - 10,
+                                         TRUE ~ DOY
+                                         )) %>%  # adjust DOY based on spawning date, adjustments are complete WAGs!!!
+    dplyr::select(silly_source,
+                  stream,
+                  year,
+                  DOY,
+                  tidyselect::starts_with(locus)) %>%
+    tidyr::pivot_longer(
+      cols = tidyselect::starts_with(locus),
+      names_to = "locus",
+      values_to = "allele"
+    ) %>%
+    dplyr::mutate(allele = factor(allele, levels = LocusControl$alleles[[{{locus}}]]$call),  # order alleles as per LocusControl
+                  allele = as.numeric(allele)) %>%  # make factor and convert to numeric
+    dplyr::count(stream, year, DOY, allele) %>%
+    dplyr::mutate(locus = locus)
+}) %>%
+    dplyr::bind_rows())
+```
+
+Convert to allele frequencies.
+```{r}
+(
+  chum_adaptive_allele_freq_wild_adj_spawning <- chum_adaptive_allele_counts_wild_adj_spawning %>%
+    tidyr::pivot_wider(names_from = allele, values_from = n) %>%
+    dplyr::select(-`NA`) %>%  # drop no-calls
+    dplyr::mutate(
+      `1` = replace_na(`1`, 0),
+      # account for unobserved alleles on a given day
+      `2` = replace_na(`2`, 0)
+    ) %>%
+    tidyr::pivot_longer(
+      cols = `1`:`2`,
+      names_to = "allele",
+      values_to = "n"
+    ) %>%
+    dplyr::group_by(stream, year, DOY, locus) %>%
+    dplyr::mutate(
+      n_alleles = sum(n),
+      p_alleles = n / n_alleles,
+      SNP = paste(locus, allele, sep = "_")
+    ) %>% 
+    dplyr::ungroup() %>% 
+    dplyr::filter(n_alleles > 0)  # remove any stream/year/DOY/locus combinations without data
 )
 ```
 
 ## View Allele Frequencies
 
+Create functions to standardize plots. Each set of plots is facetted to show years/loci.
+**NOTE** since I am forcing the y-axes to 0-1, the SE ribbons get cut off for some of the fit lines.
 ```{r}
-#  TODO
-# double check allele frequency code to make sure it is correct
-# make sure alleles are being assigned 1 vs. 2 consistently
-# filter out hatchery strays?
-# check sample sizes by stream/year/DOY?
-# see if spawning state correlates?
+adaptive_freq_plot <- function(freq, stream) {
+  freq %>% 
+    dplyr::filter(stream == {{stream}}) %>% 
+    dplyr::mutate(locus = stringr::str_remove_all(string = locus, pattern = "OkeV2_")) %>%  # shorten locus names to fit
+    ggplot2::ggplot(ggplot2::aes(x = DOY, y = p_alleles, colour = SNP, group_by(SNP))) +
+    ggplot2::geom_point() +
+    ggplot2::geom_smooth(method = "lm", weight = "n_alleles", formula = y~x) +
+    ggplot2::ylim(0, 1) +  # this cuts off the SE's for the fit line
+    ggplot2::facet_grid(locus ~ year) + 
+    ggplot2::theme_bw() + 
+    ggplot2::theme(legend.position = 'none',
+                   axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5, hjust = 0.5)) +
+    ggplot2::labs(title = stream, x = "DOY", y = "Allele Frequency")
+}
+
+avg_allele_n_plot <- function(freq, stream) {
+  freq %>% 
+    dplyr::filter(stream == {{stream}}) %>% 
+    dplyr::group_by(stream, year, DOY) %>% 
+    dplyr::summarise(n_alleles = round(mean(n_alleles)), .groups = "drop") %>% 
+    ggplot2::ggplot(ggplot2::aes(x = DOY, y = n_alleles)) + 
+    ggplot2::geom_col() +
+    ggplot2::facet_grid(~year) +
+    ggplot2::labs(title = paste0(stream, " - Average Allele Sample Size per Day"), y = "Average Number of Alleles") +
+    ggplot2::theme_bw() +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90, vjust = 0.5, hjust = 0.5))
+}
 ```
 
-### Admiralty
+### All Samples
 
-```{r fig.height=10}
-chum_adaptive_allele_freq %>% 
-  dplyr::filter(stream == "Admiralty") %>% 
-  dplyr::mutate(locus = stringr::str_remove_all(string = locus, pattern = "OkeV2_")) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = DOY, y = p_alleles, colour = SNP, group_by(SNP))) +
-  ggplot2::geom_point() +
-  ggplot2::geom_smooth(method = "lm", weight = "n_alleles", formula = y~x) +
-  ggplot2::facet_grid(locus ~ year) + 
-  ggplot2::theme_bw() + 
-  ggplot2::theme(legend.position = 'none')
+Includes hatchery-origin strays and unknown origin fish (i.e. no otolith read).
+
+#### Admiralty
+
+Show average allele sample sizes per DOY by year.
+```{r}
+avg_allele_n_plot(freq = chum_adaptive_allele_freq, stream = "Admiralty")
 ```
 
-### Fish
+**NOTE** small sample sizes in 2018 and later sampling dates due to flooding conditions.
 
-```{r fig.height=10}
-chum_adaptive_allele_freq %>% 
-  dplyr::filter(stream == "Fish - Douglas Island") %>% 
-  dplyr::mutate(locus = stringr::str_remove_all(string = locus, pattern = "OkeV2_")) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = DOY, y = p_alleles, colour = SNP, group_by(SNP))) +
-  ggplot2::geom_point() +
-  ggplot2::geom_smooth(method = "lm", weight = "n_alleles", formula = y~x) +
-  ggplot2::facet_grid(locus ~ year) + 
-  ggplot2::theme_bw() + 
-  ggplot2::theme(legend.position = 'none')
+```{r fig.height=12}
+adaptive_freq_plot(freq = chum_adaptive_allele_freq, stream = "Admiralty")
 ```
 
-### Prospect
+Inconsistent patterns among years for most loci. The most consistent relationship is in `LG29_25515161`. Some evidence of a brood year effect with more similarities between 2013/2017 (assuming most chum are age 4).
 
-```{r fig.height=10}
-chum_adaptive_allele_freq %>% 
-  dplyr::filter(stream == "Prospect") %>% 
-  dplyr::mutate(locus = stringr::str_remove_all(string = locus, pattern = "OkeV2_")) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = DOY, y = p_alleles, colour = SNP, group_by(SNP))) +
-  ggplot2::geom_point() +
-  ggplot2::geom_smooth(method = "lm", weight = "n_alleles", formula = y~x) +
-  ggplot2::facet_grid(locus ~ year) + 
-  ggplot2::theme_bw() + 
-  ggplot2::theme(legend.position = 'none')
+#### Fish
+
+Show average allele sample sizes per DOY by year.
+```{r}
+avg_allele_n_plot(freq = chum_adaptive_allele_freq, stream = "Fish - Douglas Island")
 ```
 
-### Sawmill
-
-```{r fig.height=10}
-chum_adaptive_allele_freq %>% 
-  dplyr::filter(stream == "Sawmill") %>% 
-  dplyr::mutate(locus = stringr::str_remove_all(string = locus, pattern = "OkeV2_")) %>% 
-  ggplot2::ggplot(ggplot2::aes(x = DOY, y = p_alleles, colour = SNP, group_by(SNP))) +
-  ggplot2::geom_point() +
-  ggplot2::geom_smooth(method = "lm", weight = "n_alleles", formula = y~x) +
-  ggplot2::facet_grid(locus ~ year) + 
-  ggplot2::theme_bw() + 
-  ggplot2::theme(legend.position = 'none')
+```{r fig.height=12}
+adaptive_freq_plot(freq = chum_adaptive_allele_freq %>% dplyr::filter(year != 2020), stream = "Fish - Douglas Island")  # ditch 2020; low n
 ```
+
+Inconsistent patterns among years for LG35 loci, but LG29 loci are reasonably consistent.
+
+#### Prospect
+
+Show average allele sample sizes per DOY by year.
+```{r}
+avg_allele_n_plot(freq = chum_adaptive_allele_freq, stream = "Prospect")
+```
+
+**NOTE** sample sizes are lackluster for 2020 and 2021, as are the tails of the run in 2018.
+
+```{r fig.height=12}
+adaptive_freq_plot(freq = chum_adaptive_allele_freq, stream = "Prospect")
+```
+
+Inconsistent patterns among years for LG29 loci (see `LG29_25455833` for 2014 vs. 2019!), but LG35 loci are reasonably consistent.
+
+#### Sawmill
+
+Show average allele sample sizes per DOY by year.
+```{r}
+avg_allele_n_plot(freq = chum_adaptive_allele_freq, stream = "Sawmill")
+```
+
+**NOTE** sample sizes reasonable for all except 2020.
+
+```{r fig.height=12}
+adaptive_freq_plot(freq = chum_adaptive_allele_freq %>% dplyr::filter(year != 2020), stream = "Sawmill")  # ditch 2020; low n
+```
+
+More similar to Fish Creek - Douglas Island. Weak, inconsistent relationship for LG35 loci, but LG29 loci have a consistent relationship across years.
+
+### Natural-origin
+
+Only includes natural-origin fish.
+
+#### Admiralty
+
+Show average allele sample sizes per DOY by year.
+```{r}
+avg_allele_n_plot(freq = chum_adaptive_allele_freq_wild, stream = "Admiralty")
+```
+
+Very few hatchery strays into Admiralty, no big changes in sample sizes.
+
+```{r fig.height=12}
+adaptive_freq_plot(freq = chum_adaptive_allele_freq_wild, stream = "Admiralty")
+```
+
+Similar patterns as noted above.
+
+#### Fish
+
+Show average allele sample sizes per DOY by year.
+```{r}
+avg_allele_n_plot(freq = chum_adaptive_allele_freq_wild %>% dplyr::filter(year != 2020), stream = "Fish - Douglas Island") # ditch 2020; low n
+```
+
+Lot of hatchery strays in Fish Creek - Douglas Island! Good sample sizes throughout the run for most years, excluding 2013 (sparse sampling) and 2021 (low n).
+
+```{r fig.height=12}
+adaptive_freq_plot(freq = chum_adaptive_allele_freq_wild %>% dplyr::filter(year != 2020), stream = "Fish - Douglas Island")  # ditch 2020; low n
+```
+
+Some subtle changes in relationships when excluding hatchery strays, but general pattern of stronger relationship with LG29 loci holds.
+
+#### Prospect
+
+Show average allele sample sizes per DOY by year.
+```{r}
+avg_allele_n_plot(freq = chum_adaptive_allele_freq_wild, stream = "Prospect")
+```
+
+**NOTE** sample sizes remain lackluster for 2020 and 2021, as are the tails of the run in 2018.
+
+```{r fig.height=12}
+adaptive_freq_plot(freq = chum_adaptive_allele_freq_wild, stream = "Prospect")
+```
+
+Minimal changes to relationships after excluding hatchery strays.
+
+#### Sawmill
+
+Show average allele sample sizes per DOY by year.
+```{r}
+avg_allele_n_plot(freq = chum_adaptive_allele_freq_wild, stream = "Sawmill")
+```
+
+**NOTE** sample sizes reasonable for all except 2020.
+
+```{r fig.height=12}
+adaptive_freq_plot(freq = chum_adaptive_allele_freq_wild %>% dplyr::filter(year != 2020), stream = "Sawmill")  # ditch 2020
+```
+
+The pattern of stronger relationships with LG29 loci holds.
+
+### Natural-origin + Adjust for Spawning State
+
+Only includes natural-origin fish and adjustments to collection date (DOY) based on spawning state (re-scaled to *Alive*).
+
+#### Admiralty
+
+Show average allele sample sizes per DOY by year.
+```{r}
+avg_allele_n_plot(freq = chum_adaptive_allele_freq_wild_adj_spawning, stream = "Admiralty")
+```
+
+Distribution changes a bit due to `spawning_state` adjustment to DOY.
+
+```{r fig.height=12}
+adaptive_freq_plot(freq = chum_adaptive_allele_freq_wild_adj_spawning, stream = "Admiralty")
+```
+
+Adjusting DOY for `spawning_state` doesn't appear to alter relationships much for Admiralty. LG29 loci have a stronger association with run timing than LG35.
+
+#### Fish
+
+Show average allele sample sizes per DOY by year.
+```{r}
+avg_allele_n_plot(freq = chum_adaptive_allele_freq_wild_adj_spawning %>% dplyr::filter(year != 2020), stream = "Fish - Douglas Island") # ditch 2020; low n
+```
+
+Lot of hatchery strays in Fish Creek - Douglas Island! Good sample sizes throughout the run for most years, excluding 2013 (sparse sampling) and 2021 (low n).
+
+```{r fig.height=12}
+adaptive_freq_plot(freq = chum_adaptive_allele_freq_wild_adj_spawning %>% dplyr::filter(year != 2020), stream = "Fish - Douglas Island")  # ditch 2020
+```
+
+Adjusting DOY for `spawning_state` definitely introduces some more noise, but LG29 loci still have a stronger association with run timing than LG35.
+
+#### Prospect
+
+Show average allele sample sizes per DOY by year.
+```{r}
+avg_allele_n_plot(freq = chum_adaptive_allele_freq_wild_adj_spawning, stream = "Prospect")
+```
+
+**NOTE** bigger shift in the distribution of DOY for 2013 and 2019 than other years.
+
+```{r fig.height=12}
+adaptive_freq_plot(freq = chum_adaptive_allele_freq_wild_adj_spawning, stream = "Prospect")
+```
+
+Adjusting DOY for `spawning_state` definitely introduces some more noise, but cleans up the relationships with LG29 loci (except for `LG29_25455833`, dunno what is going on with those brood year effects!).
+
+#### Sawmill
+
+Show average allele sample sizes per DOY by year.
+```{r}
+avg_allele_n_plot(freq = chum_adaptive_allele_freq_wild_adj_spawning, stream = "Sawmill")
+```
+
+**NOTE** sample sizes getting fairly small per DOY, but good distribution.
+
+```{r fig.height=12}
+adaptive_freq_plot(freq = chum_adaptive_allele_freq_wild_adj_spawning %>% dplyr::filter(year != 2020), stream = "Sawmill")  # ditch 2020
+```
+
+Adjusting DOY for `spawning_state` appears to have reversed the relationships for 2019 for `LG29_2540752` and `LG_25483595`?
+
+## Export Genotypes for NOAA ABL
+
+Save as both a `.csv` and `.rds`.
+```{r}
+readr::write_csv(x = chum_adaptive_geno, file = "output/chum_adaptive_geno_2025-07-30.csv")
+GCLr::save_objects(objects = "chum_adaptive_geno", path = "output", rds = TRUE)
+```
+
+# Conclusions
+
+Nine adaptive loci associated with run timing were identified by NOAA ABL and included in the ADF&G AHRP chum salmon parentage GT-seq panel. ~19K SEAK chum AHRP pedigree samples were genotyped at the GCL. ~4K samples were removed from further analyses due to pending QC cross checks, poor quality DNA, contaminated samples, or duplicate genotypes, leaving a total of ~15K samples collected from 2013-2023. Weighted linear regressions were performed to investigate the association between adaptive loci allele frequencies and run timing (collection date) using code adapted from Pat Barry (NOAA ABL). Note that collection date is an imperfect proxy of run timing for these fish given that samples were collected from both living fish and post-spawn carcasses! Adjusting collection date for fish condition (`spawning_state`) appears to have improved some relationships. The strength of association appears to vary both by stream, year, and origin (hatchery vs. natural), with some apparent brood year effects (assuming most chum are age-4). The sole LG23 SNP shows inconsistent and at times contrasting patterns across years, whereas SNPs on LG29 (ESRB) and LG35 (LRRC9) show more consistency across streams and years. LG29 loci (except `LG_25455833`) were more consistently associated with run timing than LG35 loci in all streams after adjusting DOY to account for `spawning_state`. 
 
 end
